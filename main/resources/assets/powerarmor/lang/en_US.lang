@@ -1,0 +1,6 @@
+item.ingotCopper.name=Copper Ingot
+item.cardSpeed.name=Speed Upgrade Card
+item.powerChest.name=Power Chestplate
+tile.blockCopper.name=Block of Copper
+tile.armorWorkbench.name=Armor Workbench
+itemGroup.tabPowerarmor=Power Armor
