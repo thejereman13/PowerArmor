@@ -7,4 +7,4 @@ TODO:
 ~Get custom textures for Workbench Buttons
 ~Fix/actually implement shift-clicking in Workbench Gui
 ~Setup method in armorTick for detecting the upgrades installed (functions for each upgrade)(Use .getClass() to sort items?)
-~Actually texture the Workbench
+~Actually texture the Workbench (work on 3d model later)
