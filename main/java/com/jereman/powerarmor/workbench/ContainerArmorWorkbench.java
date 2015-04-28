@@ -143,8 +143,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotTwo") != null){
 					if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
-						
-						//Brah, yo code aint workin, no string is being recieved!!! check the write method below, it is working kinda...
 						Console.println("Item: " + armor.getTagCompound().getString("SlotTwo"));
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
 						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
@@ -154,8 +152,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotThree") != null){
 					if (!armor.getTagCompound().getString("SlotThree").equals("none")){
-						
-						//Brah, yo code aint workin, no string is being recieved!!! check the write method below, it is working kinda...
 						Console.println("Item: " + armor.getTagCompound().getString("SlotThree"));
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
 						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
@@ -165,8 +161,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotFour") != null){
 					if (!armor.getTagCompound().getString("SlotFour").equals("none")){
-						
-						//Brah, yo code aint workin, no string is being recieved!!! check the write method below, it is working kinda...
 						Console.println("Item: " + armor.getTagCompound().getString("SlotFour"));
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
 						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
@@ -176,8 +170,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotFive") != null){
 					if (!armor.getTagCompound().getString("SlotFive").equals("none")){
-						
-						//Brah, yo code aint workin, no string is being recieved!!! check the write method below, it is working kinda...
 						Console.println("Item: " + armor.getTagCompound().getString("SlotFive"));
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
 						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
