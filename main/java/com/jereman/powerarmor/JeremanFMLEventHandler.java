@@ -10,7 +10,7 @@ import com.jereman.powerarmor.init.JeremanItems;
 
 public class JeremanFMLEventHandler {
 
-	
+	//Do da things to reverse the effects added later
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event){
 		if (!event.player.worldObj.isRemote && event.phase == TickEvent.Phase.START){

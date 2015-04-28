@@ -14,10 +14,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import scala.Console;
 
+import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.armor.PowerChest;
 import com.jereman.powerarmor.init.JeremanItems;
 
-public class CardSpeed extends Item{
+public class CardSpeed extends PowerCards{
 	public static float playerSpeed = .3f;
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)

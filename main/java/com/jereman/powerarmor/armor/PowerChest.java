@@ -1,11 +1,15 @@
 package com.jereman.powerarmor.armor;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import scala.Console;
 
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.Reference;
 import com.jereman.powerarmor.init.JeremanItems;
+import com.jereman.powerarmor.items.CardJump;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 public class PowerChest extends net.minecraft.item.ItemArmor{
+	private Method method;
+
 	public PowerChest(){
 		super(Main.PowerArmorMaterial, 0, 1);
 		this.setMaxDamage(1000);
@@ -28,26 +34,55 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 		if (!world.isRemote){
 			ExtendedProperties props = ExtendedProperties.get(player); //NBT data for the player wearing the chestplate
 		if (player.getCurrentArmor(2).getItem() == JeremanItems.powerChest){
-			if (props.getChestPlate() == false){ //setup for ability reversal upon armor removal
-				props.setChestPlate(true);
-				Console.println("Chestplate is being worn"); 							//CHAT
-				
-			}
-			if (stack.getTagCompound() != null && stack.getTagCompound().getInteger("SpeedUpgrade") != 0){ //Speed Upgrade Stuff
-			if (stack.getTagCompound().hasKey("SpeedUpgrade")){
-				if (stack.getTagCompound().getInteger("SpeedUpgrade") == 1){
-					player.capabilities.setPlayerWalkSpeed(.3f);
+			
+			final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
+			for (String upgradeString: upgradeList){
+				if (upgradeString.equals("none")){
+					
+				}else if (!upgradeString.equals("none")){
+				Console.println("Upgrade: " + upgradeString.substring(5));
+				try {
+					this.method = this.getClass().getMethod(upgradeString.substring(5), int.class, EntityPlayer.class);
+				} catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				}
+				try {
+					//Setup code to get the Upgrade Amount
+					EntityPlayer playerIn = player;
+					int upgradeAmount = 3; //Remove This Later
+					method.invoke(this, upgradeAmount, playerIn); //Passing data to the correct function for each upgrade in use
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
 				}
 			}
-			}else{
-				player.capabilities.setPlayerWalkSpeed(.1f);
+			
+
+			if (props.getChestPlate() == false){ //setup for ability reversal upon armor removal in FMLEventHandler
+				props.setChestPlate(true);
+				Console.println("Chestplate is being worn");
 			}
 			
-			/*if (stack.getTagCompound() != null && stack.getTagCompound().getInteger("JumpUpgrade") != 0){ //Jump Upgrade Stuff
-				
-			} */
 		}
 	}
+	}
+	
+	//CardSpeed function
+	public void cardSpeed(int playerSpeed, EntityPlayer player){
+		float actuallSpeed = ((float) playerSpeed / 10);
+		Console.println("Speed Card being executed, speed is: " + actuallSpeed);
+		player.capabilities.setPlayerWalkSpeed(actuallSpeed);
+	}
+	
+	//CardJump Function
+	public void cardJump(int jumpHeight, EntityPlayer player){
+			//MEH
 	}
 	
 	@Override

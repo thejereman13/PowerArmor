@@ -4,6 +4,7 @@ import java.util.List;
 
 import scala.Console;
 
+import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.Reference;
 
 import net.minecraft.client.Minecraft;
@@ -19,7 +20,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class CardJump extends Item{
+public class CardJump extends PowerCards{
 	public static double jumpHeight = 0;
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)

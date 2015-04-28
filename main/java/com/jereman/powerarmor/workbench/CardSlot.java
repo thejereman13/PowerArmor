@@ -1,5 +1,6 @@
 package com.jereman.powerarmor.workbench;
 
+import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.items.CardJump;
 import com.jereman.powerarmor.items.CardSpeed;
 
@@ -24,7 +25,7 @@ public class CardSlot extends Slot{
 	@Override
 	public boolean isItemValid(ItemStack stack){
 		final Item item = stack.getItem();
-		if (item instanceof CardJump || item instanceof CardSpeed){
+		if (item instanceof PowerCards){
 			return true;
 		}
 		return false;
