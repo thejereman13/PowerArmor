@@ -1,8 +1,8 @@
 package com.jereman.powerarmor;
 
-import com.jereman.powerarmor.gui.GuiArmorWorkbench;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 import com.jereman.powerarmor.workbench.ContainerArmorWorkbench;
+import com.jereman.powerarmor.workbench.GuiArmorWorkbench;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

@@ -1,14 +1,14 @@
-package com.jereman.powerarmor.gui;
+package com.jereman.powerarmor.workbench;
 
 import org.lwjgl.opengl.GL11;
 
 import scala.Console;
 
+import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.Reference;
 import com.jereman.powerarmor.packets.CardNumberMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
-import com.jereman.powerarmor.workbench.ContainerArmorWorkbench;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -29,17 +29,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiArmorWorkbench extends GuiContainer{
-	
+	public TileEntityArmorWorkbench workbench;
 	public static int xCord;
 	public static int yCord;
+	public int slotActivated = 0;
 	public double slider1;
+	public EntityPlayer player;
 	private final ResourceLocation backgroundImage = new ResourceLocation(Reference.MOD_ID.toLowerCase(), "textures/client/gui/guiArmorWorkbench.png");
 	
 	public GuiArmorWorkbench(EntityPlayer player, InventoryPlayer invPlayer, TileEntityArmorWorkbench entity){
-		super(new ContainerArmorWorkbench(player, invPlayer, entity));		
-		this.xSize = 197;
+		super(new ContainerArmorWorkbench(player, invPlayer, entity));
+		this.workbench = entity;
+		this.player = player;
+		this.xSize = 176;
 		this.ySize = 200;
-
 	}
 	
 	@Override
@@ -48,17 +51,17 @@ public class GuiArmorWorkbench extends GuiContainer{
 		xCord = (this.width - this.xSize) / 2;
 		yCord = (this.height - this.ySize) / 2;
 		
-		this.buttonList.add(new GuiButton(0, xCord + 47, yCord + 6, 10, 19, ""));
-		this.buttonList.add(new GuiButton(1, xCord + 47, yCord + 26, 10, 19, ""));
-		this.buttonList.add(new GuiButton(2, xCord + 47, yCord + 46, 10, 19, ""));
-		this.buttonList.add(new GuiButton(3, xCord + 47, yCord + 66, 10, 19, ""));
-		this.buttonList.add(new GuiButton(4, xCord + 47, yCord + 86, 10, 19, ""));
+		this.buttonList.add(new GuiButton(0, xCord + 57, yCord + 6, 10, 18, ""));
+		this.buttonList.add(new GuiButton(1, xCord + 57, yCord + 26, 10, 18, ""));
+		this.buttonList.add(new GuiButton(2, xCord + 57, yCord + 46, 10, 18, ""));
+		this.buttonList.add(new GuiButton(3, xCord + 57, yCord + 66, 10, 18, ""));
+		this.buttonList.add(new GuiButton(4, xCord + 57, yCord + 86, 10, 18, ""));
 	}
 	
 	public void actionPerformed(GuiButton button){
 			Main.network.sendToServer(new CardNumberMessage(button.id));
-			Console.println("Sent Message");
-		
+			slotActivated = button.id + 1;
+
 	}
 	
 	@Override
@@ -76,6 +79,7 @@ public class GuiArmorWorkbench extends GuiContainer{
 	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY){
+
 	}
 	
 	@Override
@@ -85,5 +89,10 @@ public class GuiArmorWorkbench extends GuiContainer{
 		xCord = (this.width - this.xSize) / 2;
 		yCord = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(xCord, yCord, 0, 0, xSize, ySize);
+		if (slotActivated != 0){
+			drawTexturedModalRect(xCord + 35, yCord - 13 + (slotActivated * 20), 177, 1, 4, 16);
+		}
+		
+
 	}
 }

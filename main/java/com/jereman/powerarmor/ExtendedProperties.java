@@ -45,7 +45,6 @@ public class ExtendedProperties implements IExtendedEntityProperties{
 		
 		this.armorChestWorn = compound.getBoolean("ChestWorn");
 		this.armorPantsWorn = compound.getBoolean("PantsWorn");
-		Console.println("Chest: " + this.armorChestWorn + " Pants: " + this.armorPantsWorn);
 	}
 
 	@Override

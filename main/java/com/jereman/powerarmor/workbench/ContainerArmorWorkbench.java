@@ -11,21 +11,25 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.IElementHandler;
+import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.armor.PowerChest;
-import com.jereman.powerarmor.gui.GuiArmorWorkbench;
 import com.jereman.powerarmor.init.JeremanItems;
+import com.jereman.powerarmor.packets.CardGuiMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 
 public class ContainerArmorWorkbench extends Container implements IElementHandler{
-	private TileEntityArmorWorkbench workbench;
+	public TileEntityArmorWorkbench workbench;
 	public double SpeedCurrent;
 	public boolean shouldUpdate = true;
+	public EntityPlayer player;
 	
 	private static final int ARMOR_START = 27, ARMOR_END = ARMOR_START + 3,
 			INV_START = 1, INV_END = INV_START+26,
@@ -38,26 +42,28 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	
 	public ContainerArmorWorkbench(final EntityPlayer player, InventoryPlayer invPlayer, TileEntityArmorWorkbench entity){
 		int m;
-		int armorOffset = 6;
+		int armorOffset = 8;
 		int invStartY = 117;
 		int invStartX = 30;
 		this.workbench = entity;
 		inventory = invPlayer;
+		this.player = player;
+		
 		
 		//Add slots from hotbar
 		for (int x = 0; x < 9; x++){
-			addSlotToContainer(new Slot(invPlayer, x, 29 + x * 18, 174));
+			addSlotToContainer(new Slot(invPlayer, x, 8 + x * 18, 173));
 		}
 		//Add slots from inventory
 		for (m = 0; m < 3; ++m){
 			for (int j = 0; j < 9; ++j){
-				this.addSlotToContainer(new Slot(invPlayer, j + m * 9 + 9, 29 + j * 18, 116 + m * 18));
+				this.addSlotToContainer(new Slot(invPlayer, j + m * 9 + 9, 8 + j * 18, 115 + m * 18));
 			}
 		}
 		//Add Armor slots to Container
 		for (int i = 0; i < 4; ++i) {
 		      final int k = i;
-		      addSlotToContainer(new Slot(invPlayer, invPlayer.getSizeInventory() - 1 - i, armorOffset, 62 + i * 18) {
+		      addSlotToContainer(new Slot(invPlayer, invPlayer.getSizeInventory() - 1 - i, armorOffset, 33 + i * 18) {
 
 		        @Override
 		        public int getSlotStackLimit() {
@@ -82,10 +88,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		
 		//Add Card Slots to Container
 		for (int y = 0; y < 5; y++){
-			this.addSlotToContainer(new CardSlot(entity, y, 29, 8 + 20*y));
+			this.addSlotToContainer(new CardSlot(entity, y, 40, 7 + 20*y));
 		}
 		//Add Armor Piece to Container
-		this.addSlotToContainer(new ArmorpieceSlot(entity, 5, 6, 14));
+		this.addSlotToContainer(new ArmorpieceSlot(entity, 5, 8, 7));
 	}
 	
 
@@ -126,14 +132,13 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		
 		if (armor != null){
 			if (armor.getItem() instanceof PowerChest){
-				
+
 				//Getting the Cards from NBT data and putting them in the gui
 			if (armor.getTagCompound() != null & this.shouldUpdate == true){
 				if (armor.getTagCompound().getString("SlotOne") != null){
 					String tagOne =  armor.getTagCompound().getString("SlotOne");
 					Console.println("Tag One: " + tagOne);
 					if (tagOne.equals("none")){
-						Console.println("Der be nothing");
 						workbench.setInventorySlotContents(0, null);
 					}else if (!tagOne.equals("none")){
 						Console.println("Item: " + armor.getTagCompound().getString("SlotOne"));
@@ -185,31 +190,26 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				//Storing the data from slots
 				if (slotOne != null){
 					PowerChest.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
-					Console.println(slotOne.getUnlocalizedName());
 				}else{
 					PowerChest.NBTUpgradeList("SlotOne", armor, "none");
 				}
 				if (slotTwo != null){
 					PowerChest.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
-					Console.println(slotTwo.getUnlocalizedName());
 				}else{
 					PowerChest.NBTUpgradeList("SlotTwo", armor, "none");
 				}
 				if (slotThree !=null){
 					PowerChest.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
-					Console.println(slotThree.getUnlocalizedName());
 				}else{
 					PowerChest.NBTUpgradeList("SlotThree", armor, "none");
 				}
 				if (slotFour != null){
 					PowerChest.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
-					Console.println(slotFour.getUnlocalizedName());
 				}else{
 					PowerChest.NBTUpgradeList("SlotFour", armor, "none");
 				}
 				if (slotFive != null){
 					PowerChest.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
-					Console.println(slotFive.getUnlocalizedName());
 				}else{
 					PowerChest.NBTUpgradeList("SlotFive", armor, "none");
 				}
@@ -220,12 +220,48 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			for (int i = 0; i < 5; i++){
 				workbench.setInventorySlotContents(i, null);
 				this.shouldUpdate = true;
+				
 			}
 		}
 	}
-	
+	//Buttons to select the upgrade to modify
 	public void buttonClick(int buttonId){
-		Console.println("Test");
+		switch (buttonId){
+		case 0:
+			Console.println("Button 1");
+			if (workbench.getStackInSlot(0) != null){
+				//nothing here yet
+			}
+			break;
+		case 1:
+			Console.println("Button 2");
+			if (workbench.getStackInSlot(1) != null){
+				//nothing here yet
+			}
+			break;
+		case 2:
+			Console.println("Button 3");
+			if (workbench.getStackInSlot(2) != null){
+				//nothing here yet
+			}
+			break;
+		case 3:
+			Console.println("Button 4");
+			if (workbench.getStackInSlot(3) != null){
+				//nothing here yet
+			}
+			break;
+		case 4:
+			Console.println("Button 5");
+			if (workbench.getStackInSlot(4) != null){
+				//nothing here yet
+			}
+			break;
+		default:
+			Console.println("Others");
+			break;
+		}
+			
 	}
 	
 	@Override

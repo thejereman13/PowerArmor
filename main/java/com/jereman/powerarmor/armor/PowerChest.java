@@ -44,6 +44,7 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 				try {
 					this.method = this.getClass().getMethod(upgradeString.substring(5), int.class, EntityPlayer.class);
 				} catch (NoSuchMethodException e) {
+					Console.println("Uhh Oh!!!: Someone didn't register a function for a card!");
 					e.printStackTrace();
 				} catch (SecurityException e) {
 					e.printStackTrace();
@@ -82,7 +83,7 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 	
 	//CardJump Function
 	public void cardJump(int jumpHeight, EntityPlayer player){
-			//MEH
+		//Put stuff here, probably for the eventhandler
 	}
 	
 	@Override
@@ -106,7 +107,7 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 		}
 		NBTTagCompound nbt = new NBTTagCompound();
 		stack.getTagCompound().setInteger(upgradeName, amount);
-		Console.println("Setting NBT Data");
+		Console.println("Setting NBT Upgrade Amount as: " + amount);
 		
 	}
 	
@@ -116,7 +117,7 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 		}
 		NBTTagCompound nbt = new NBTTagCompound();
 		stack.getTagCompound().setString(slotNum, upgrade);
-		Console.println("Setting NBT Data as: " + upgrade);
+		//Console.println("Setting NBT Data as: " + upgrade);
 		
 	}
 

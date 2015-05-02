@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import com.jereman.powerarmor.init.Blocks;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.init.armor;
+import com.jereman.powerarmor.packets.CardGuiMessage;
 import com.jereman.powerarmor.packets.CardNumberHandler;
 import com.jereman.powerarmor.packets.CardNumberMessage;
 import com.jereman.powerarmor.proxy.CommonProxy;

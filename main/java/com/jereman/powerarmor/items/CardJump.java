@@ -61,21 +61,9 @@ public class CardJump extends PowerCards{
 		if (stack.getTagCompound() != null){
 			if (stack.getTagCompound().hasKey("activatedText")){
 				NBTTagCompound nbt = (NBTTagCompound) stack.getTagCompound().getTag("activatedText");
-				boolean activation = nbt.getBoolean("isenabled");
-				tooltip.add("Jump Upgrade Card is Activated");
 			}
 		}
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack stack)
-    {
-        if (stack.getTagCompound() != null){
-        	return stack.getTagCompound().hasKey("activatedText");
-        }
-		return false;
-    }
 	
 	protected void keyTyped(char par1, int par2){
 		Minecraft mc = FMLClientHandler.instance().getClient();
