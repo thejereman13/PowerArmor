@@ -17,7 +17,6 @@ public class CardNumberMessage implements IMessage{
 	
 	public CardNumberMessage(int buttonId){
 		this.buttonId = buttonId;
-		Console.println("Got the Button");
 	}
 	
 	@Override
@@ -25,14 +24,11 @@ public class CardNumberMessage implements IMessage{
 		int elementLength = buf.readInt();
 		Console.println(elementLength);
 		this.buttonId = elementLength;
-		
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		buf.writeInt(buttonId);
-		Console.println("Writing buttonID");
-		
 	}
 
 		

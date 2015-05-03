@@ -1,9 +1,13 @@
 package com.jereman.powerarmor.workbench;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import scala.Console;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -22,7 +26,7 @@ import com.jereman.powerarmor.IElementHandler;
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.armor.PowerChest;
 import com.jereman.powerarmor.init.JeremanItems;
-import com.jereman.powerarmor.packets.CardGuiMessage;
+import com.jereman.powerarmor.packets.CardUpgradeMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 
 public class ContainerArmorWorkbench extends Container implements IElementHandler{
@@ -39,6 +43,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	protected TileEntityArmorWorkbench tileEntity;
 	
 	public Item slotOne, slotTwo, slotThree, slotFour, slotFive;
+	public int slotSelected = 0;
+	public double slotOneAmount, slotTwoAmount, slotThreeAmount, slotFourAmount, slotFiveAmount;
 	
 	public ContainerArmorWorkbench(final EntityPlayer player, InventoryPlayer invPlayer, TileEntityArmorWorkbench entity){
 		int m;
@@ -99,7 +105,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	public boolean canInteractWith(EntityPlayer playerIn) {
 		return this.workbench.isUseableByPlayer(playerIn);
 	}
-	
+
 	@Override
 	public void detectAndSendChanges(){						//Container Update Tick
 		super.detectAndSendChanges();
@@ -135,7 +141,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 
 				//Getting the Cards from NBT data and putting them in the gui
 			if (armor.getTagCompound() != null & this.shouldUpdate == true){
-				if (armor.getTagCompound().getString("SlotOne") != null){
+				if (armor.getTagCompound().getString("SlotOne") != null){			//Slot One Code
 					String tagOne =  armor.getTagCompound().getString("SlotOne");
 					Console.println("Tag One: " + tagOne);
 					if (tagOne.equals("none")){
@@ -146,7 +152,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
 					} 
 				}
-				if (armor.getTagCompound().getString("SlotTwo") != null){
+				if (armor.getTagCompound().getString("SlotTwo") != null){			//Slot Two Code
 					if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
 						Console.println("Item: " + armor.getTagCompound().getString("SlotTwo"));
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
@@ -155,7 +161,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(1, null);
 					}
 				}
-				if (armor.getTagCompound().getString("SlotThree") != null){
+				if (armor.getTagCompound().getString("SlotThree") != null){			//Slot Three Code
 					if (!armor.getTagCompound().getString("SlotThree").equals("none")){
 						Console.println("Item: " + armor.getTagCompound().getString("SlotThree"));
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
@@ -164,7 +170,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(2, null);
 					}
 				}
-				if (armor.getTagCompound().getString("SlotFour") != null){
+				if (armor.getTagCompound().getString("SlotFour") != null){			//Slot Four Code
 					if (!armor.getTagCompound().getString("SlotFour").equals("none")){
 						Console.println("Item: " + armor.getTagCompound().getString("SlotFour"));
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
@@ -173,7 +179,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(3, null);
 					}
 				}
-				if (armor.getTagCompound().getString("SlotFive") != null){
+				if (armor.getTagCompound().getString("SlotFive") != null){			//Slot Five Code
 					if (!armor.getTagCompound().getString("SlotFive").equals("none")){
 						Console.println("Item: " + armor.getTagCompound().getString("SlotFive"));
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
@@ -224,46 +230,229 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			}
 		}
 	}
+	
 	//Buttons to select the upgrade to modify
 	public void buttonClick(int buttonId){
 		switch (buttonId){
 		case 0:
 			Console.println("Button 1");
 			if (workbench.getStackInSlot(0) != null){
-				//nothing here yet
+				this.slotSelected = 1;
+				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 1:
 			Console.println("Button 2");
 			if (workbench.getStackInSlot(1) != null){
-				//nothing here yet
+				this.slotSelected = 2;
+				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 2:
 			Console.println("Button 3");
 			if (workbench.getStackInSlot(2) != null){
-				//nothing here yet
+				this.slotSelected = 3;
+				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 3:
 			Console.println("Button 4");
 			if (workbench.getStackInSlot(3) != null){
-				//nothing here yet
+				this.slotSelected = 4;
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 4:
 			Console.println("Button 5");
 			if (workbench.getStackInSlot(4) != null){
-				//nothing here yet
+				this.slotSelected = 5;
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+			}
+			break;
+		case 5:
+			Console.println("Upgrade -1");
+			switch (this.slotSelected){
+			case 1:
+				this.slotOneAmount -= 1;
+				if (this.slotOneAmount <= 0){
+					this.slotOneAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				break;
+			case 2:
+				this.slotTwoAmount -= 1;
+				if (this.slotTwoAmount <= 0){
+					this.slotTwoAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				break;
+			case 3:
+				this.slotThreeAmount -= 1;
+				if (this.slotThreeAmount <= 0){
+					this.slotThreeAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				break;
+			case 4:
+				this.slotFourAmount -= 1;
+				if (this.slotFourAmount <= 0){
+					this.slotFourAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				break;
+			case 5:
+				this.slotFiveAmount -= 1;
+				if (this.slotFiveAmount <= 0){
+					this.slotFiveAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				break;
+			}
+			break;
+		case 6:
+			Console.println("Upgrade -.1");
+			switch (this.slotSelected){
+			case 1:
+				double slotOneish = round(this.slotOneAmount - .1000, 2);
+				this.slotOneAmount = slotOneish;
+				if (this.slotOneAmount <= 0){
+					this.slotOneAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				break;
+			case 2:
+				double slotTwoish = round(this.slotTwoAmount - .1000, 2);
+				this.slotTwoAmount = slotTwoish;
+				if (this.slotTwoAmount <= 0){
+					this.slotTwoAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				break;
+			case 3:
+				double slotThreeish = round(this.slotThreeAmount - .1000, 2);
+				this.slotThreeAmount = slotThreeish;
+				if (this.slotThreeAmount <= 0){
+					this.slotThreeAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				break;
+			case 4:
+				double slotFourish = round(this.slotFourAmount - .1000, 2);
+				this.slotFourAmount = slotFourish;
+				if (this.slotFourAmount <= 0){
+					this.slotFourAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				break;
+			case 5:
+				double slotFiveish = round(this.slotFourAmount - .1000, 2);
+				this.slotFiveAmount = slotFiveish;
+				if (this.slotFiveAmount <= 0){
+					this.slotFiveAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				break;
+			}
+			break;
+		case 7:
+			Console.println("Upgrade +.1");
+			switch (this.slotSelected){
+			case 1:
+				double slotOneish = round(this.slotOneAmount + .1000, 2);
+				this.slotOneAmount = slotOneish;
+				if (this.slotOneAmount <= 0){
+					this.slotOneAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				break;
+			case 2:
+				double slotTwoish = round(this.slotTwoAmount + .1000, 2);
+				this.slotTwoAmount = slotTwoish;
+				if (this.slotTwoAmount <= 0){
+					this.slotTwoAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				break;
+			case 3:
+				double slotThreeish = round(this.slotThreeAmount + .1000, 2);
+				this.slotThreeAmount = slotThreeish;
+				if (this.slotThreeAmount <= 0){
+					this.slotThreeAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				break;
+			case 4:
+				double slotFourish = round(this.slotFourAmount + .1000, 2);
+				this.slotFourAmount = slotFourish;
+				if (this.slotFourAmount <= 0){
+					this.slotFourAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				break;
+			case 5:
+				double slotFiveish = round(this.slotFiveAmount + .1000, 2);
+				this.slotFiveAmount = slotFiveish;
+				if (this.slotFiveAmount <= 0){
+					this.slotFiveAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				break;
+			}
+			break;
+		case 8:
+			Console.println("Upgrade +1");
+			switch (this.slotSelected){
+			case 1:
+				this.slotOneAmount += 1;
+				if (this.slotOneAmount <= 0){
+					this.slotOneAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				break;
+			case 2:
+				this.slotTwoAmount += 1;
+				if (this.slotTwoAmount <= 0){
+					this.slotTwoAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				break;
+			case 3:
+				this.slotThreeAmount += 1;
+				if (this.slotThreeAmount <= 0){
+					this.slotThreeAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				break;
+			case 4:
+				this.slotFourAmount += 1;
+				if (this.slotFourAmount <= 0){
+					this.slotFourAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				break;
+			case 5:
+				this.slotFiveAmount += 1;
+				if (this.slotFiveAmount <= 0){
+					this.slotFiveAmount = 0.00;
+				}
+				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				break;
 			}
 			break;
 		default:
-			Console.println("Others");
+			Console.println("WTF!?");
 			break;
-		}
-			
+		}	
 	}
 	
+	//Function to round doubles, makes things nicer...
+		public static double round(double value, int places) {
+		    if (places < 0) throw new IllegalArgumentException();
+
+		    BigDecimal bd = new BigDecimal(value);
+		    bd = bd.setScale(places, RoundingMode.HALF_UP);
+		    return bd.doubleValue();
+		}
 	@Override
 	protected boolean mergeItemStack(ItemStack stack, int start, int end, boolean backwards)
 	{
@@ -347,7 +536,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	
 	 @Override
      public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-             return null;
+         //Still need to work on!!!    
+		 
+		 return null;
              /*ItemStack itemstack = null;
              Slot slot = (Slot)this.inventorySlots.get(index);
 

@@ -149,6 +149,7 @@ public class TileEntityArmorWorkbench extends TileEntity implements IInventory{
 	}
 	
 	public void readFromNBT(NBTTagCompound compound) {
+		super.readFromNBT(compound);
 		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < items.tagCount(); ++i) {
 			NBTTagCompound item = items.getCompoundTagAt(i);
@@ -160,6 +161,7 @@ public class TileEntityArmorWorkbench extends TileEntity implements IInventory{
 	}
 
 	public void writeToNBT(NBTTagCompound compound) {
+		super.writeToNBT(compound);
 		NBTTagList items = new NBTTagList();
 		for (int i = 0; i < getSizeInventory(); ++i) {
 			if (getStackInSlot(i) != null) {

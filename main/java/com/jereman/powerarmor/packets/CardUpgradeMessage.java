@@ -11,28 +11,23 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class CardGuiMessage implements IMessage{
-	public int buttonId;
-	public CardGuiMessage(){}
+public class CardUpgradeMessage implements IMessage{
+	public double amount;
+	public CardUpgradeMessage(){}
 	
-	public CardGuiMessage(int buttonId){
-		this.buttonId = buttonId;
-		Console.println("Got the Button");
+	public CardUpgradeMessage(double amount){
+		this.amount = amount;
 	}
 	
 	@Override
 	public void fromBytes(ByteBuf buf) {
-		int elementLength = buf.readInt();
-		Console.println(elementLength);
-		this.buttonId = elementLength;
-		
+		double elementLength = buf.readDouble();
+		this.amount = elementLength;
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
-		buf.writeInt(buttonId);
-		Console.println("Writing buttonID");
-		
+		buf.writeDouble(amount);
 	}
 
 		

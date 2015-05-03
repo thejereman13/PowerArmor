@@ -15,12 +15,9 @@ public class CardNumberHandler implements IMessageHandler<CardNumberMessage, IMe
 	@Override
 	public IMessage onMessage(CardNumberMessage message, MessageContext ctx) {
 		EntityPlayerMP player = ctx.getServerHandler().playerEntity;
-		Console.println(message.buttonId);
 		if (player != null){
-			Console.println("Sending Function to Container");
-			((IElementHandler) player.openContainer).buttonClick(message.buttonId);
+				((IElementHandler) player.openContainer).buttonClick(message.buttonId);
 		}
 		return null;
 	}
-
 }

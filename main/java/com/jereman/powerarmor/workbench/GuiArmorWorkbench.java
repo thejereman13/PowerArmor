@@ -1,5 +1,8 @@
 package com.jereman.powerarmor.workbench;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import org.lwjgl.opengl.GL11;
 
 import scala.Console;
@@ -11,6 +14,7 @@ import com.jereman.powerarmor.packets.CardNumberMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiOptionSlider;
 import net.minecraft.client.gui.GuiScreen;
@@ -33,13 +37,15 @@ public class GuiArmorWorkbench extends GuiContainer{
 	public static int xCord;
 	public static int yCord;
 	public int slotActivated = 0;
-	public double slider1;
+	public double upgrade = 0;
 	public EntityPlayer player;
+	public ContainerArmorWorkbench container;
 	private final ResourceLocation backgroundImage = new ResourceLocation(Reference.MOD_ID.toLowerCase(), "textures/client/gui/guiArmorWorkbench.png");
 	
 	public GuiArmorWorkbench(EntityPlayer player, InventoryPlayer invPlayer, TileEntityArmorWorkbench entity){
 		super(new ContainerArmorWorkbench(player, invPlayer, entity));
 		this.workbench = entity;
+		this.container = (ContainerArmorWorkbench)this.inventorySlots;
 		this.player = player;
 		this.xSize = 176;
 		this.ySize = 200;
@@ -56,11 +62,17 @@ public class GuiArmorWorkbench extends GuiContainer{
 		this.buttonList.add(new GuiButton(2, xCord + 57, yCord + 46, 10, 18, ""));
 		this.buttonList.add(new GuiButton(3, xCord + 57, yCord + 66, 10, 18, ""));
 		this.buttonList.add(new GuiButton(4, xCord + 57, yCord + 86, 10, 18, ""));
+		this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 10, 20, 20, "-1"));
+		this.buttonList.add(new GuiButton(6, xCord + 80, yCord + 30, 20, 20, "-.1"));
+		this.buttonList.add(new GuiButton(7, xCord + 80, yCord + 50, 20, 20, "+.1"));
+		this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 70, 20, 20, "+1"));
 	}
 	
 	public void actionPerformed(GuiButton button){
 			Main.network.sendToServer(new CardNumberMessage(button.id));
-			slotActivated = button.id + 1;
+			if (button.id <= 4){
+				slotActivated = button.id + 1;
+			}
 
 	}
 	
@@ -82,6 +94,11 @@ public class GuiArmorWorkbench extends GuiContainer{
 
 	}
 	
+	public void recieveAmount(double upgradeAmount){
+		Console.println("Gui recieved: " + upgradeAmount);
+		this.upgrade = upgradeAmount;
+	}
+	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1F, 1F, 1F, 1F);
@@ -89,10 +106,13 @@ public class GuiArmorWorkbench extends GuiContainer{
 		xCord = (this.width - this.xSize) / 2;
 		yCord = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(xCord, yCord, 0, 0, xSize, ySize);
+		Console.println("Upgrade: " + this.upgrade);
 		if (slotActivated != 0){
 			drawTexturedModalRect(xCord + 35, yCord - 13 + (slotActivated * 20), 177, 1, 4, 16);
 		}
-		
+		this.fontRendererObj.drawString("Upgrade: " + this.upgrade, xCord + 110, yCord + 10, 0x000e74);
+
 
 	}
+	
 }
