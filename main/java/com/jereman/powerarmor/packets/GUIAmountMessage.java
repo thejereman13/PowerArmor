@@ -11,11 +11,11 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class CardUpgradeMessage implements IMessage{
+public class GUIAmountMessage implements IMessage{
 	public double amount;
-	public CardUpgradeMessage(){}
+	public GUIAmountMessage(){}
 	
-	public CardUpgradeMessage(double amount){
+	public GUIAmountMessage(double amount){
 		this.amount = amount;
 	}
 	

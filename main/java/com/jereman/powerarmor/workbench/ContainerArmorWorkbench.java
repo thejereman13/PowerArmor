@@ -26,7 +26,7 @@ import com.jereman.powerarmor.IElementHandler;
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.armor.PowerChest;
 import com.jereman.powerarmor.init.JeremanItems;
-import com.jereman.powerarmor.packets.CardUpgradeMessage;
+import com.jereman.powerarmor.packets.GUIAmountMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 
 public class ContainerArmorWorkbench extends Container implements IElementHandler{
@@ -34,6 +34,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	public double SpeedCurrent;
 	public boolean shouldUpdate = true;
 	public EntityPlayer player;
+	ItemStack armor;
 	
 	private static final int ARMOR_START = 27, ARMOR_END = ARMOR_START + 3,
 			INV_START = 1, INV_END = INV_START+26,
@@ -109,7 +110,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	@Override
 	public void detectAndSendChanges(){						//Container Update Tick
 		super.detectAndSendChanges();
-		ItemStack armor = workbench.getStackInSlot(5);
+		this.armor = workbench.getStackInSlot(5);
 		if (workbench.getStackInSlot(0)!= null){
 		this.slotOne = workbench.getStackInSlot(0).getItem();
 		}else{
@@ -220,97 +221,123 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					PowerChest.NBTUpgradeList("SlotFive", armor, "none");
 				}
 				
+				switch (this.slotSelected){
+				case 1:
+					PowerChest.NBTUpgrades("SlotOneAmount", armor, this.slotOneAmount);
+					break;
+				case 2:
+					PowerChest.NBTUpgrades("SlotTwoAmount", armor, this.slotTwoAmount);
+					break;
+				case 3:
+					PowerChest.NBTUpgrades("SlotThreeAmount", armor, this.slotThreeAmount);
+					break;
+				case 4:
+					PowerChest.NBTUpgrades("SlotFourAmount", armor, this.slotFourAmount);
+					break;
+				case 5:
+					PowerChest.NBTUpgrades("SlotFiveAmount", armor, this.slotFiveAmount);
+				}
+				
 				
 			}
 		}else{
 			for (int i = 0; i < 5; i++){
 				workbench.setInventorySlotContents(i, null);
+				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 				this.shouldUpdate = true;
 				
 			}
 		}
 	}
 	
-	//Buttons to select the upgrade to modify
+		//Buttons to select the upgrade to modify
 	public void buttonClick(int buttonId){
 		switch (buttonId){
-		case 0:
-			Console.println("Button 1");
+		case 0: //Button 1
 			if (workbench.getStackInSlot(0) != null){
+				if (armor.getTagCompound().hasKey("SlotOneAmount")){
+					this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
+				}
 				this.slotSelected = 1;
-				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 			}
 			break;
-		case 1:
-			Console.println("Button 2");
+		case 1: //Button 2
 			if (workbench.getStackInSlot(1) != null){
+				if (armor.getTagCompound().hasKey("SlotTwoAmount")){
+					this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
+				}
 				this.slotSelected = 2;
-				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 			}
 			break;
-		case 2:
-			Console.println("Button 3");
+		case 2: //Button 3
 			if (workbench.getStackInSlot(2) != null){
+				if (armor.getTagCompound().hasKey("SlotThreeAmount")){
+					this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
+				}
 				this.slotSelected = 3;
-				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 			}
 			break;
-		case 3:
-			Console.println("Button 4");
+		case 3: //Button 4
 			if (workbench.getStackInSlot(3) != null){
+				if (armor.getTagCompound().hasKey("SlotFourAmount")){
+					this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
+				}
 				this.slotSelected = 4;
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 			}
 			break;
-		case 4:
-			Console.println("Button 5");
+		case 4: //Button 5
 			if (workbench.getStackInSlot(4) != null){
+				if (armor.getTagCompound().hasKey("SlotFiveAmount")){
+					this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
+				}
 				this.slotSelected = 5;
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 			}
 			break;
-		case 5:
-			Console.println("Upgrade -1");
+		case 5: //Upgrade -1
 			switch (this.slotSelected){
 			case 1:
 				this.slotOneAmount -= 1;
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
 				this.slotTwoAmount -= 1;
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
 				this.slotThreeAmount -= 1;
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
 				this.slotFourAmount -= 1;
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
 				this.slotFiveAmount -= 1;
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
 			}
 			break;
-		case 6:
-			Console.println("Upgrade -.1");
+		case 6: //Upgrade -.1
 			switch (this.slotSelected){
 			case 1:
 				double slotOneish = round(this.slotOneAmount - .1000, 2);
@@ -318,7 +345,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
 				double slotTwoish = round(this.slotTwoAmount - .1000, 2);
@@ -326,7 +353,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
 				double slotThreeish = round(this.slotThreeAmount - .1000, 2);
@@ -334,7 +361,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
 				double slotFourish = round(this.slotFourAmount - .1000, 2);
@@ -342,7 +369,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
 				double slotFiveish = round(this.slotFourAmount - .1000, 2);
@@ -350,12 +377,11 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
 			}
 			break;
-		case 7:
-			Console.println("Upgrade +.1");
+		case 7: //Upgrade +.1
 			switch (this.slotSelected){
 			case 1:
 				double slotOneish = round(this.slotOneAmount + .1000, 2);
@@ -363,7 +389,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
 				double slotTwoish = round(this.slotTwoAmount + .1000, 2);
@@ -371,7 +397,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
 				double slotThreeish = round(this.slotThreeAmount + .1000, 2);
@@ -379,7 +405,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
 				double slotFourish = round(this.slotFourAmount + .1000, 2);
@@ -387,7 +413,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
 				double slotFiveish = round(this.slotFiveAmount + .1000, 2);
@@ -395,52 +421,50 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
 			}
 			break;
-		case 8:
-			Console.println("Upgrade +1");
+		case 8: //Upgrade +1
 			switch (this.slotSelected){
 			case 1:
 				this.slotOneAmount += 1;
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
 				this.slotTwoAmount += 1;
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
 				this.slotThreeAmount += 1;
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
 				this.slotFourAmount += 1;
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
 				this.slotFiveAmount += 1;
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
 				}
-				Main.network.sendTo(new CardUpgradeMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
 			}
 			break;
 		default:
-			Console.println("WTF!?");
 			break;
 		}	
 	}

@@ -22,7 +22,7 @@ import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 public class PowerChest extends net.minecraft.item.ItemArmor{
 	private Method method;
-
+	double upgradeAmount;
 	public PowerChest(){
 		super(Main.PowerArmorMaterial, 0, 1);
 		this.setMaxDamage(1000);
@@ -40,49 +40,60 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 				if (upgradeString.equals("none")){
 					
 				}else if (!upgradeString.equals("none")){
-				Console.println("Upgrade: " + upgradeString.substring(5));
-				try {
-					this.method = this.getClass().getMethod(upgradeString.substring(5), int.class, EntityPlayer.class);
-				} catch (NoSuchMethodException e) {
-					Console.println("Uhh Oh!!!: Someone didn't register a function for a card!");
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				}
-				try {
-					//Setup code to get the Upgrade Amount
-					EntityPlayer playerIn = player;
-					int upgradeAmount = 3; //Remove This Later
-					method.invoke(this, upgradeAmount, playerIn); //Passing data to the correct function for each upgrade in use
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
+						//Determining what slot the card is in, setting the amount for execution to the NBT data for that slot
+					if (upgradeString.equals(stack.getTagCompound().getString("SlotOne"))){
+						this.upgradeAmount = stack.getTagCompound().getDouble("SlotOneAmount");
+					}
+					if (upgradeString.equals(stack.getTagCompound().getString("SlotTwo"))){
+						this.upgradeAmount = stack.getTagCompound().getDouble("SlotTwoAmount");
+					}
+					if (upgradeString.equals(stack.getTagCompound().getString("SlotThree"))){
+						this.upgradeAmount = stack.getTagCompound().getDouble("SlotThreeAmount");
+					}
+					if (upgradeString.equals(stack.getTagCompound().getString("SlotFour"))){
+						this.upgradeAmount = stack.getTagCompound().getDouble("SlotFourAmount");
+					}
+					if (upgradeString.equals(stack.getTagCompound().getString("SlotFive"))){
+						this.upgradeAmount = stack.getTagCompound().getDouble("SlotFiveAmount");
+					}
+					Console.println("Upgrade: " + upgradeString.substring(5));
+					try {
+						this.method = this.getClass().getMethod(upgradeString.substring(5), double.class, EntityPlayer.class);
+					} catch (NoSuchMethodException e) {
+						Console.println("Uhh Oh!!!: Someone didn't register a function for a card!");
+						e.printStackTrace();
+					} catch (SecurityException e) {
+						e.printStackTrace();
+					}
+					try {
+						
+						EntityPlayer playerIn = player;
+						method.invoke(this, upgradeAmount, playerIn); //Passing data to the correct function for each upgrade in use
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
 				}
 			}
-			
-
 			if (props.getChestPlate() == false){ //setup for ability reversal upon armor removal in FMLEventHandler
 				props.setChestPlate(true);
 				Console.println("Chestplate is being worn");
 			}
-			
 		}
 	}
 	}
 	
-	//CardSpeed function
-	public void cardSpeed(int playerSpeed, EntityPlayer player){
+		//CardSpeed function
+	public void cardSpeed(double playerSpeed, EntityPlayer player){
 		float actuallSpeed = ((float) playerSpeed / 10);
-		Console.println("Speed Card being executed, speed is: " + actuallSpeed);
 		player.capabilities.setPlayerWalkSpeed(actuallSpeed);
 	}
 	
-	//CardJump Function
-	public void cardJump(int jumpHeight, EntityPlayer player){
+		//CardJump Function
+	public void cardJump(double jumpHeight, EntityPlayer player){
 		//Put stuff here, probably for the eventhandler
 	}
 	
@@ -101,23 +112,21 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 		return false;
 	}
 	
-	public static void NBTUpgrades(String upgradeName, ItemStack stack, int amount){ //NBT stuff
+	public static void NBTUpgrades(String upgradeName, ItemStack stack, double amount){ //Set the NBT data for upgrade Amount
 		if (stack.getTagCompound() == null){
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		NBTTagCompound nbt = new NBTTagCompound();
-		stack.getTagCompound().setInteger(upgradeName, amount);
-		Console.println("Setting NBT Upgrade Amount as: " + amount);
+		stack.getTagCompound().setDouble(upgradeName, amount);
 		
 	}
 	
-	public static void NBTUpgradeList(String slotNum, ItemStack stack, String upgrade){ //NBT stuff
+	public static void NBTUpgradeList(String slotNum, ItemStack stack, String upgrade){ //Set the NBT data for the name of the upgrades
 		if (stack.getTagCompound() == null){
 			stack.setTagCompound(new NBTTagCompound());
 		}
 		NBTTagCompound nbt = new NBTTagCompound();
 		stack.getTagCompound().setString(slotNum, upgrade);
-		//Console.println("Setting NBT Data as: " + upgrade);
 		
 	}
 

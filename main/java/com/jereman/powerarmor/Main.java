@@ -19,8 +19,8 @@ import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.init.armor;
 import com.jereman.powerarmor.packets.CardNumberHandler;
 import com.jereman.powerarmor.packets.CardNumberMessage;
-import com.jereman.powerarmor.packets.CardUpgradeHandler;
-import com.jereman.powerarmor.packets.CardUpgradeMessage;
+import com.jereman.powerarmor.packets.GUIAmountHandler;
+import com.jereman.powerarmor.packets.GUIAmountMessage;
 import com.jereman.powerarmor.proxy.CommonProxy;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class Main {
@@ -48,7 +48,7 @@ public class Main {
 		armor.init();
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("powerarmor");
 		network.registerMessage(CardNumberHandler.class, CardNumberMessage.class, 0, Side.SERVER);
-		network.registerMessage(CardUpgradeHandler.class, CardUpgradeMessage.class, 1, Side.CLIENT);
+		network.registerMessage(GUIAmountHandler.class, GUIAmountMessage.class, 1, Side.CLIENT);
 		
 	}
 	

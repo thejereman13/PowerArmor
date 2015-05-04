@@ -38,6 +38,8 @@ public class GuiArmorWorkbench extends GuiContainer{
 	public static int yCord;
 	public int slotActivated = 0;
 	public double upgrade = 0;
+	public boolean isButton;
+	public boolean isEmpty;
 	public EntityPlayer player;
 	public ContainerArmorWorkbench container;
 	private final ResourceLocation backgroundImage = new ResourceLocation(Reference.MOD_ID.toLowerCase(), "textures/client/gui/guiArmorWorkbench.png");
@@ -62,16 +64,20 @@ public class GuiArmorWorkbench extends GuiContainer{
 		this.buttonList.add(new GuiButton(2, xCord + 57, yCord + 46, 10, 18, ""));
 		this.buttonList.add(new GuiButton(3, xCord + 57, yCord + 66, 10, 18, ""));
 		this.buttonList.add(new GuiButton(4, xCord + 57, yCord + 86, 10, 18, ""));
-		this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 10, 20, 20, "-1"));
-		this.buttonList.add(new GuiButton(6, xCord + 80, yCord + 30, 20, 20, "-.1"));
-		this.buttonList.add(new GuiButton(7, xCord + 80, yCord + 50, 20, 20, "+.1"));
-		this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 70, 20, 20, "+1"));
+
 	}
 	
 	public void actionPerformed(GuiButton button){
 			Main.network.sendToServer(new CardNumberMessage(button.id));
 			if (button.id <= 4){
 				slotActivated = button.id + 1;
+				if (isButton == false){
+					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 20, 20, 20, "-1"));
+					this.buttonList.add(new GuiButton(6, xCord + 80, yCord + 40, 20, 20, "-.1"));
+					this.buttonList.add(new GuiButton(7, xCord + 80, yCord + 60, 20, 20, "+.1"));
+					this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 80, 20, 20, "+1"));
+					this.isButton = true;
+				}
 			}
 
 	}
@@ -95,8 +101,12 @@ public class GuiArmorWorkbench extends GuiContainer{
 	}
 	
 	public void recieveAmount(double upgradeAmount){
-		Console.println("Gui recieved: " + upgradeAmount);
 		this.upgrade = upgradeAmount;
+		if (this.upgrade == -1){
+			this.isEmpty = true;
+		}else{
+			this.isEmpty = false;
+		}
 	}
 	
 	@Override
@@ -106,12 +116,14 @@ public class GuiArmorWorkbench extends GuiContainer{
 		xCord = (this.width - this.xSize) / 2;
 		yCord = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(xCord, yCord, 0, 0, xSize, ySize);
-		Console.println("Upgrade: " + this.upgrade);
-		if (slotActivated != 0){
+		if (slotActivated != 0 && isEmpty == false){
 			drawTexturedModalRect(xCord + 35, yCord - 13 + (slotActivated * 20), 177, 1, 4, 16);
 		}
-		this.fontRendererObj.drawString("Upgrade: " + this.upgrade, xCord + 110, yCord + 10, 0x000e74);
-
+		if (this.isEmpty){
+			this.fontRendererObj.drawString("Upgrade: " + "None", xCord + 100, yCord + 10, 0x000e74);
+		}else{
+			this.fontRendererObj.drawString("Upgrade: " + this.upgrade, xCord + 100, yCord + 10, 0x000e74);
+		}
 
 	}
 	

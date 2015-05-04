@@ -12,10 +12,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class CardUpgradeHandler implements IMessageHandler<CardUpgradeMessage, IMessage> {
+public class GUIAmountHandler implements IMessageHandler<GUIAmountMessage, IMessage> {
 
 	@Override
-	public IMessage onMessage(CardUpgradeMessage message, MessageContext ctx) {
+	public IMessage onMessage(GUIAmountMessage message, MessageContext ctx) {
 		if (!Minecraft.getMinecraft().inGameHasFocus && Minecraft.getMinecraft().currentScreen instanceof GuiArmorWorkbench){
 			Console.println("Called: " + message.amount);
 				((GuiArmorWorkbench)Minecraft.getMinecraft().currentScreen).recieveAmount(message.amount);
