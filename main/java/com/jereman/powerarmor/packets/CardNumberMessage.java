@@ -22,7 +22,6 @@ public class CardNumberMessage implements IMessage{
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		int elementLength = buf.readInt();
-		Console.println(elementLength);
 		this.buttonId = elementLength;
 	}
 

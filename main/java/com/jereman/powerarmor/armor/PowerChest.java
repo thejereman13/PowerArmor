@@ -56,7 +56,6 @@ public class PowerChest extends net.minecraft.item.ItemArmor{
 					if (upgradeString.equals(stack.getTagCompound().getString("SlotFive"))){
 						this.upgradeAmount = stack.getTagCompound().getDouble("SlotFiveAmount");
 					}
-					Console.println("Upgrade: " + upgradeString.substring(5));
 					try {
 						this.method = this.getClass().getMethod(upgradeString.substring(5), double.class, EntityPlayer.class);
 					} catch (NoSuchMethodException e) {

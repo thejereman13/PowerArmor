@@ -46,6 +46,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	public Item slotOne, slotTwo, slotThree, slotFour, slotFive;
 	public int slotSelected = 0;
 	public double slotOneAmount, slotTwoAmount, slotThreeAmount, slotFourAmount, slotFiveAmount;
+	public boolean slotOneValid = false, slotTwoValid = false, slotThreeValid = false, slotFourValid = false, slotFiveValid = false;
 	
 	public ContainerArmorWorkbench(final EntityPlayer player, InventoryPlayer invPlayer, TileEntityArmorWorkbench entity){
 		int m;
@@ -144,13 +145,16 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			if (armor.getTagCompound() != null & this.shouldUpdate == true){
 				if (armor.getTagCompound().getString("SlotOne") != null){			//Slot One Code
 					String tagOne =  armor.getTagCompound().getString("SlotOne");
-					Console.println("Tag One: " + tagOne);
 					if (tagOne.equals("none")){
 						workbench.setInventorySlotContents(0, null);
 					}else if (!tagOne.equals("none")){
 						Console.println("Item: " + armor.getTagCompound().getString("SlotOne"));
 						Item inputItem1 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotOne").substring(5));
 						workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
+						if (armor.getTagCompound().getBoolean("SlotOneValid")){		//Setting the new item with correct NBT data
+							workbench.getStackInSlot(0).setTagCompound(new NBTTagCompound());
+							workbench.getStackInSlot(0).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+						}
 					} 
 				}
 				if (armor.getTagCompound().getString("SlotTwo") != null){			//Slot Two Code
@@ -158,6 +162,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Console.println("Item: " + armor.getTagCompound().getString("SlotTwo"));
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
 						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
+						if (armor.getTagCompound().getBoolean("SlotTwoValid")){		//Setting the new item with correct NBT data
+							workbench.getStackInSlot(1).setTagCompound(new NBTTagCompound());
+							workbench.getStackInSlot(1).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+						}
 					}else if (armor.getTagCompound().getString("SlotTwo").equals("none")){
 						workbench.setInventorySlotContents(1, null);
 					}
@@ -167,6 +175,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Console.println("Item: " + armor.getTagCompound().getString("SlotThree"));
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
 						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
+						if (armor.getTagCompound().getBoolean("SlotThreeValid")){	//Setting the new item with correct NBT data
+							workbench.getStackInSlot(2).setTagCompound(new NBTTagCompound());
+							workbench.getStackInSlot(2).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+						}
 					}else if (armor.getTagCompound().getString("SlotThree").equals("none")){
 						workbench.setInventorySlotContents(2, null);
 					}
@@ -176,6 +188,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Console.println("Item: " + armor.getTagCompound().getString("SlotFour"));
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
 						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
+						if (armor.getTagCompound().getBoolean("SlotFourValid")){	//Setting the new item with correct NBT data
+							workbench.getStackInSlot(3).setTagCompound(new NBTTagCompound());
+							workbench.getStackInSlot(3).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+						}
 					}else if (armor.getTagCompound().getString("SlotFour").equals("none")){
 						workbench.setInventorySlotContents(3, null);
 					}
@@ -185,6 +201,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Console.println("Item: " + armor.getTagCompound().getString("SlotFive"));
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
 						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
+						if (armor.getTagCompound().getBoolean("SlotFiveValid")){	//Setting the new item with correct NBT data
+							workbench.getStackInSlot(4).setTagCompound(new NBTTagCompound());
+							workbench.getStackInSlot(4).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+						}
 					}else if (armor.getTagCompound().getString("SlotFive").equals("none")){
 						workbench.setInventorySlotContents(4, null);
 					}
@@ -238,15 +258,99 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					PowerChest.NBTUpgrades("SlotFiveAmount", armor, this.slotFiveAmount);
 				}
 				
-				
+				//Checking if the cards are valid for the currently inserted armor piece
+				if (workbench.getStackInSlot(0) != null){
+				if (workbench.getStackInSlot(0).hasTagCompound()){
+				if (workbench.getStackInSlot(0).getTagCompound().hasKey("ValidArmor")){
+					if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotOneValid", false);
+						this.slotOneValid = false;
+					}else{
+						this.armor.getTagCompound().setBoolean("SlotOneValid", true);
+						this.slotOneValid = true;
+					}
+				}
+				}
+				}
+				if (workbench.getStackInSlot(1) != null){
+				if (workbench.getStackInSlot(1).getTagCompound() != null){
+				if (workbench.getStackInSlot(1).getTagCompound().hasKey("ValidArmor")){
+					if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
+						this.slotTwoValid = false;
+					}else{
+						this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
+						this.slotTwoValid = true;
+					}
+				}
+				}
+				}
+				if (workbench.getStackInSlot(2) != null){
+				if (workbench.getStackInSlot(2).getTagCompound() != null){
+				if (workbench.getStackInSlot(2).getTagCompound().hasKey("ValidArmor")){
+					if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
+						this.slotThreeValid = false;
+					}else{
+						this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
+						this.slotThreeValid = true;
+					}
+				}
+				}
+				}
+				if (workbench.getStackInSlot(3) != null){
+				if (workbench.getStackInSlot(3).getTagCompound() != null){
+				if (workbench.getStackInSlot(3).getTagCompound().hasKey("ValidArmor")){
+					if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotFourValid", false);
+						this.slotFourValid = false;
+					}else{
+						this.armor.getTagCompound().setBoolean("SlotFourValid", true);
+						this.slotFourValid = true;
+					}
+				}
+				}
+				}
+				if (workbench.getStackInSlot(4) != null){
+				if (workbench.getStackInSlot(4).getTagCompound() != null){
+				if (workbench.getStackInSlot(4).getTagCompound().hasKey("ValidArmor")){
+					if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
+						this.slotFiveValid = false;
+					}else{
+						this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
+						this.slotFiveValid = true;
+					}
+				}
+				}
+				}
 			}
 		}else{
-			for (int i = 0; i < 5; i++){
-				workbench.setInventorySlotContents(i, null);
+				//Not removing the cards if they are invalid, removing if they are
+				if (this.slotOneValid){
+					workbench.setInventorySlotContents(0, null);
+					this.slotOneValid = false;
+				}
+				if (this.slotTwoValid){
+					workbench.setInventorySlotContents(1, null);
+					this.slotTwoValid = false;
+				}
+				if (this.slotThreeValid){
+					workbench.setInventorySlotContents(2, null);
+					this.slotThreeValid = false;
+				}
+				if (this.slotFourValid){
+					workbench.setInventorySlotContents(3, null);
+					this.slotFourValid = false;
+				}
+				if (this.slotFiveValid){
+					workbench.setInventorySlotContents(4, null);
+					this.slotFiveValid = false;
+				}
+				
 				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 				this.shouldUpdate = true;
 				
-			}
 		}
 	}
 	

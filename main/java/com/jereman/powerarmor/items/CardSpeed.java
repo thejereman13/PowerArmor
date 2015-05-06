@@ -2,6 +2,7 @@ package com.jereman.powerarmor.items;
 
 import java.util.List;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -22,6 +23,25 @@ import com.jereman.powerarmor.init.JeremanItems;
 
 public class CardSpeed extends PowerCards{
 	public static float playerSpeed = .3f;
+	public static String validArmor = "powerChest";
+	public boolean shouldSetArmor = true;
+	
+	public CardSpeed(){
+		
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World par2World, Entity par3Entity, int par4, boolean par5){	//Setting default NBT Data
+		if (stack.getTagCompound() != null){
+			if (stack.getTagCompound().hasKey("ValidArmor") != true){
+				stack.getTagCompound().setString("ValidArmor", this.validArmor);
+				Console.println("Setting valid Armor");
+			}
+		}else{
+			stack.setTagCompound(new NBTTagCompound());
+		}
+	}
+	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
@@ -53,10 +73,5 @@ public class CardSpeed extends PowerCards{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
-		if (stack.getTagCompound() != null){
-			if (stack.getTagCompound().hasKey("activatedText")){
-				NBTTagCompound nbt = (NBTTagCompound) stack.getTagCompound().getTag("activatedText");
-			}
-		}
 	}
 }

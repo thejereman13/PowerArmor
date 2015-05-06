@@ -17,8 +17,11 @@ public class GUIAmountHandler implements IMessageHandler<GUIAmountMessage, IMess
 	@Override
 	public IMessage onMessage(GUIAmountMessage message, MessageContext ctx) {
 		if (!Minecraft.getMinecraft().inGameHasFocus && Minecraft.getMinecraft().currentScreen instanceof GuiArmorWorkbench){
-			Console.println("Called: " + message.amount);
+			try{
 				((GuiArmorWorkbench)Minecraft.getMinecraft().currentScreen).recieveAmount(message.amount);
+			}catch (NullPointerException e){
+				
+			}
 		}
 		return null;
 	}

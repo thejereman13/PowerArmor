@@ -8,6 +8,7 @@ import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.Reference;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,12 +23,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class CardJump extends PowerCards{
 	public static double jumpHeight = 0;
+	public String validArmor = "powerPants";
+	public boolean shouldSetArmor= true;
+	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         
 		return false;
     }
+	
+	@Override
+	public void onUpdate(ItemStack stack, World par2World, Entity par3Entity, int par4, boolean par5){ //Setting default NBT Data
+		if (stack.getTagCompound() != null){
+			if (stack.getTagCompound().hasKey("ValidArmor") != true){
+				stack.getTagCompound().setString("ValidArmor", this.validArmor);
+			}
+		}else{
+			stack.setTagCompound(new NBTTagCompound());
+		}
+	}
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn)
@@ -58,11 +73,6 @@ public class CardJump extends PowerCards{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
-		if (stack.getTagCompound() != null){
-			if (stack.getTagCompound().hasKey("activatedText")){
-				NBTTagCompound nbt = (NBTTagCompound) stack.getTagCompound().getTag("activatedText");
-			}
-		}
 	}
 	
 	protected void keyTyped(char par1, int par2){
