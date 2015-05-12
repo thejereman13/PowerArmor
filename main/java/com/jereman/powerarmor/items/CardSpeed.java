@@ -24,6 +24,7 @@ import com.jereman.powerarmor.init.JeremanItems;
 public class CardSpeed extends PowerCards{
 	public static float playerSpeed = .3f;
 	public static String validArmor = "powerChest";
+	public double limit = 3.25;
 	public boolean shouldSetArmor = true;
 	
 	public CardSpeed(){
@@ -35,7 +36,9 @@ public class CardSpeed extends PowerCards{
 		if (stack.getTagCompound() != null){
 			if (stack.getTagCompound().hasKey("ValidArmor") != true){
 				stack.getTagCompound().setString("ValidArmor", this.validArmor);
-				Console.println("Setting valid Armor");
+			}
+			if (stack.getTagCompound().hasKey("UpgradeLimit") != true){
+				stack.getTagCompound().setDouble("UpgradeLimit", this.limit);
 			}
 		}else{
 			stack.setTagCompound(new NBTTagCompound());

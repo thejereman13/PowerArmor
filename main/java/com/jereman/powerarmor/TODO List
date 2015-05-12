@@ -1,12 +1,8 @@
 TODO:
-~Finish getting the GUI worked out (Find better method for button arrangement? maybe horizontal)
+~Finish getting the GUI worked out (Custom Settings; probably need another network class)
 ~Get custom textures for Workbench Buttons (maybe later)
 ~Add shift-clicking in Workbench Gui for custom Items/Slots
-~Actually texture the Workbench (work on 3d model later)
-~Setup the powerChest as a base item to extend
 ~Setup API for card limits
-~Add Round function to -1 and +1 buttons
-~Fix Leggings Rendering (Something with Layer 2)
 Ideas:
 ~Card that can interact with your inventory, syncs with chest (goes on the pants, cuz ender pockets)
 ~

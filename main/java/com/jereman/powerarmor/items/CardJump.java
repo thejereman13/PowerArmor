@@ -24,6 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CardJump extends PowerCards{
 	public static double jumpHeight = 0;
 	public String validArmor = "powerPants";
+	public double limit = 2.5;
 	public boolean shouldSetArmor= true;
 	
 	@Override
@@ -38,6 +39,9 @@ public class CardJump extends PowerCards{
 		if (stack.getTagCompound() != null){
 			if (stack.getTagCompound().hasKey("ValidArmor") != true){
 				stack.getTagCompound().setString("ValidArmor", this.validArmor);
+			}
+			if (stack.getTagCompound().hasKey("UpgradeLimit") != true){
+				stack.getTagCompound().setDouble("UpgradeLimit", this.limit);
 			}
 		}else{
 			stack.setTagCompound(new NBTTagCompound());

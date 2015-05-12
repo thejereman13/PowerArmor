@@ -95,11 +95,6 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 	}
 	
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type){
-		return Reference.MOD_ID + ":textures/models/armor/powerarmor_layer_1.png";
-	}
-	
-	@Override
 	public boolean isDamageable(){
 		return false;
 	}
@@ -110,6 +105,15 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 	}
 	
 	public static void NBTUpgrades(String upgradeName, ItemStack stack, double amount){ //Set the NBT data for upgrade Amount
+		if (stack.getTagCompound() == null){
+			stack.setTagCompound(new NBTTagCompound());
+		}
+		NBTTagCompound nbt = new NBTTagCompound();
+		stack.getTagCompound().setDouble(upgradeName, amount);
+		
+	}
+	
+	public static void NBTUpgradeLimit(String upgradeName, ItemStack stack, double amount){ //Set the NBT data for upgrade Amount
 		if (stack.getTagCompound() == null){
 			stack.setTagCompound(new NBTTagCompound());
 		}

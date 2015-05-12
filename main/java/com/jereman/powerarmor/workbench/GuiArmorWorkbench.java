@@ -73,10 +73,12 @@ public class GuiArmorWorkbench extends GuiContainer{
 			if (button.id <= 4){
 				slotActivated = button.id + 1;
 				if (isButton == false){
-					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 20, 20, 20, "-1"));
-					this.buttonList.add(new GuiButton(6, xCord + 100, yCord + 20, 20, 20, "-.1"));
-					this.buttonList.add(new GuiButton(7, xCord + 120, yCord + 20, 20, 20, "+.1"));
-					this.buttonList.add(new GuiButton(8, xCord + 140, yCord + 20, 20, 20, "+1"));
+					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 20, 25, 20, "-1"));
+					this.buttonList.add(new GuiButton(6, xCord + 105, yCord + 20, 25, 20, "-.1"));
+					this.buttonList.add(new GuiButton(7, xCord + 130, yCord + 20, 25, 20, "-.05"));
+					this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 41, 25, 20, "+1"));
+					this.buttonList.add(new GuiButton(9, xCord + 105, yCord + 41, 25, 20, "+.1"));
+					this.buttonList.add(new GuiButton(10, xCord + 130, yCord + 41, 25, 20, "+.05"));
 					this.isButton = true;
 				}
 			}

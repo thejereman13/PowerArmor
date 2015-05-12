@@ -48,6 +48,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	public int slotSelected = 0;
 	public double slotOneAmount, slotTwoAmount, slotThreeAmount, slotFourAmount, slotFiveAmount;
 	public boolean slotOneValid = false, slotTwoValid = false, slotThreeValid = false, slotFourValid = false, slotFiveValid = false;
+	public double slotOneLimit, slotTwoLimit, slotThreeLimit, slotFourLimit, slotFiveLimit;
 	
 	public ContainerArmorWorkbench(final EntityPlayer player, InventoryPlayer invPlayer, TileEntityArmorWorkbench entity){
 		int m;
@@ -114,29 +115,58 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		super.detectAndSendChanges();
 		this.armor = workbench.getStackInSlot(5);
 		if (workbench.getStackInSlot(0)!= null){
-		this.slotOne = workbench.getStackInSlot(0).getItem();
+			this.slotOne = workbench.getStackInSlot(0).getItem();
 		}else{
 			this.slotOne = null;
 		}
 		if (workbench.getStackInSlot(1) != null){
-		this.slotTwo = workbench.getStackInSlot(1).getItem();
+			this.slotTwo = workbench.getStackInSlot(1).getItem();
 		}else{
 			this.slotTwo = null;
 		}
 		if (workbench.getStackInSlot(2) != null){
-		this.slotThree = workbench.getStackInSlot(2).getItem();
+			this.slotThree = workbench.getStackInSlot(2).getItem();
 		}else{
 			this.slotThree = null;
 		}
 		if (workbench.getStackInSlot(3) != null){
-		this.slotFour = workbench.getStackInSlot(3).getItem();
+			this.slotFour = workbench.getStackInSlot(3).getItem();
 		}else{
 			this.slotFour = null;
 		}
 		if (workbench.getStackInSlot(4) != null){
-		this.slotFive = workbench.getStackInSlot(4).getItem();
+			this.slotFive = workbench.getStackInSlot(4).getItem();
 		}else{
 			this.slotFive = null;
+		}
+		if (armor != null){
+			if (armor.hasTagCompound()){
+				if (armor.getTagCompound().hasKey("SlotOneLimit")){
+					this.slotOneLimit = armor.getTagCompound().getDouble("SlotOneLimit");
+				}else if (!armor.getTagCompound().hasKey("SlotOneLimit")){
+					this.slotOneLimit = 0;
+				}
+				if (armor.getTagCompound().hasKey("SlotTwoLimit")){
+					this.slotTwoLimit = armor.getTagCompound().getDouble("SlotTwoLimit");
+				}else if (!armor.getTagCompound().hasKey("SlotTwoLimit")){
+					this.slotTwoLimit = 0;
+				}
+				if (armor.getTagCompound().hasKey("SlotThreeLimit")){
+					this.slotThreeLimit = armor.getTagCompound().getDouble("SlotThreeLimit");
+				}else if (!armor.getTagCompound().hasKey("SlotThreeLimit")){
+					this.slotThreeLimit = 0;
+				}
+				if (armor.getTagCompound().hasKey("SlotFourLimit")){
+					this.slotFourLimit = armor.getTagCompound().getDouble("SlotFourLimit");
+				}else if (!armor.getTagCompound().hasKey("SlotFourLimit")){
+					this.slotFourLimit = 0;
+				}
+				if (armor.getTagCompound().hasKey("SlotFiveLimit")){
+					this.slotFiveLimit = armor.getTagCompound().getDouble("SlotFiveLimit");
+				}else if (!armor.getTagCompound().hasKey("SlotFiveLimit")){
+					this.slotFiveLimit = 0;
+				}
+			}
 		}
 		
 		if (armor != null){
@@ -155,6 +185,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						if (armor.getTagCompound().getBoolean("SlotOneValid")){		//Setting the new item with correct NBT data
 							workbench.getStackInSlot(0).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(0).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+							if (armor.getTagCompound().hasKey("SlotOneLimit")){
+								workbench.getStackInSlot(0).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotOneLimit"));
+							}
 						}
 					} 
 				}
@@ -166,6 +199,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						if (armor.getTagCompound().getBoolean("SlotTwoValid")){		//Setting the new item with correct NBT data
 							workbench.getStackInSlot(1).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(1).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+							if (armor.getTagCompound().hasKey("SlotTwoLimit")){
+								workbench.getStackInSlot(1).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotTwoLimit"));
+							}
 						}
 					}else if (armor.getTagCompound().getString("SlotTwo").equals("none")){
 						workbench.setInventorySlotContents(1, null);
@@ -179,6 +215,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						if (armor.getTagCompound().getBoolean("SlotThreeValid")){	//Setting the new item with correct NBT data
 							workbench.getStackInSlot(2).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(2).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+							if (armor.getTagCompound().hasKey("SlotThreeLimit")){
+								workbench.getStackInSlot(2).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotThreeLimit"));
+							}
 						}
 					}else if (armor.getTagCompound().getString("SlotThree").equals("none")){
 						workbench.setInventorySlotContents(2, null);
@@ -192,6 +231,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						if (armor.getTagCompound().getBoolean("SlotFourValid")){	//Setting the new item with correct NBT data
 							workbench.getStackInSlot(3).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(3).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+							if (armor.getTagCompound().hasKey("SlotFourLimit")){
+								workbench.getStackInSlot(3).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotFourLimit"));
+							}
 						}
 					}else if (armor.getTagCompound().getString("SlotFour").equals("none")){
 						workbench.setInventorySlotContents(3, null);
@@ -205,6 +247,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						if (armor.getTagCompound().getBoolean("SlotFiveValid")){	//Setting the new item with correct NBT data
 							workbench.getStackInSlot(4).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(4).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
+							if (armor.getTagCompound().hasKey("SlotFiveLimit")){
+								workbench.getStackInSlot(4).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotFiveLimit"));
+							}
 						}
 					}else if (armor.getTagCompound().getString("SlotFive").equals("none")){
 						workbench.setInventorySlotContents(4, null);
@@ -217,28 +262,38 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				//Storing the data from slots
 				if (slotOne != null && this.slotOneValid){
 					PowerBase.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
+					PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit"));
 				}else{
 					PowerBase.NBTUpgradeList("SlotOne", armor, "none");
+					PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, 0);
 				}
 				if (slotTwo != null && this.slotTwoValid){
 					PowerBase.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
+					PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit"));
 				}else{
 					PowerBase.NBTUpgradeList("SlotTwo", armor, "none");
+					PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, 0);
 				}
 				if (slotThree !=null && this.slotThreeValid){
 					PowerBase.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
+					PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit"));
 				}else{
 					PowerBase.NBTUpgradeList("SlotThree", armor, "none");
+					PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, 0);
 				}
 				if (slotFour != null && this.slotFourValid){
 					PowerBase.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
+					PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit"));
 				}else{
 					PowerBase.NBTUpgradeList("SlotFour", armor, "none");
+					PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, 0);
 				}
 				if (slotFive != null && this.slotFiveValid){
 					PowerBase.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
+					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit"));
 				}else{
 					PowerBase.NBTUpgradeList("SlotFive", armor, "none");
+					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, 0);
 				}
 				
 				switch (this.slotSelected){
@@ -326,7 +381,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 			}
 		}else{
-				//Not removing the cards if they are invalid, removing if they are
+				//Putting the cards in the player's inventory if they are invalid, removing if they are
 				if (this.slotOneValid){
 					workbench.setInventorySlotContents(0, null);
 				}else if (this.slotOneValid == false && workbench.getStackInSlot(0) != null){
@@ -418,37 +473,57 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		case 5: //Upgrade -1
 			switch (this.slotSelected){
 			case 1:
-				this.slotOneAmount -= 1;
+				double slotOneish = round(this.slotOneAmount - 1.000, 2);
+				this.slotOneAmount = slotOneish;
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
+				}
+				if (this.slotOneAmount > this.slotOneLimit){
+					this.slotOneAmount = this.slotOneLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
-				this.slotTwoAmount -= 1;
+				double slotTwoish = round(this.slotTwoAmount - 1.000, 2);
+				this.slotTwoAmount = slotTwoish;
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
+				}
+				if (this.slotTwoAmount > this.slotTwoLimit){
+					this.slotTwoAmount = this.slotTwoLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
-				this.slotThreeAmount -= 1;
+				double slotThreeish = round(this.slotThreeAmount - 1.000, 2);
+				this.slotThreeAmount = slotThreeish;
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
+				}
+				if (this.slotThreeAmount > this.slotThreeLimit){
+					this.slotThreeAmount = this.slotThreeLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
-				this.slotFourAmount -= 1;
+				double slotFourish = round(this.slotFourAmount - 1.000, 2);
+				this.slotFourAmount = slotFourish;
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
+				}
+				if (this.slotFourAmount > this.slotFourLimit){
+					this.slotFourAmount = this.slotFourLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
-				this.slotFiveAmount -= 1;
+				double slotFiveish = round(this.slotFourAmount - 1.000, 2);
+				this.slotFiveAmount = slotFiveish;
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
+				}
+				if (this.slotFiveAmount > this.slotFiveLimit){
+					this.slotFiveAmount = this.slotFiveLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
@@ -462,6 +537,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
 				}
+				if (this.slotOneAmount > this.slotOneLimit){
+					this.slotOneAmount = this.slotOneLimit;
+				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
@@ -469,6 +547,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				this.slotTwoAmount = slotTwoish;
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
+				}
+				if (this.slotTwoAmount > this.slotTwoLimit){
+					this.slotTwoAmount = this.slotTwoLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
@@ -478,6 +559,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
 				}
+				if (this.slotThreeAmount > this.slotThreeLimit){
+					this.slotThreeAmount = this.slotThreeLimit;
+				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
@@ -485,6 +569,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				this.slotFourAmount = slotFourish;
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
+				}
+				if (this.slotFourAmount > this.slotFourLimit){
+					this.slotFourAmount = this.slotFourLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
@@ -494,17 +581,141 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
 				}
+				if (this.slotFiveAmount > this.slotFiveLimit){
+					this.slotFiveAmount = this.slotFiveLimit;
+				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
 			}
 			break;
-		case 7: //Upgrade +.1
+		case 7: //Upgrade -.05
+			switch (this.slotSelected){
+			case 1:
+				double slotOneish = round(this.slotOneAmount - .0500, 2);
+				this.slotOneAmount = slotOneish;
+				if (this.slotOneAmount <= 0){
+					this.slotOneAmount = 0.00;
+				}
+				if (this.slotOneAmount > this.slotOneLimit){
+					this.slotOneAmount = this.slotOneLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				break;
+			case 2:
+				double slotTwoish = round(this.slotTwoAmount - .0500, 2);
+				this.slotTwoAmount = slotTwoish;
+				if (this.slotTwoAmount <= 0){
+					this.slotTwoAmount = 0.00;
+				}
+				if (this.slotTwoAmount > this.slotTwoLimit){
+					this.slotTwoAmount = this.slotTwoLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				break;
+			case 3:
+				double slotThreeish = round(this.slotThreeAmount - .0500, 2);
+				this.slotThreeAmount = slotThreeish;
+				if (this.slotThreeAmount <= 0){
+					this.slotThreeAmount = 0.00;
+				}
+				if (this.slotThreeAmount > this.slotThreeLimit){
+					this.slotThreeAmount = this.slotThreeLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				break;
+			case 4:
+				double slotFourish = round(this.slotFourAmount - .0500, 2);
+				this.slotFourAmount = slotFourish;
+				if (this.slotFourAmount <= 0){
+					this.slotFourAmount = 0.00;
+				}
+				if (this.slotFourAmount > this.slotFourLimit){
+					this.slotFourAmount = this.slotFourLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				break;
+			case 5:
+				double slotFiveish = round(this.slotFourAmount - .0500, 2);
+				this.slotFiveAmount = slotFiveish;
+				if (this.slotFiveAmount <= 0){
+					this.slotFiveAmount = 0.00;
+				}
+				if (this.slotFiveAmount > this.slotFiveLimit){
+					this.slotFiveAmount = this.slotFiveLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				break;
+			}
+			break;
+		case 8: //Upgrade +1
+			switch (this.slotSelected){
+			case 1:
+				double slotOneish = round(this.slotOneAmount + 1.000, 2);
+				this.slotOneAmount = slotOneish;
+				if (this.slotOneAmount <= 0){
+					this.slotOneAmount = 0.00;
+				}
+				if (this.slotOneAmount > this.slotOneLimit){
+					this.slotOneAmount = this.slotOneLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				break;
+			case 2:
+				double slotTwoish = round(this.slotTwoAmount + 1.000, 2);
+				this.slotTwoAmount = slotTwoish;
+				if (this.slotTwoAmount <= 0){
+					this.slotTwoAmount = 0.00;
+				}
+				if (this.slotTwoAmount > this.slotTwoLimit){
+					this.slotTwoAmount = this.slotTwoLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				break;
+			case 3:
+				double slotThreeish = round(this.slotThreeAmount + 1.000, 2);
+				this.slotThreeAmount = slotThreeish;
+				if (this.slotThreeAmount <= 0){
+					this.slotThreeAmount = 0.00;
+				}
+				if (this.slotThreeAmount > this.slotThreeLimit){
+					this.slotThreeAmount = this.slotThreeLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				break;
+			case 4:
+				double slotFourish = round(this.slotFourAmount + 1.000, 2);
+				this.slotFourAmount = slotFourish;
+				if (this.slotFourAmount <= 0){
+					this.slotFourAmount = 0.00;
+				}
+				if (this.slotFourAmount > this.slotFourLimit){
+					this.slotFourAmount = this.slotFourLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				break;
+			case 5:
+				double slotFiveish = round(this.slotFourAmount + 1.000, 2);
+				this.slotFiveAmount = slotFiveish;
+				if (this.slotFiveAmount <= 0){
+					this.slotFiveAmount = 0.00;
+				}
+				if (this.slotFiveAmount > this.slotFiveLimit){
+					this.slotFiveAmount = this.slotFiveLimit;
+				}
+				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				break;
+			}
+			break;
+		case 9:	//Upgrade +.1
 			switch (this.slotSelected){
 			case 1:
 				double slotOneish = round(this.slotOneAmount + .1000, 2);
 				this.slotOneAmount = slotOneish;
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
+				}
+				if (this.slotOneAmount > this.slotOneLimit){
+					this.slotOneAmount = this.slotOneLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
@@ -514,6 +725,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
 				}
+				if (this.slotTwoAmount > this.slotTwoLimit){
+					this.slotTwoAmount = this.slotTwoLimit;
+				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
@@ -521,6 +735,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				this.slotThreeAmount = slotThreeish;
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
+				}
+				if (this.slotThreeAmount > this.slotThreeLimit){
+					this.slotThreeAmount = this.slotThreeLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
@@ -530,52 +747,78 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
 				}
+				if (this.slotFourAmount > this.slotFourLimit){
+					this.slotFourAmount = this.slotFourLimit;
+				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
-				double slotFiveish = round(this.slotFiveAmount + .1000, 2);
+				double slotFiveish = round(this.slotFourAmount + .1000, 2);
 				this.slotFiveAmount = slotFiveish;
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
+				}
+				if (this.slotFiveAmount > this.slotFiveLimit){
+					this.slotFiveAmount = this.slotFiveLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
 			}
 			break;
-		case 8: //Upgrade +1
+		case 10:
 			switch (this.slotSelected){
 			case 1:
-				this.slotOneAmount += 1;
+				double slotOneish = round(this.slotOneAmount + .0500, 2);
+				this.slotOneAmount = slotOneish;
 				if (this.slotOneAmount <= 0){
 					this.slotOneAmount = 0.00;
+				}
+				if (this.slotOneAmount > this.slotOneLimit){
+					this.slotOneAmount = this.slotOneLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				break;
 			case 2:
-				this.slotTwoAmount += 1;
+				double slotTwoish = round(this.slotTwoAmount + .0500, 2);
+				this.slotTwoAmount = slotTwoish;
 				if (this.slotTwoAmount <= 0){
 					this.slotTwoAmount = 0.00;
+				}
+				if (this.slotTwoAmount > this.slotTwoLimit){
+					this.slotTwoAmount = this.slotTwoLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
 				break;
 			case 3:
-				this.slotThreeAmount += 1;
+				double slotThreeish = round(this.slotThreeAmount + .0500, 2);
+				this.slotThreeAmount = slotThreeish;
 				if (this.slotThreeAmount <= 0){
 					this.slotThreeAmount = 0.00;
+				}
+				if (this.slotThreeAmount > this.slotThreeLimit){
+					this.slotThreeAmount = this.slotThreeLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
 				break;
 			case 4:
-				this.slotFourAmount += 1;
+				double slotFourish = round(this.slotFourAmount + .0500, 2);
+				this.slotFourAmount = slotFourish;
 				if (this.slotFourAmount <= 0){
 					this.slotFourAmount = 0.00;
+				}
+				if (this.slotFourAmount > this.slotFourLimit){
+					this.slotFourAmount = this.slotFourLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
 				break;
 			case 5:
-				this.slotFiveAmount += 1;
+				double slotFiveish = round(this.slotFourAmount + .0500, 2);
+				this.slotFiveAmount = slotFiveish;
 				if (this.slotFiveAmount <= 0){
 					this.slotFiveAmount = 0.00;
+				}
+				if (this.slotFiveAmount > this.slotFiveLimit){
+					this.slotFiveAmount = this.slotFiveLimit;
 				}
 				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
 				break;
@@ -678,7 +921,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	 @Override
      public ItemStack transferStackInSlot(EntityPlayer player, int index) {
          //Still need to work on custom slots/items, don't break it the next time you try...  
-		 Console.println(index);
 		 ItemStack itemstack = null;
 		 Slot slot = (Slot)this.inventorySlots.get(index);
 		 if (slot != null && slot.getHasStack()){
