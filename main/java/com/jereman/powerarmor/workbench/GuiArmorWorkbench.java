@@ -26,6 +26,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.config.GuiSlider;
@@ -39,7 +40,8 @@ public class GuiArmorWorkbench extends GuiContainer{
 	public int slotActivated = 0;
 	public double upgrade = 0;
 	public boolean isButton;
-	public boolean isEmpty;
+	IThreadListener mainThread;
+	public boolean isEmpty = true;
 	public EntityPlayer player;
 	public ContainerArmorWorkbench container;
 	private final ResourceLocation backgroundImage = new ResourceLocation(Reference.MOD_ID.toLowerCase(), "textures/client/gui/guiArmorWorkbench.png");
@@ -52,7 +54,6 @@ public class GuiArmorWorkbench extends GuiContainer{
 		this.xSize = 176;
 		this.ySize = 200;
 	}
-	
 	@Override
 	public void initGui(){
 		super.initGui();
@@ -73,9 +74,9 @@ public class GuiArmorWorkbench extends GuiContainer{
 				slotActivated = button.id + 1;
 				if (isButton == false){
 					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 20, 20, 20, "-1"));
-					this.buttonList.add(new GuiButton(6, xCord + 80, yCord + 40, 20, 20, "-.1"));
-					this.buttonList.add(new GuiButton(7, xCord + 80, yCord + 60, 20, 20, "+.1"));
-					this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 80, 20, 20, "+1"));
+					this.buttonList.add(new GuiButton(6, xCord + 100, yCord + 20, 20, 20, "-.1"));
+					this.buttonList.add(new GuiButton(7, xCord + 120, yCord + 20, 20, 20, "+.1"));
+					this.buttonList.add(new GuiButton(8, xCord + 140, yCord + 20, 20, 20, "+1"));
 					this.isButton = true;
 				}
 			}

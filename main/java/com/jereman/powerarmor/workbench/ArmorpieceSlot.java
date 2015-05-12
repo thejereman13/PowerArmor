@@ -1,6 +1,6 @@
 package com.jereman.powerarmor.workbench;
 
-import com.jereman.powerarmor.armor.PowerChest;
+import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.items.CardJump;
 import com.jereman.powerarmor.items.CardSpeed;
 
@@ -25,7 +25,7 @@ public class ArmorpieceSlot extends Slot{
 	@Override
 	public boolean isItemValid(ItemStack stack){
 		final Item item = stack.getItem();
-		if (item instanceof PowerChest){
+		if (item instanceof PowerBase){
 			return true;
 		}
 		return false;

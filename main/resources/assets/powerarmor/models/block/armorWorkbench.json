@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "particle": "powerarmor:blocks/armorWorkbench_bottom",
+        "down": "powerarmor:blocks/armorWorkbench_bottom",
+        "up": "powerarmor:blocks/armorWorkbench_top",
+        "north": "powerarmor:blocks/armorWorkbench_side",
+        "east": "powerarmor:blocks/armorWorkbench_side",
+        "south": "powerarmor:blocks/armorWorkbench_side",
+        "west": "powerarmor:blocks/armorWorkbench_side"
+    }
+}

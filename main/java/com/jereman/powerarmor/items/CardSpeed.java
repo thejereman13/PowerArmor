@@ -18,7 +18,7 @@ import scala.Console;
 
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.PowerCards;
-import com.jereman.powerarmor.armor.PowerChest;
+import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 
 public class CardSpeed extends PowerCards{
@@ -63,7 +63,7 @@ public class CardSpeed extends PowerCards{
         	if(stack.getTagCompound() != null){
         		stack.getTagCompound().removeTag("activatedText");
         		stack.clearCustomName();
-        		PowerChest.NBTUpgrades("SpeedUpgrade", playerIn.getCurrentArmor(2), 0);
+        		PowerBase.NBTUpgrades("SpeedUpgrade", playerIn.getCurrentArmor(2), 0);
         	}
         }
 		

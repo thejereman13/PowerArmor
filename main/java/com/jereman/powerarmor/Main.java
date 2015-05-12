@@ -16,7 +16,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.jereman.powerarmor.init.Blocks;
 import com.jereman.powerarmor.init.JeremanItems;
-import com.jereman.powerarmor.init.armor;
 import com.jereman.powerarmor.packets.CardNumberHandler;
 import com.jereman.powerarmor.packets.CardNumberMessage;
 import com.jereman.powerarmor.packets.GUIAmountHandler;
@@ -45,7 +44,6 @@ public class Main {
 		Blocks.register();
 		JeremanItems.init();
 		JeremanItems.register();
-		armor.init();
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("powerarmor");
 		network.registerMessage(CardNumberHandler.class, CardNumberMessage.class, 0, Side.SERVER);
 		network.registerMessage(GUIAmountHandler.class, GUIAmountMessage.class, 1, Side.CLIENT);

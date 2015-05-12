@@ -9,7 +9,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.Reference;
+import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.armor.PowerChest;
+import com.jereman.powerarmor.armor.PowerPants;
 import com.jereman.powerarmor.items.CardJump;
 import com.jereman.powerarmor.items.CardSpeed;
 
@@ -19,11 +21,13 @@ public class JeremanItems {
 	public static Item cardSpeed;
 	public static Item cardJump;
 	public static Item powerChest;
+	public static Item powerPants;
 	public static void init(){
 		ingotCopper = new Item().setUnlocalizedName("ingotCopper").setCreativeTab(Main.tabPowerarmor);
 		cardSpeed = new CardSpeed().setUnlocalizedName("cardSpeed").setCreativeTab(Main.tabPowerarmor);
 		cardJump = new CardJump().setUnlocalizedName("cardJump").setCreativeTab(Main.tabPowerarmor);
 		powerChest = new PowerChest().setUnlocalizedName("powerChest").setCreativeTab(Main.tabPowerarmor);
+		powerPants = new PowerPants().setUnlocalizedName("powerPants").setCreativeTab(Main.tabPowerarmor);
 	}
 	
 	public static void register(){
@@ -31,6 +35,7 @@ public class JeremanItems {
 		GameRegistry.registerItem(cardSpeed, cardSpeed.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(cardJump, cardJump.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerChest, powerChest.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(powerPants, powerPants.getUnlocalizedName().substring(5));
 		
 	}
 	
@@ -39,6 +44,7 @@ public class JeremanItems {
 		registerRender(cardSpeed);
 		registerRender(cardJump);
 		registerRender(powerChest);
+		registerRender(powerPants);
 	}
 	
 	public static void registerRender(Item item){

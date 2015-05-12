@@ -19,8 +19,7 @@ public class JeremanFMLEventHandler {
 			if (props.getChestPlate() && player.getCurrentArmor(2) == null){
 				props.setChestPlate(false);
 				player.capabilities.setPlayerWalkSpeed(.1f);
-				Console.println("Changed Player Walk Speed");
-			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null && player.getCurrentArmor(2).getItem() != JeremanItems.powerChest){
+			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null && player.getCurrentArmor(2).getItem() != JeremanItems.powerPants){
 				props.setChestPlate(false);
 				player.capabilities.setPlayerWalkSpeed(.1f);
 			}

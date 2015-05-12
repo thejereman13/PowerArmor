@@ -24,7 +24,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.IElementHandler;
 import com.jereman.powerarmor.Main;
-import com.jereman.powerarmor.armor.PowerChest;
+import com.jereman.powerarmor.PowerCards;
+import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.packets.GUIAmountMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
@@ -139,7 +140,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		}
 		
 		if (armor != null){
-			if (armor.getItem() instanceof PowerChest){
+			if (armor.getItem() instanceof PowerBase){
 
 				//Getting the Cards from NBT data and putting them in the gui
 			if (armor.getTagCompound() != null & this.shouldUpdate == true){
@@ -212,50 +213,49 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				this.shouldUpdate = false;
 				workbench.markDirty();
 			}else{
-				
 			}
 				//Storing the data from slots
-				if (slotOne != null){
-					PowerChest.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
+				if (slotOne != null && this.slotOneValid){
+					PowerBase.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
 				}else{
-					PowerChest.NBTUpgradeList("SlotOne", armor, "none");
+					PowerBase.NBTUpgradeList("SlotOne", armor, "none");
 				}
-				if (slotTwo != null){
-					PowerChest.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
+				if (slotTwo != null && this.slotTwoValid){
+					PowerBase.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
 				}else{
-					PowerChest.NBTUpgradeList("SlotTwo", armor, "none");
+					PowerBase.NBTUpgradeList("SlotTwo", armor, "none");
 				}
-				if (slotThree !=null){
-					PowerChest.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
+				if (slotThree !=null && this.slotThreeValid){
+					PowerBase.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
 				}else{
-					PowerChest.NBTUpgradeList("SlotThree", armor, "none");
+					PowerBase.NBTUpgradeList("SlotThree", armor, "none");
 				}
-				if (slotFour != null){
-					PowerChest.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
+				if (slotFour != null && this.slotFourValid){
+					PowerBase.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
 				}else{
-					PowerChest.NBTUpgradeList("SlotFour", armor, "none");
+					PowerBase.NBTUpgradeList("SlotFour", armor, "none");
 				}
-				if (slotFive != null){
-					PowerChest.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
+				if (slotFive != null && this.slotFiveValid){
+					PowerBase.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
 				}else{
-					PowerChest.NBTUpgradeList("SlotFive", armor, "none");
+					PowerBase.NBTUpgradeList("SlotFive", armor, "none");
 				}
 				
 				switch (this.slotSelected){
 				case 1:
-					PowerChest.NBTUpgrades("SlotOneAmount", armor, this.slotOneAmount);
+					PowerBase.NBTUpgrades("SlotOneAmount", armor, this.slotOneAmount);
 					break;
 				case 2:
-					PowerChest.NBTUpgrades("SlotTwoAmount", armor, this.slotTwoAmount);
+					PowerBase.NBTUpgrades("SlotTwoAmount", armor, this.slotTwoAmount);
 					break;
 				case 3:
-					PowerChest.NBTUpgrades("SlotThreeAmount", armor, this.slotThreeAmount);
+					PowerBase.NBTUpgrades("SlotThreeAmount", armor, this.slotThreeAmount);
 					break;
 				case 4:
-					PowerChest.NBTUpgrades("SlotFourAmount", armor, this.slotFourAmount);
+					PowerBase.NBTUpgrades("SlotFourAmount", armor, this.slotFourAmount);
 					break;
 				case 5:
-					PowerChest.NBTUpgrades("SlotFiveAmount", armor, this.slotFiveAmount);
+					PowerBase.NBTUpgrades("SlotFiveAmount", armor, this.slotFiveAmount);
 				}
 				
 				//Checking if the cards are valid for the currently inserted armor piece
@@ -329,26 +329,39 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				//Not removing the cards if they are invalid, removing if they are
 				if (this.slotOneValid){
 					workbench.setInventorySlotContents(0, null);
-					this.slotOneValid = false;
+				}else if (this.slotOneValid == false && workbench.getStackInSlot(0) != null){
+					this.player.inventory.addItemStackToInventory(new ItemStack(this.slotOne));
+					workbench.setInventorySlotContents(0, null);
 				}
 				if (this.slotTwoValid){
 					workbench.setInventorySlotContents(1, null);
-					this.slotTwoValid = false;
+				}else if (this.slotTwoValid == false && workbench.getStackInSlot(1) != null){
+					this.player.inventory.addItemStackToInventory(new ItemStack(this.slotTwo));
+					workbench.setInventorySlotContents(1, null);
 				}
 				if (this.slotThreeValid){
 					workbench.setInventorySlotContents(2, null);
-					this.slotThreeValid = false;
+				}else if (this.slotThreeValid == false && workbench.getStackInSlot(2) != null){
+					this.player.inventory.addItemStackToInventory(new ItemStack(this.slotThree));
+					workbench.setInventorySlotContents(2, null);
 				}
 				if (this.slotFourValid){
 					workbench.setInventorySlotContents(3, null);
-					this.slotFourValid = false;
+				}else if (this.slotFourValid == false && workbench.getStackInSlot(3) != null){
+					this.player.inventory.addItemStackToInventory(new ItemStack(this.slotFour));
+					workbench.setInventorySlotContents(3, null);
 				}
 				if (this.slotFiveValid){
 					workbench.setInventorySlotContents(4, null);
-					this.slotFiveValid = false;
+				}else if (this.slotFiveValid == false && workbench.getStackInSlot(4) != null){
+					this.player.inventory.addItemStackToInventory(new ItemStack(this.slotFive));
+					workbench.setInventorySlotContents(4, null);
 				}
-				
-				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+				try{
+					Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+				} catch (Exception e){
+					
+				}
 				this.shouldUpdate = true;
 				
 		}
@@ -664,40 +677,30 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	
 	 @Override
      public ItemStack transferStackInSlot(EntityPlayer player, int index) {
-         //Still need to work on!!!    
-		 
-		 return null;
-             /*ItemStack itemstack = null;
-             Slot slot = (Slot)this.inventorySlots.get(index);
-
-             if (slot != null && slot.getHasStack())
-             {
-                 ItemStack itemstack1 = slot.getStack();
-                 itemstack = itemstack1.copy();
-
-                 if (index < this.numRows * 9)
-                 {
-                     if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true))
-                     {
-                         return null;
-                     }
-                 }
-                 else if (!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false))
-                 {
-                     return null;
-                 }
-
-                 if (itemstack1.stackSize == 0)
-                 {
-                     slot.putStack((ItemStack)null);
-                 }
-                 else
-                 {
-                     slot.onSlotChanged();
+         //Still need to work on custom slots/items, don't break it the next time you try...  
+		 Console.println(index);
+		 ItemStack itemstack = null;
+		 Slot slot = (Slot)this.inventorySlots.get(index);
+		 if (slot != null && slot.getHasStack()){
+			 ItemStack itemstack1 = slot.getStack();
+             itemstack = itemstack1.copy();
+             
+             if (index <= 8){
+                 if (!this.mergeItemStack(itemstack1, 9, 46, false)){
+                	 return null;
                  }
              }
-
-             return itemstack;
-         }*/
-     }
+             if (index > 8 && index < 48){
+            	 if (!this.mergeItemStack(itemstack1, 0, 9, false)){
+            		 return null;
+            	 }
+             }
+             if (itemstack1.stackSize == 0){
+                 slot.putStack((ItemStack) null);
+             }else{
+                 slot.onSlotChanged();
+             }
+		 }
+		 return null;
+	 }
 }

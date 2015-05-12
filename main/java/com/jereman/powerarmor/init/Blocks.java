@@ -26,7 +26,6 @@ public class Blocks {
 	public static void register(){
 		GameRegistry.registerBlock(blockCopper, blockCopper.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(armorWorkbench, armorWorkbench.getUnlocalizedName().substring(5));
-		//GameRegistry.registerTileEntity(TileEntityArmorWorkbench.class, "tileEntityWorkbench");
 	}
 	
 	public static void registerRenders(){

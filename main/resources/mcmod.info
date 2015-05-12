@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "powerArmor",
+  "name": "Power Armor",
+  "description": "Jereman's Better Armor for Minecraft",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "http://jereman.com",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Jereman"],
+  "credits": "Jereman",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
