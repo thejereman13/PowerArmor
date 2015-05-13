@@ -21,13 +21,12 @@ import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 
-public class CardSpeed extends PowerCards{
-	public static float playerSpeed = .3f;
-	public static String validArmor = "powerChest";
-	public static double limit = 3.25;
+public class CardStep extends PowerCards{
+	public static String validArmor = "powerPants";
+	public static double limit = 0;
 	public boolean shouldSetArmor = true;
 	
-	public CardSpeed(){
+	public CardStep(){
 		
 	}
 	
@@ -54,23 +53,8 @@ public class CardSpeed extends PowerCards{
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn)
-    {
-		if (!playerIn.isSneaking() && playerIn.getCurrentArmor(2) != null){
-        	if (stack.getTagCompound() == null){
-        		stack.setTagCompound(new NBTTagCompound());
-        	}
-        	NBTTagCompound nbt = new NBTTagCompound();
-        	nbt.setBoolean("isenabled", true);
-        	stack.getTagCompound().setTag("activatedText", nbt);
-        }else if (playerIn.isSneaking() && playerSpeed >.1 && playerIn.getCurrentArmor(2) != null){
-        	if(stack.getTagCompound() != null){
-        		stack.getTagCompound().removeTag("activatedText");
-        		stack.clearCustomName();
-        		PowerBase.NBTUpgrades("SpeedUpgrade", playerIn.getCurrentArmor(2), 0);
-        	}
-        }
-		
-		return stack;
+	{	
+		return null;
     }
 	
 	@Override

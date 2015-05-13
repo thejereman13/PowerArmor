@@ -31,14 +31,13 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 	//Checks for information about the chestplate being worn
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack){
 		if (!world.isRemote){
-			ExtendedProperties props = ExtendedProperties.get(player); //NBT data for the player wearing the chestplate
-		if (true){
+		if (stack.hasTagCompound()){
 			
 			final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
 			for (String upgradeString: upgradeList){
-				if (upgradeString.equals("none")){
-					
-				}else if (!upgradeString.equals("none")){
+				if (upgradeString.equals("none") || upgradeString.equals(null)){
+					//None
+				}else if (!upgradeString.equals("none") && !upgradeString.equals(null)){
 						//Determining what slot the card is in, setting the amount for execution to the NBT data for that slot
 					if (upgradeString.equals(stack.getTagCompound().getString("SlotOne"))){
 						this.upgradeAmount = stack.getTagCompound().getDouble("SlotOneAmount");
@@ -59,9 +58,7 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 						this.method = this.getClass().getMethod(upgradeString.substring(5), double.class, EntityPlayer.class);
 					} catch (NoSuchMethodException e) {
 						Console.println("Uhh Oh!!!: Someone didn't register a function for a card!");
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
+					} catch (Exception e) {
 					}
 					try {
 						
@@ -76,14 +73,11 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 					}
 				}
 			}
-			if (props.getChestPlate() == false){ //setup for ability reversal upon armor removal in FMLEventHandler
-				props.setChestPlate(true);
-			}
 		}
 	}
 	}
 	
-		//CardSpeed function
+		//CardSpeed Function
 	public void cardSpeed(double playerSpeed, EntityPlayer player){
 		float actuallSpeed = ((float) playerSpeed / 10);
 		player.capabilities.setPlayerWalkSpeed(actuallSpeed);
@@ -92,6 +86,11 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 		//CardJump Function
 	public void cardJump(double jumpHeight, EntityPlayer player){
 		//Put stuff here, probably for the eventhandler
+	}
+	
+		//CardStep Function
+	public void cardStep(double nullStuff, EntityPlayer player){
+		//It's in the PowerPants Class, because stuff...
 	}
 	
 	@Override

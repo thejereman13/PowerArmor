@@ -28,6 +28,7 @@ import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.packets.GUIAmountMessage;
+import com.jereman.powerarmor.packets.GUISlotMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 
 public class ContainerArmorWorkbench extends Container implements IElementHandler{
@@ -430,8 +431,18 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (armor.getTagCompound().hasKey("SlotOneAmount")){
 					this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
 				}
+				if (workbench.getStackInSlot(0).getTagCompound().hasKey("UpgradeLimit")){
+					if (workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit") == 0){
+						Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+					}else{
+						Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+					}
+				}
 				this.slotSelected = 1;
-				Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
+			}else if (workbench.getStackInSlot(0) == null){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 1: //Button 2
@@ -439,8 +450,18 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (armor.getTagCompound().hasKey("SlotTwoAmount")){
 					this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
 				}
+				if (workbench.getStackInSlot(1).getTagCompound().hasKey("UpgradeLimit")){
+					if (workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit") == 0){
+						Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+					}else{
+						Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+					}
+				}
 				this.slotSelected = 2;
-				Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
+			}else if (workbench.getStackInSlot(1) == null){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 2: //Button 3
@@ -448,8 +469,18 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (armor.getTagCompound().hasKey("SlotThreeAmount")){
 					this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
 				}
+				if (workbench.getStackInSlot(2).getTagCompound().hasKey("UpgradeLimit")){
+					if (workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit") == 0){
+						Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+					}else{
+						Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+					}
+				}
 				this.slotSelected = 3;
-				Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
+			}else if (workbench.getStackInSlot(2) == null){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 3: //Button 4
@@ -457,8 +488,18 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (armor.getTagCompound().hasKey("SlotFourAmount")){
 					this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
 				}
+				if (workbench.getStackInSlot(3).getTagCompound().hasKey("UpgradeLimit")){
+					if (workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit") == 0){
+						Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+					}else{
+						Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+					}
+				}
 				this.slotSelected = 4;
-				Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
+			}else if (workbench.getStackInSlot(3) == null){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 4: //Button 5
@@ -466,8 +507,18 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (armor.getTagCompound().hasKey("SlotFiveAmount")){
 					this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
 				}
+				if (workbench.getStackInSlot(4).getTagCompound().hasKey("UpgradeLimit")){
+					if (workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit") == 0){
+						Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+					}else{
+						Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+					}
+				}
 				this.slotSelected = 5;
-				Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
+			}else if (workbench.getStackInSlot(4) == null){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 5: //Upgrade -1

@@ -39,9 +39,10 @@ public class GuiArmorWorkbench extends GuiContainer{
 	public static int yCord;
 	public int slotActivated = 0;
 	public double upgrade = 0;
-	public boolean isButton;
+	public boolean isButton = false;
 	IThreadListener mainThread;
 	public boolean isEmpty = true;
+	public String nullName = "none";
 	public EntityPlayer player;
 	public ContainerArmorWorkbench container;
 	private final ResourceLocation backgroundImage = new ResourceLocation(Reference.MOD_ID.toLowerCase(), "textures/client/gui/guiArmorWorkbench.png");
@@ -71,7 +72,6 @@ public class GuiArmorWorkbench extends GuiContainer{
 	public void actionPerformed(GuiButton button){
 			Main.network.sendToServer(new CardNumberMessage(button.id));
 			if (button.id <= 4){
-				slotActivated = button.id + 1;
 				if (isButton == false){
 					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 20, 25, 20, "-1"));
 					this.buttonList.add(new GuiButton(6, xCord + 105, yCord + 20, 25, 20, "-.1"));
@@ -110,6 +110,19 @@ public class GuiArmorWorkbench extends GuiContainer{
 		}else{
 			this.isEmpty = false;
 		}
+		if (this.upgrade == -2){
+			this.nullName = "null";
+		}else{
+			this.nullName = "none";
+		}
+	}
+	
+	public void recieveSlot(double slotNum){
+		this.slotActivated = (int) slotNum;
+		if (this.slotActivated == 0){
+			this.isEmpty = true;
+			this.upgrade = -1;
+		}
 	}
 	
 	@Override
@@ -122,10 +135,19 @@ public class GuiArmorWorkbench extends GuiContainer{
 		if (slotActivated != 0 && isEmpty == false){
 			drawTexturedModalRect(xCord + 35, yCord - 13 + (slotActivated * 20), 177, 1, 4, 16);
 		}
-		if (this.isEmpty){
-			this.fontRendererObj.drawString("Upgrade: " + "None", xCord + 100, yCord + 10, 0x000e74);
+		if (this.isEmpty || this.upgrade == -2){
+			this.fontRendererObj.drawString("Upgrade: " + this.nullName, xCord + 98, yCord + 10, 0x000e74);
+			if (isButton == true){
+				this.buttonList.remove(5);
+				this.buttonList.remove(5);
+				this.buttonList.remove(5);
+				this.buttonList.remove(5);
+				this.buttonList.remove(5);
+				this.buttonList.remove(5);
+				this.isButton = false;
+			}
 		}else{
-			this.fontRendererObj.drawString("Upgrade: " + this.upgrade, xCord + 100, yCord + 10, 0x000e74);
+			this.fontRendererObj.drawString("Upgrade: " + this.upgrade, xCord + 98, yCord + 10, 0x000e74);
 		}
 
 	}

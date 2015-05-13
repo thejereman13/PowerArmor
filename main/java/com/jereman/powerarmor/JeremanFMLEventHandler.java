@@ -1,5 +1,6 @@
 package com.jereman.powerarmor;
 
+import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -19,7 +20,7 @@ public class JeremanFMLEventHandler {
 			if (props.getChestPlate() && player.getCurrentArmor(2) == null){
 				props.setChestPlate(false);
 				player.capabilities.setPlayerWalkSpeed(.1f);
-			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null && player.getCurrentArmor(2).getItem() != JeremanItems.powerPants){
+			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null && player.getCurrentArmor(2).getItem() != JeremanItems.powerChest){
 				props.setChestPlate(false);
 				player.capabilities.setPlayerWalkSpeed(.1f);
 			}
