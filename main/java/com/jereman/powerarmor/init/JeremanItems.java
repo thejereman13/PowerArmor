@@ -3,17 +3,15 @@ package com.jereman.powerarmor.init;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.Reference;
-import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.armor.PowerChest;
 import com.jereman.powerarmor.armor.PowerPants;
 import com.jereman.powerarmor.items.CardJump;
 import com.jereman.powerarmor.items.CardSpeed;
+import com.jereman.powerarmor.items.CardStep;
 
 public class JeremanItems {
 	
@@ -22,12 +20,14 @@ public class JeremanItems {
 	public static Item cardJump;
 	public static Item powerChest;
 	public static Item powerPants;
+	public static Item cardStep;
 	public static void init(){
 		ingotCopper = new Item().setUnlocalizedName("ingotCopper").setCreativeTab(Main.tabPowerarmor);
 		cardSpeed = new CardSpeed().setUnlocalizedName("cardSpeed").setCreativeTab(Main.tabPowerarmor);
 		cardJump = new CardJump().setUnlocalizedName("cardJump").setCreativeTab(Main.tabPowerarmor);
 		powerChest = new PowerChest().setUnlocalizedName("powerChest").setCreativeTab(Main.tabPowerarmor);
 		powerPants = new PowerPants().setUnlocalizedName("powerPants").setCreativeTab(Main.tabPowerarmor);
+		cardStep = new CardStep().setUnlocalizedName("cardStep").setCreativeTab(Main.tabPowerarmor);
 	}
 	
 	public static void register(){
@@ -36,6 +36,7 @@ public class JeremanItems {
 		GameRegistry.registerItem(cardJump, cardJump.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerChest, powerChest.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerPants, powerPants.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(cardStep, cardStep.getUnlocalizedName().substring(5));
 		
 	}
 	
@@ -45,6 +46,7 @@ public class JeremanItems {
 		registerRender(cardJump);
 		registerRender(powerChest);
 		registerRender(powerPants);
+		registerRender(cardStep);
 	}
 	
 	public static void registerRender(Item item){

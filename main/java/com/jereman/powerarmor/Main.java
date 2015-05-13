@@ -20,6 +20,8 @@ import com.jereman.powerarmor.packets.CardNumberHandler;
 import com.jereman.powerarmor.packets.CardNumberMessage;
 import com.jereman.powerarmor.packets.GUIAmountHandler;
 import com.jereman.powerarmor.packets.GUIAmountMessage;
+import com.jereman.powerarmor.packets.GUISlotHandler;
+import com.jereman.powerarmor.packets.GUISlotMessage;
 import com.jereman.powerarmor.proxy.CommonProxy;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class Main {
@@ -47,6 +49,7 @@ public class Main {
 		network = NetworkRegistry.INSTANCE.newSimpleChannel("powerarmor");
 		network.registerMessage(CardNumberHandler.class, CardNumberMessage.class, 0, Side.SERVER);
 		network.registerMessage(GUIAmountHandler.class, GUIAmountMessage.class, 1, Side.CLIENT);
+		network.registerMessage(GUISlotHandler.class, GUISlotMessage.class, 2, Side.CLIENT);
 		
 	}
 	

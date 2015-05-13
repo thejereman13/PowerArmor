@@ -58,5 +58,12 @@ public class ExtendedProperties implements IExtendedEntityProperties{
 	public void setChestPlate(boolean value){
 		this.armorChestWorn = value;
 	}
+	
+	public boolean getLeggings(){
+		return this.armorPantsWorn;
+	}
+	public void setLeggings(boolean value){
+		this.armorPantsWorn = value;
+	}
 
 }

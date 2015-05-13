@@ -12,7 +12,7 @@ public class PowerarmorTab extends CreativeTabs{
 
 	@Override
 	public Item getTabIconItem() {
-		return com.jereman.powerarmor.init.JeremanItems.ingotCopper;
+		return com.jereman.powerarmor.init.JeremanItems.powerChest;
 	}
 
 }

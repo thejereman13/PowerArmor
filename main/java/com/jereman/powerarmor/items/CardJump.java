@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CardJump extends PowerCards{
 	public static double jumpHeight = 0;
 	public String validArmor = "powerPants";
-	public double limit = 2.5;
+	public static double limit = 1.5;
 	public boolean shouldSetArmor= true;
 	
 	@Override
