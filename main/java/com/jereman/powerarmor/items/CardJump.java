@@ -34,6 +34,10 @@ public class CardJump extends PowerCards{
 		return false;
     }
 	
+	public static void Upgrade(double playerSpeed, EntityPlayer player){
+		//Ehhh....
+	}
+	
 	@Override
 	public void onUpdate(ItemStack stack, World par2World, Entity par3Entity, int par4, boolean par5){ //Setting default NBT Data
 		if (stack.getTagCompound() != null){

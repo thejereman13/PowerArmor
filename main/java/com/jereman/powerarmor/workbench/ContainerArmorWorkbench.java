@@ -180,7 +180,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					if (tagOne.equals("none")){
 						workbench.setInventorySlotContents(0, null);
 					}else if (!tagOne.equals("none")){
-						Console.println("Item: " + armor.getTagCompound().getString("SlotOne"));
 						Item inputItem1 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotOne").substring(5));
 						workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
 						if (armor.getTagCompound().getBoolean("SlotOneValid")){		//Setting the new item with correct NBT data
@@ -194,7 +193,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotTwo") != null){			//Slot Two Code
 					if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
-						Console.println("Item: " + armor.getTagCompound().getString("SlotTwo"));
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
 						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
 						if (armor.getTagCompound().getBoolean("SlotTwoValid")){		//Setting the new item with correct NBT data
@@ -210,7 +208,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotThree") != null){			//Slot Three Code
 					if (!armor.getTagCompound().getString("SlotThree").equals("none")){
-						Console.println("Item: " + armor.getTagCompound().getString("SlotThree"));
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
 						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
 						if (armor.getTagCompound().getBoolean("SlotThreeValid")){	//Setting the new item with correct NBT data
@@ -226,7 +223,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotFour") != null){			//Slot Four Code
 					if (!armor.getTagCompound().getString("SlotFour").equals("none")){
-						Console.println("Item: " + armor.getTagCompound().getString("SlotFour"));
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
 						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
 						if (armor.getTagCompound().getBoolean("SlotFourValid")){	//Setting the new item with correct NBT data
@@ -242,7 +238,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				if (armor.getTagCompound().getString("SlotFive") != null){			//Slot Five Code
 					if (!armor.getTagCompound().getString("SlotFive").equals("none")){
-						Console.println("Item: " + armor.getTagCompound().getString("SlotFive"));
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
 						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
 						if (armor.getTagCompound().getBoolean("SlotFiveValid")){	//Setting the new item with correct NBT data
