@@ -2,7 +2,7 @@ TODO:
 ~Finish getting the GUI worked out (Custom Settings; probably need another network class)
 ~Get custom textures for Workbench Buttons (maybe later)
 ~Add shift-clicking in Workbench Gui for custom Items/Slots
-~Find better spot for the card functions (allow additions with API)
+~Find better spot for the card functions (allow additions with API) (create itemstack from the item name(code in the container class) and get the class from the item, execute a common function in that class)
 ~Setup Jump Card
 Ideas:
 ~Card that can interact with your inventory, syncs with chest (goes on the pants, cuz ender pockets)
