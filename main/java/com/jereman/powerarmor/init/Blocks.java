@@ -19,7 +19,7 @@ public class Blocks {
 	
 	public static void init(){
 		blockCopper = new BlockCopper(Material.glass).setUnlocalizedName("blockCopper").setCreativeTab(Main.tabPowerarmor);
-		armorWorkbench = new armorWorkbench(Material.rock).setUnlocalizedName("armorWorkbench").setCreativeTab(Main.tabPowerarmor);
+		armorWorkbench = new armorWorkbench(Material.rock).setUnlocalizedName("armorWorkbench").setCreativeTab(Main.tabPowerarmor).setHardness(8);
 		
 	}
 	
