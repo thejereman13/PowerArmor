@@ -33,10 +33,15 @@ public class PowerPants extends PowerBase{
 				if (upgradeString.equals("none") || upgradeString.equals(null)){
 					//None
 				}else{
-					if (stack.getTagCompound().getBoolean("HasStep") == false && upgradeString.substring(5).equals("cardStep")){
+					if (stack.getTagCompound().getBoolean("HasStep") == false && upgradeString.substring(5).equals("cardJump")){
 						stack.getTagCompound().setBoolean("HasStep", true);
 					}else{
 						stack.getTagCompound().setBoolean("HasStep", false);
+					}
+					if (stack.getTagCompound().getBoolean("HasJump") == false && upgradeString.substring(5).equals("cardJump")){
+						stack.getTagCompound().setBoolean("HasJump", true);
+					}else{
+						stack.getTagCompound().setBoolean("HasJump", false);
 					}
 				}
 			}

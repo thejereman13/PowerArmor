@@ -1,5 +1,7 @@
 package com.jereman.powerarmor.blocks;
 
+import scala.Console;
+
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
 
@@ -9,7 +11,10 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -24,9 +29,23 @@ public class armorWorkbench extends Block implements ITileEntityProvider{
 	public static String name = "armorWorkbench";
 	public armorWorkbench(Material materialIn) {
 		super(materialIn);
+		this.stepSound = Block.soundTypeStone;
+	}
+
+	@Override
+	public void breakBlock(World worldIn, BlockPos pos, IBlockState state){
+		TileEntityArmorWorkbench workbench = (TileEntityArmorWorkbench) worldIn.getTileEntity(pos);
+		super.breakBlock(worldIn, pos, state);
+		if (workbench.getStackInSlot(5) != null){
+			float f = this.RANDOM.nextFloat() * 0.8F + 0.1F;
+			float f1 = this.RANDOM.nextFloat() * 0.8F + 0.1F;
+			float f2 = this.RANDOM.nextFloat() * 0.8F + 0.1F;
+			EntityItem item = new EntityItem(worldIn, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, workbench.getStackInSlotOnClosing(5));
+			worldIn.spawnEntityInWorld(item);
+		}
+		
 	}
 	
-
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta){
 		return new TileEntityArmorWorkbench();

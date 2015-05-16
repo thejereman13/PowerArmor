@@ -10,15 +10,18 @@ import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.Reference;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.items.CardJump;
+import com.jereman.powerarmor.items.*;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class PowerBase extends net.minecraft.item.ItemArmor{
 	private Method method;
@@ -54,16 +57,17 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 					if (upgradeString.equals(stack.getTagCompound().getString("SlotFive"))){
 						this.upgradeAmount = stack.getTagCompound().getDouble("SlotFiveAmount");
 					}
+					Item upgradeItem = GameRegistry.findItem("powerarmor", upgradeString.substring(5));
 					try {
-						this.method = this.getClass().getMethod(upgradeString.substring(5), double.class, EntityPlayer.class);
+						this.method = upgradeItem.getClass().getMethod("Upgrade", double.class, EntityPlayer.class);
 					} catch (NoSuchMethodException e) {
 						Console.println("Uhh Oh!!!: Someone didn't register a function for a card!");
 					} catch (Exception e) {
 					}
 					try {
-						
+						Object upgradeClass = upgradeItem.getClass();
 						EntityPlayer playerIn = player;
-						method.invoke(this, upgradeAmount, playerIn); //Passing data to the correct function for each upgrade in use
+						method.invoke(upgradeClass, upgradeAmount, playerIn); //Passing data to the correct function for each upgrade in use
 					} catch (IllegalAccessException e) {
 						e.printStackTrace();
 					} catch (IllegalArgumentException e) {
@@ -75,22 +79,6 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 			}
 		}
 	}
-	}
-	
-		//CardSpeed Function
-	public void cardSpeed(double playerSpeed, EntityPlayer player){
-		float actuallSpeed = ((float) playerSpeed / 10);
-		player.capabilities.setPlayerWalkSpeed(actuallSpeed);
-	}
-	
-		//CardJump Function
-	public void cardJump(double jumpHeight, EntityPlayer player){
-		//Put stuff here, probably for the eventhandler
-	}
-	
-		//CardStep Function
-	public void cardStep(double nullStuff, EntityPlayer player){
-		//It's in the PowerPants Class, because stuff...
 	}
 	
 	@Override

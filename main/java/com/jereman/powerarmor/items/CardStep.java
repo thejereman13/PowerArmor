@@ -27,7 +27,10 @@ public class CardStep extends PowerCards{
 	public boolean shouldSetArmor = true;
 	
 	public CardStep(){
-		
+	}
+	
+	public static void Upgrade(double playerSpeed, EntityPlayer player){
+		//Code is in the Pants Class
 	}
 	
 	@Override

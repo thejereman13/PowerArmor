@@ -31,6 +31,11 @@ public class CardSpeed extends PowerCards{
 		
 	}
 	
+	public static void Upgrade(double playerSpeed, EntityPlayer player){
+		float actuallSpeed = ((float) playerSpeed / 10);
+		player.capabilities.setPlayerWalkSpeed(actuallSpeed);
+	}
+	
 	@Override
 	public void onUpdate(ItemStack stack, World par2World, Entity par3Entity, int par4, boolean par5){	//Setting default NBT Data
 		if (stack.getTagCompound() != null){
