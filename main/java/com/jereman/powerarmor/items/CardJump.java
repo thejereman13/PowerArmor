@@ -36,7 +36,10 @@ public class CardJump extends PowerCards{
 	
 	public static void Upgrade(double playerSpeed, EntityPlayer player){
 		ExtendedProperties props = ExtendedProperties.get((EntityPlayer) player);
-		player.getCurrentArmor(1).getTagCompound().setDouble("JumpAmount", playerSpeed);
+		if (player.getCurrentArmor(1).hasTagCompound()){
+				player.getCurrentArmor(1).getTagCompound().setBoolean("HasJump", true);
+			player.getCurrentArmor(1).getTagCompound().setDouble("JumpAmount", playerSpeed);
+		}
 	}
 	
 	@Override

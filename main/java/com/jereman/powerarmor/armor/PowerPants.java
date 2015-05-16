@@ -1,5 +1,6 @@
 package com.jereman.powerarmor.armor;
 
+import scala.Console;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -33,15 +34,8 @@ public class PowerPants extends PowerBase{
 				if (upgradeString.equals("none") || upgradeString.equals(null)){
 					//None
 				}else{
-					if (stack.getTagCompound().getBoolean("HasStep") == false && upgradeString.substring(5).equals("cardJump")){
+					if (upgradeString.substring(5).equals("cardStep")){
 						stack.getTagCompound().setBoolean("HasStep", true);
-					}else{
-						stack.getTagCompound().setBoolean("HasStep", false);
-					}
-					if (stack.getTagCompound().getBoolean("HasJump") == false && upgradeString.substring(5).equals("cardJump")){
-						stack.getTagCompound().setBoolean("HasJump", true);
-					}else{
-						stack.getTagCompound().setBoolean("HasJump", false);
 					}
 				}
 			}
