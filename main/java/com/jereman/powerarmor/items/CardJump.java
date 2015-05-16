@@ -4,6 +4,7 @@ import java.util.List;
 
 import scala.Console;
 
+import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.Reference;
 
@@ -24,18 +25,18 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CardJump extends PowerCards{
 	public static double jumpHeight = 0;
 	public String validArmor = "powerPants";
-	public static double limit = 1.5;
+	public static double limit = 3.5;
 	public boolean shouldSetArmor= true;
 	
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        
 		return false;
     }
 	
 	public static void Upgrade(double playerSpeed, EntityPlayer player){
-		//Ehhh....
+		ExtendedProperties props = ExtendedProperties.get((EntityPlayer) player);
+		player.getCurrentArmor(1).getTagCompound().setDouble("JumpAmount", playerSpeed);
 	}
 	
 	@Override
@@ -53,43 +54,9 @@ public class CardJump extends PowerCards{
 	}
 	
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World worldIn, EntityPlayer playerIn)
-    {
-		if (!playerIn.isSneaking()){
-        	if (stack.getTagCompound() == null){
-        		stack.setTagCompound(new NBTTagCompound());
-        	}
-        	NBTTagCompound nbt = new NBTTagCompound();
-        	nbt.setBoolean("isenabled", true);
-        	stack.getTagCompound().setTag("activatedText", nbt);
-        	stack.setStackDisplayName(EnumChatFormatting.AQUA + "Jump Upgrade Card");
-        	playerIn.stepHeight = 1f;
-        	jumpHeight = 1;
-        }else if (playerIn.isSneaking()){
-        	if(stack.getTagCompound() != null){
-        		stack.getTagCompound().removeTag("activatedText");
-        		stack.clearCustomName();
-        		playerIn.stepHeight = .5f;
-        		jumpHeight = 0;
-        		
-        	}
-        }
-		
-		return stack;
-    }
-	
-	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+	
 	}
 	
-	protected void keyTyped(char par1, int par2){
-		Minecraft mc = FMLClientHandler.instance().getClient();
-		if (par2 == mc.gameSettings.keyBindJump.getKeyCode()){
-			Console.println("He Jumped!");
-		}
-	}
-	
-	
-
 }

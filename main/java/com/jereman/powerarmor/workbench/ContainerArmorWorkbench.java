@@ -140,7 +140,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		}else{
 			this.slotFive = null;
 		}
-		if (armor != null){
+		
+		if (armor != null){					//Code to detect the limits on each card
 			if (armor.hasTagCompound()){
 				if (armor.getTagCompound().hasKey("SlotOneLimit")){
 					this.slotOneLimit = armor.getTagCompound().getDouble("SlotOneLimit");
@@ -182,6 +183,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					}else if (!tagOne.equals("none")){
 						Item inputItem1 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotOne").substring(5));
 						workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
+						this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
 						if (armor.getTagCompound().getBoolean("SlotOneValid")){		//Setting the new item with correct NBT data
 							workbench.getStackInSlot(0).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(0).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
@@ -195,6 +197,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
 						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
+						this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
 						if (armor.getTagCompound().getBoolean("SlotTwoValid")){		//Setting the new item with correct NBT data
 							workbench.getStackInSlot(1).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(1).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
@@ -210,6 +213,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					if (!armor.getTagCompound().getString("SlotThree").equals("none")){
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
 						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
+						this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
 						if (armor.getTagCompound().getBoolean("SlotThreeValid")){	//Setting the new item with correct NBT data
 							workbench.getStackInSlot(2).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(2).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
@@ -225,6 +229,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					if (!armor.getTagCompound().getString("SlotFour").equals("none")){
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
 						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
+						this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
 						if (armor.getTagCompound().getBoolean("SlotFourValid")){	//Setting the new item with correct NBT data
 							workbench.getStackInSlot(3).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(3).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
@@ -240,6 +245,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					if (!armor.getTagCompound().getString("SlotFive").equals("none")){
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
 						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
+						this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
 						if (armor.getTagCompound().getBoolean("SlotFiveValid")){	//Setting the new item with correct NBT data
 							workbench.getStackInSlot(4).setTagCompound(new NBTTagCompound());
 							workbench.getStackInSlot(4).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
@@ -425,6 +431,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			if (workbench.getStackInSlot(0) != null){
 				if (armor.getTagCompound().hasKey("SlotOneAmount")){
 					this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
+				}else{
+					Main.network.sendTo(new GUIAmountMessage(0), (EntityPlayerMP) this.player);
 				}
 				if (workbench.getStackInSlot(0).getTagCompound().hasKey("UpgradeLimit")){
 					if (workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit") == 0){
@@ -444,6 +452,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			if (workbench.getStackInSlot(1) != null){
 				if (armor.getTagCompound().hasKey("SlotTwoAmount")){
 					this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
+				}else{
+					Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				}
 				if (workbench.getStackInSlot(1).getTagCompound().hasKey("UpgradeLimit")){
 					if (workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit") == 0){
@@ -463,6 +473,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			if (workbench.getStackInSlot(2) != null){
 				if (armor.getTagCompound().hasKey("SlotThreeAmount")){
 					this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
+				}else{
+					Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				}
 				if (workbench.getStackInSlot(2).getTagCompound().hasKey("UpgradeLimit")){
 					if (workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit") == 0){
@@ -482,6 +494,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			if (workbench.getStackInSlot(3) != null){
 				if (armor.getTagCompound().hasKey("SlotFourAmount")){
 					this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
+				}else{
+					Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				}
 				if (workbench.getStackInSlot(3).getTagCompound().hasKey("UpgradeLimit")){
 					if (workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit") == 0){
@@ -501,6 +515,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			if (workbench.getStackInSlot(4) != null){
 				if (armor.getTagCompound().hasKey("SlotFiveAmount")){
 					this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
+				}else{
+					Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
 				}
 				if (workbench.getStackInSlot(4).getTagCompound().hasKey("UpgradeLimit")){
 					if (workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit") == 0){
