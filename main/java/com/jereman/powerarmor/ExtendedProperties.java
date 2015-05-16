@@ -14,6 +14,8 @@ public class ExtendedProperties implements IExtendedEntityProperties{
 	
 	public boolean armorChestWorn;
 	public boolean armorPantsWorn;
+	public boolean armorBootsWorn;
+	public boolean armorHelmetWorn;
 	
 	public ExtendedProperties(EntityPlayer player){
 		this.player = player;
@@ -64,6 +66,20 @@ public class ExtendedProperties implements IExtendedEntityProperties{
 	}
 	public void setLeggings(boolean value){
 		this.armorPantsWorn = value;
+	}
+	
+	public boolean getBoots(){
+		return this.armorBootsWorn;
+	}
+	public void setBoots(boolean value){
+		this.armorBootsWorn = value;
+	}
+	
+	public boolean getHelmet(){
+		return this.armorHelmetWorn;
+	}
+	public void setHelmet(boolean value){
+		this.armorHelmetWorn = value;
 	}
 
 }
