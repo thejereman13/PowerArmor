@@ -19,7 +19,7 @@ public class JeremanEventHandler {
 		if (event.entity instanceof EntityPlayer){
 			EntityPlayer player = (EntityPlayer) event.entity;
 			ExtendedProperties props = ExtendedProperties.get((EntityPlayer) player);
-			if (player.getCurrentArmor(1) != null){
+			if (player.getCurrentArmor(1) != null && player.getCurrentArmor(1).hasTagCompound()){
 				if (props.getLeggings() && player.getCurrentArmor(1).getItem() != JeremanItems.powerPants){
 					props.setLeggings(false);
 					player.stepHeight = .5F;
@@ -45,10 +45,12 @@ public class JeremanEventHandler {
 			ExtendedProperties props = ExtendedProperties.get((EntityPlayer) player);
 			if (player.getCurrentArmor(1) != null){
 				if (props.getLeggings() && player.getCurrentArmor(1).getItem() == JeremanItems.powerPants){
-					if (player.getCurrentArmor(1).getTagCompound().getBoolean("HasStep")){
-						player.motionY += (player.getCurrentArmor(1).getTagCompound().getDouble("JumpAmount") / 10);
-					}else{
-						player.getCurrentArmor(1).getTagCompound().setBoolean("HasStep", false);
+					if (player.getCurrentArmor(1).hasTagCompound()){
+						if (player.getCurrentArmor(1).getTagCompound().getBoolean("HasStep")){
+							player.motionY += (player.getCurrentArmor(1).getTagCompound().getDouble("JumpAmount") / 10);
+						}else{
+							player.getCurrentArmor(1).getTagCompound().setBoolean("HasStep", false);
+						}
 					}
 				}
 			}
