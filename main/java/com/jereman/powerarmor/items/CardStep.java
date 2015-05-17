@@ -2,6 +2,7 @@ package com.jereman.powerarmor.items;
 
 import java.util.List;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -63,5 +64,8 @@ public class CardStep extends PowerCards{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+		if (GuiScreen.isShiftKeyDown()){
+			tooltip.add(EnumChatFormatting.DARK_AQUA + "Automatically step up whole blocks");
+		}
 	}
 }

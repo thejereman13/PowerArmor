@@ -22,11 +22,9 @@ public class JeremanFMLEventHandler {
 			if (props.getChestPlate() && player.getCurrentArmor(2) == null){
 				props.setChestPlate(false);
 				player.capabilities.setPlayerWalkSpeed(.1f);
-				player.fireResistance = 0;
 			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null && player.getCurrentArmor(2).getItem() != JeremanItems.powerChest){
 				props.setChestPlate(false);
 				player.capabilities.setPlayerWalkSpeed(.1f);
-				player.fireResistance = 0;
 			}
 		}else{
 		}

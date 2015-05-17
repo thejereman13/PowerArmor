@@ -134,8 +134,8 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		//Probably need to override in each Armor class for functionalitys
-		ArmorProperties properties = new ArmorProperties(0, .25, 5);
+		//Need to override in each Armor class for functionalitys
+		ArmorProperties properties = new ArmorProperties(0, .25, 1);
 		return properties;
 	}
 

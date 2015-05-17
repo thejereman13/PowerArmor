@@ -36,7 +36,7 @@ public class PowerBoots extends PowerBase{
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
 		ArmorProperties properties;
 		if ((source == DamageSource.fall) && findAllUpgrades(armor, "cardFall")){
-			properties= new ArmorProperties(2, 1, (int) (500 * (.2 * player.getCurrentArmor(0).getTagCompound().getDouble("FallDamage"))));
+			properties= new ArmorProperties(2, 1, (int) (500 * (.2 * armor.getTagCompound().getDouble("FallDamage"))));
 		}else{
 			properties = new ArmorProperties(0, .25, 5);
 		}

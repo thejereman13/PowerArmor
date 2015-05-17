@@ -1,5 +1,12 @@
 package com.jereman.powerarmor;
 
+import java.util.*;
+import java.util.function.Function;
+
+import scala.actors.threadpool.Arrays;
+import scala.math.Ordering;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -39,6 +46,7 @@ public class Main {
 	public static int powerDurability = 1000;
 	public static ArmorMaterial PowerArmorMaterial = EnumHelper.addArmorMaterial("PowerArmorMaterial", "powerarmor/textures/models/armor/powerarmor", -1, powerarmorDamageReduction, 0);
 	public static SimpleNetworkWrapper network;
+	public static Comparator<ItemStack> tabSorter;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
@@ -50,7 +58,6 @@ public class Main {
 		network.registerMessage(CardNumberHandler.class, CardNumberMessage.class, 0, Side.SERVER);
 		network.registerMessage(GUIAmountHandler.class, GUIAmountMessage.class, 1, Side.CLIENT);
 		network.registerMessage(GUISlotHandler.class, GUISlotMessage.class, 2, Side.CLIENT);
-		
 	}
 	
 	@EventHandler

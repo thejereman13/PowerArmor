@@ -30,18 +30,15 @@ public class PowerChest extends PowerBase{
 		if (props.getChestPlate() == false){
 			props.setChestPlate(true);
 		}
-		if (stack.hasTagCompound()){
-			if (findAllUpgrades(stack, "cardFire") == false){
-				player.fireResistance = 0;
-			}
-		}
 	}
 	
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
 		ArmorProperties properties;
 		if ((source == DamageSource.onFire || source == DamageSource.inFire || source == DamageSource.lava) && findAllUpgrades(armor, "cardFire")){
-			properties= new ArmorProperties(1, 1, (int) (100 * (.2 * player.getCurrentArmor(2).getTagCompound().getDouble("FireDamage"))));
+			properties= new ArmorProperties(2, 1, (int) (200 * (.2 * player.getCurrentArmor(2).getTagCompound().getDouble("FireDamage"))));
+		}else if (findAllUpgrades(armor, "cardProtection")){
+			properties = new ArmorProperties(1,1, (int) (250 * (.2 * player.getCurrentArmor(2).getTagCompound().getDouble("GenericDamage"))));
 		}else{
 			properties = new ArmorProperties(0, .25, 5);
 		}

@@ -14,6 +14,8 @@ import com.jereman.powerarmor.armor.PowerPants;
 import com.jereman.powerarmor.items.CardFall;
 import com.jereman.powerarmor.items.CardFire;
 import com.jereman.powerarmor.items.CardJump;
+import com.jereman.powerarmor.items.CardPerfectFall;
+import com.jereman.powerarmor.items.CardProtection;
 import com.jereman.powerarmor.items.CardSpeed;
 import com.jereman.powerarmor.items.CardStep;
 
@@ -29,6 +31,8 @@ public class JeremanItems {
 	public static Item cardStep;
 	public static Item cardFire;
 	public static Item cardFall;
+	public static Item cardPerfectFall;
+	public static Item cardProtection;
 	public static void init(){
 		ingotCopper = new Item().setUnlocalizedName("ingotCopper").setCreativeTab(Main.tabPowerarmor);
 		cardSpeed = new CardSpeed().setUnlocalizedName("cardSpeed").setCreativeTab(Main.tabPowerarmor);
@@ -40,20 +44,23 @@ public class JeremanItems {
 		cardStep = new CardStep().setUnlocalizedName("cardStep").setCreativeTab(Main.tabPowerarmor);
 		cardFire = new CardFire().setUnlocalizedName("cardFire").setCreativeTab(Main.tabPowerarmor);
 		cardFall = new CardFall().setUnlocalizedName("cardFall").setCreativeTab(Main.tabPowerarmor);
-
+		cardPerfectFall = new CardPerfectFall().setUnlocalizedName("cardPerfectFall").setCreativeTab(Main.tabPowerarmor);
+		cardProtection = new CardProtection().setUnlocalizedName("cardProtection").setCreativeTab(Main.tabPowerarmor);
 	}
 	
 	public static void register(){
 		GameRegistry.registerItem(ingotCopper, ingotCopper.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardSpeed, cardSpeed.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardJump, cardJump.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerHelmet, powerHelmet.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerChest, powerChest.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerPants, powerPants.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerBoots, powerBoots.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(cardSpeed, cardSpeed.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(cardJump, cardJump.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(cardStep, cardStep.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(cardFire, cardFire.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(cardFall, cardFall.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(cardPerfectFall, cardPerfectFall.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(cardProtection, cardProtection.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders(){
@@ -67,6 +74,8 @@ public class JeremanItems {
 		registerRender(cardStep);
 		registerRender(cardFire);
 		registerRender(cardFall);
+		registerRender(cardPerfectFall);
+		registerRender(cardProtection);
 	}
 	
 	public static void registerRender(Item item){

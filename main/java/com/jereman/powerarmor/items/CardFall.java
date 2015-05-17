@@ -2,6 +2,7 @@ package com.jereman.powerarmor.items;
 
 import java.util.List;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -23,7 +24,7 @@ import com.jereman.powerarmor.init.JeremanItems;
 
 public class CardFall extends PowerCards{
 	public static String validArmor = "powerBoots";
-	public static double limit = 5;
+	public static double limit = 4;
 	public boolean shouldSetArmor = true;
 	
 	public CardFall(){
@@ -63,5 +64,8 @@ public class CardFall extends PowerCards{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+		if (GuiScreen.isShiftKeyDown()){
+			tooltip.add(EnumChatFormatting.DARK_AQUA + "Reduces the damage taken from falling");
+		}
 	}
 }
