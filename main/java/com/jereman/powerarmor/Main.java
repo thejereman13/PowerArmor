@@ -36,8 +36,8 @@ public class Main {
 	
 	public static boolean ArmorWorn;
 	public static int powerarmorDamageReduction[] = {3,8,6,3};
-	public static int powerDurability = 100;
-	public static ArmorMaterial PowerArmorMaterial = EnumHelper.addArmorMaterial("PowerArmorMaterial", "powerarmor/textures/models/armor/powerarmor", powerDurability, powerarmorDamageReduction, 0);
+	public static int powerDurability = 1000;
+	public static ArmorMaterial PowerArmorMaterial = EnumHelper.addArmorMaterial("PowerArmorMaterial", "powerarmor/textures/models/armor/powerarmor", -1, powerarmorDamageReduction, 0);
 	public static SimpleNetworkWrapper network;
 	
 	@EventHandler

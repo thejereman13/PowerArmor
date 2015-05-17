@@ -2,10 +2,13 @@ package com.jereman.powerarmor.armor;
 
 import scala.Console;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Reference;
@@ -29,16 +32,18 @@ public class PowerPants extends PowerBase{
 			props.setLeggings(true);
 		}
 		if (stack.hasTagCompound()){
-			final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
-			for (String upgradeString: upgradeList){
-				if (upgradeString.equals("none") || upgradeString.equals(null)){
-					//None
-				}else{
-					if (upgradeString.substring(5).equals("cardStep")){
-						stack.getTagCompound().setBoolean("HasStep", true);
-					}
-				}
+			if (findAllUpgrades(stack, "cardStep")){
+				stack.getTagCompound().setBoolean("HasStep", true);
+			}else if (findAllUpgrades(stack, "cardStep") == false){
+				stack.getTagCompound().setBoolean("HasStep", false);
+			}
+			if (findAllUpgrades(stack, "cardJump")){
+				stack.getTagCompound().setBoolean("HasJump", true);
+			}else if (findAllUpgrades(stack, "cardJump") == false){
+				stack.getTagCompound().setBoolean("HasJump", false);
 			}
 		}
 	}
+	
+	
 }

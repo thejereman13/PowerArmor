@@ -9,21 +9,23 @@ import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.Reference;
 import com.jereman.powerarmor.init.JeremanItems;
-import com.jereman.powerarmor.items.CardJump;
 import com.jereman.powerarmor.items.*;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class PowerBase extends net.minecraft.item.ItemArmor{
+public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialArmor{
 	private Method method;
 	double upgradeAmount;
 	public PowerBase(int armorSlot){
@@ -34,7 +36,7 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 	//Checks for information about the chestplate being worn
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack){
 		if (!world.isRemote){
-		if (stack.hasTagCompound()){
+			if (stack.hasTagCompound()){
 			
 			final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
 			for (String upgradeString: upgradeList){
@@ -81,6 +83,18 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 	}
 	}
 	
+	public static boolean findAllUpgrades(ItemStack stack, String upgradeCheck){
+		final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
+		for (String upgradeString: upgradeList){
+			if (upgradeString != null && !upgradeString.equals("none")){
+				if (upgradeString.substring(5).equals(upgradeCheck)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean isDamageable(){
 		return false;
@@ -115,6 +129,25 @@ public class PowerBase extends net.minecraft.item.ItemArmor{
 		}
 		NBTTagCompound nbt = new NBTTagCompound();
 		stack.getTagCompound().setString(slotNum, upgrade);
+		
+	}
+
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+		//Probably need to override in each Armor class for functionalitys
+		ArmorProperties properties = new ArmorProperties(0, .25, 5);
+		return properties;
+	}
+
+	@Override
+	public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+		return 4;
+	}
+
+	@Override
+	public void damageArmor(EntityLivingBase entity, ItemStack stack,
+			DamageSource source, int damage, int slot) {
+		//Armor Does not take natural damage, will remain empty until Power system is in place
 		
 	}
 

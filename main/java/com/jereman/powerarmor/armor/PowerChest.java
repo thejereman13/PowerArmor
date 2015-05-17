@@ -1,9 +1,12 @@
 package com.jereman.powerarmor.armor;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Main;
@@ -27,5 +30,21 @@ public class PowerChest extends PowerBase{
 		if (props.getChestPlate() == false){
 			props.setChestPlate(true);
 		}
+		if (stack.hasTagCompound()){
+			if (findAllUpgrades(stack, "cardFire") == false){
+				player.fireResistance = 0;
+			}
+		}
+	}
+	
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+		ArmorProperties properties;
+		if ((source == DamageSource.onFire || source == DamageSource.inFire || source == DamageSource.lava) && findAllUpgrades(armor, "cardFire")){
+			properties= new ArmorProperties(1, 1, (int) (100 * (.2 * player.getCurrentArmor(2).getTagCompound().getDouble("FireDamage"))));
+		}else{
+			properties = new ArmorProperties(0, .25, 5);
+		}
+		return properties;
 	}
 }
