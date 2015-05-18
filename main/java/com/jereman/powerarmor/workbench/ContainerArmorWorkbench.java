@@ -88,12 +88,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		          }
 		          return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, player);
 		        }
-
-		        /* @Override
-		        @SideOnly(Side.CLIENT)
-		        public IIcon getBackgroundIconIndex() {
-		          return ItemArmor.func_94602_b(k);
-		        } */
 		      });
 		    }
 		
@@ -317,69 +311,79 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				
 				//Checking if the cards are valid for the currently inserted armor piece
 				if (workbench.getStackInSlot(0) != null){
-				if (workbench.getStackInSlot(0).hasTagCompound()){
-				if (workbench.getStackInSlot(0).getTagCompound().hasKey("ValidArmor")){
-					if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-						this.armor.getTagCompound().setBoolean("SlotOneValid", false);
-						this.slotOneValid = false;
-					}else{
-						this.armor.getTagCompound().setBoolean("SlotOneValid", true);
-						this.slotOneValid = true;
+					if (workbench.getStackInSlot(0).hasTagCompound()){
+						if (workbench.getStackInSlot(0).getTagCompound().hasKey("ValidArmor")){
+							if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotOneValid", false);
+								this.slotOneValid = false;
+							}else{
+								this.armor.getTagCompound().setBoolean("SlotOneValid", true);
+								this.slotOneValid = true;
+							}
+						}
 					}
-				}
-				}
+				}else{
+					this.slotOneAmount = 0;
 				}
 				if (workbench.getStackInSlot(1) != null){
-				if (workbench.getStackInSlot(1).getTagCompound() != null){
-				if (workbench.getStackInSlot(1).getTagCompound().hasKey("ValidArmor")){
-					if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-						this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
-						this.slotTwoValid = false;
-					}else{
-						this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
-						this.slotTwoValid = true;
+					if (workbench.getStackInSlot(1).getTagCompound() != null){
+						if (workbench.getStackInSlot(1).getTagCompound().hasKey("ValidArmor")){
+							if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
+								this.slotTwoValid = false;
+							}else{
+								this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
+								this.slotTwoValid = true;
+							}
+						}
 					}
-				}
-				}
+				}else{
+					this.slotTwoAmount = 0;
 				}
 				if (workbench.getStackInSlot(2) != null){
-				if (workbench.getStackInSlot(2).getTagCompound() != null){
-				if (workbench.getStackInSlot(2).getTagCompound().hasKey("ValidArmor")){
-					if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-						this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
-						this.slotThreeValid = false;
-					}else{
-						this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
-						this.slotThreeValid = true;
+					if (workbench.getStackInSlot(2).getTagCompound() != null){
+						if (workbench.getStackInSlot(2).getTagCompound().hasKey("ValidArmor")){
+							if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
+								this.slotThreeValid = false;
+							}else{
+								this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
+								this.slotThreeValid = true;
+							}
+						}
 					}
-				}
-				}
+				}else{
+					this.slotThreeAmount = 0;
 				}
 				if (workbench.getStackInSlot(3) != null){
-				if (workbench.getStackInSlot(3).getTagCompound() != null){
-				if (workbench.getStackInSlot(3).getTagCompound().hasKey("ValidArmor")){
-					if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-						this.armor.getTagCompound().setBoolean("SlotFourValid", false);
-						this.slotFourValid = false;
-					}else{
-						this.armor.getTagCompound().setBoolean("SlotFourValid", true);
-						this.slotFourValid = true;
+					if (workbench.getStackInSlot(3).getTagCompound() != null){
+						if (workbench.getStackInSlot(3).getTagCompound().hasKey("ValidArmor")){
+							if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotFourValid", false);
+								this.slotFourValid = false;
+							}else{
+								this.armor.getTagCompound().setBoolean("SlotFourValid", true);
+								this.slotFourValid = true;
+							}
+						}
 					}
-				}
-				}
+				}else{
+					this.slotFourAmount = 0;
 				}
 				if (workbench.getStackInSlot(4) != null){
-				if (workbench.getStackInSlot(4).getTagCompound() != null){
-				if (workbench.getStackInSlot(4).getTagCompound().hasKey("ValidArmor")){
-					if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-						this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
-						this.slotFiveValid = false;
-					}else{
-						this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
-						this.slotFiveValid = true;
+					if (workbench.getStackInSlot(4).getTagCompound() != null){
+						if (workbench.getStackInSlot(4).getTagCompound().hasKey("ValidArmor")){
+							if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
+								this.slotFiveValid = false;
+							}else{
+								this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
+								this.slotFiveValid = true;
+							}
+						}
 					}
-				}
-				}
+				}else{
+					this.slotFiveAmount = 0;
 				}
 			}
 		}else{

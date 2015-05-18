@@ -1,9 +1,15 @@
 item.ingotCopper.name=Copper Ingot
 item.cardSpeed.name=Speed Upgrade Card
 item.cardJump.name=Jump Upgrade Card
+item.cardStep.name=Step Assist Card
+item.cardFire.name=Fire Resistance Card
+item.cardFall.name=Fall Resistance Card
+item.cardPerfectFall.name=Perfect Fall Resistance Card
+item.cardProtection.name=Protection Card
+item.powerHelmet.name=Power Helmet
 item.powerChest.name=Power Chestplate
 item.powerPants.name=Power Leggings
-item.cardStep.name=Step Upgrade Card
+item.powerBoots.name=Power Boots
 tile.blockCopper.name=Block of Copper
 tile.armorWorkbench.name=Armor Workbench
 itemGroup.tabPowerarmor=Power Armor

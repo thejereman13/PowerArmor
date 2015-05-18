@@ -6,10 +6,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
+import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.items.CardJump;
 
@@ -46,10 +48,10 @@ public class JeremanEventHandler {
 			if (player.getCurrentArmor(1) != null){
 				if (props.getLeggings() && player.getCurrentArmor(1).getItem() == JeremanItems.powerPants){
 					if (player.getCurrentArmor(1).hasTagCompound()){
-						if (player.getCurrentArmor(1).getTagCompound().getBoolean("HasStep")){
-							player.motionY += (player.getCurrentArmor(1).getTagCompound().getDouble("JumpAmount") / 10);
+						if (player.getCurrentArmor(1).getTagCompound().getBoolean("HasJump")){
+							player.motionY += (player.getCurrentArmor(1).getTagCompound().getDouble("JumpAmount") / 5);
 						}else{
-							player.getCurrentArmor(1).getTagCompound().setBoolean("HasStep", false);
+							player.getCurrentArmor(1).getTagCompound().setBoolean("HasJump", false);
 						}
 					}
 				}

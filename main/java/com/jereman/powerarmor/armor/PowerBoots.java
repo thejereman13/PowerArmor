@@ -1,9 +1,12 @@
 package com.jereman.powerarmor.armor;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Main;
@@ -27,5 +30,16 @@ public class PowerBoots extends PowerBase{
 		if (props.getBoots() == false){
 			props.setBoots(true);
 		}
+	}
+	
+	@Override
+	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+		ArmorProperties properties;
+		if ((source == DamageSource.fall) && findAllUpgrades(armor, "cardFall")){
+			properties= new ArmorProperties(2, 1, (int) (500 * (.2 * armor.getTagCompound().getDouble("FallDamage"))));
+		}else{
+			properties = new ArmorProperties(0, .25, 5);
+		}
+		return properties;
 	}
 }

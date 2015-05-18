@@ -14,22 +14,18 @@ import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Blocks {
-	public static Block blockCopper;
 	public static Block armorWorkbench;
 	
 	public static void init(){
-		blockCopper = new BlockCopper(Material.glass).setUnlocalizedName("blockCopper").setCreativeTab(Main.tabPowerarmor);
 		armorWorkbench = new armorWorkbench(Material.rock).setUnlocalizedName("armorWorkbench").setCreativeTab(Main.tabPowerarmor).setHardness(8);
 		
 	}
 	
 	public static void register(){
-		GameRegistry.registerBlock(blockCopper, blockCopper.getUnlocalizedName().substring(5));
 		GameRegistry.registerBlock(armorWorkbench, armorWorkbench.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders(){
-		registerRender(blockCopper);
 		registerRender(armorWorkbench);
 	}
 	

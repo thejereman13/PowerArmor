@@ -22,16 +22,16 @@ import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 
-public class CardStep extends PowerCards{
-	public static String validArmor = "powerPants";
-	public static double limit = 0;
+public class CardFall extends PowerCards{
+	public static String validArmor = "powerBoots";
+	public static double limit = 4;
 	public boolean shouldSetArmor = true;
 	
-	public CardStep(){
+	public CardFall(){
 	}
 	
-	public static void Upgrade(double playerSpeed, EntityPlayer player){
-		//Code is in the Pants Class
+	public static void Upgrade(double fallMultiplier, EntityPlayer player){
+		player.getCurrentArmor(0).getTagCompound().setDouble("FallDamage", fallMultiplier);
 	}
 	
 	@Override
@@ -65,7 +65,7 @@ public class CardStep extends PowerCards{
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
-			tooltip.add(EnumChatFormatting.DARK_AQUA + "Automatically step up whole blocks");
+			tooltip.add(EnumChatFormatting.DARK_AQUA + "Reduces the damage taken from falling");
 		}
 	}
 }

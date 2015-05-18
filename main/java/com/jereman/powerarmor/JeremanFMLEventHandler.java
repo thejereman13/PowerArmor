@@ -3,10 +3,12 @@ package com.jereman.powerarmor;
 import ibxm.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import scala.Console;
 
+import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 
 public class JeremanFMLEventHandler {
@@ -28,5 +30,6 @@ public class JeremanFMLEventHandler {
 		}
 		
 	}
+	
 }
 
