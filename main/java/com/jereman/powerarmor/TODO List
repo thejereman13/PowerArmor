@@ -1,5 +1,6 @@
 TODO:
 ~Finish getting the GUI worked out (Custom Settings; probably need another network class; function in class that adds the custom items)
+~Setup stuff for slot amount limit
 ~Add shift-clicking in Workbench Gui for custom Items/Slots
 Ideas:
 ~Card that can interact with your inventory, syncs with chest (goes on the pants, cuz ender pockets)
