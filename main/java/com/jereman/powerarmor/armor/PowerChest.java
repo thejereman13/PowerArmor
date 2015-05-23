@@ -20,7 +20,11 @@ public class PowerChest extends PowerBase{
 	
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type){
-		return Reference.MOD_ID + ":textures/models/armor/powerarmor_layer_1.png";
+		if (!PowerBase.findAllUpgrades(stack, "cardArmorInvis")){
+			return Reference.MOD_ID + ":textures/models/armor/powerarmor_layer_1.png";
+		}else{
+			return Reference.MOD_ID + ":textures/models/armor/powerarmor_layer_10.png";
+		}
 	}
 	
 	@Override

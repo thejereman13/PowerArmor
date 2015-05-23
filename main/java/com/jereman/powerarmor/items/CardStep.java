@@ -66,6 +66,10 @@ public class CardStep extends PowerCards{
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Automatically step up whole blocks");
+			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Leggings");
+		}
+		if (GuiScreen.isCtrlKeyDown()){
+			tooltip.add(EnumChatFormatting.GRAY + "It's like having portable stairs");
 		}
 	}
 }

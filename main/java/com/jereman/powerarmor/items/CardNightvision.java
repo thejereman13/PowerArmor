@@ -15,6 +15,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import scala.Console;
 
 import com.jereman.powerarmor.ExtendedProperties;
@@ -22,16 +24,16 @@ import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 
-public class CardPerfectFall extends PowerCards{
-	public static String validArmor = "powerBoots";
+public class CardNightvision extends PowerCards{
+	public static String validArmor = "powerHelmet";
 	public static double limit = 0;
 	public boolean shouldSetArmor = true;
 	
-	public CardPerfectFall(){
+	public CardNightvision(){
 	}
 	
 	public static void Upgrade(double playerSpeed, EntityPlayer player){
-		player.fallDistance = 0;
+		player.addPotionEffect(new PotionEffect(Potion.nightVision.id, 210, 0, true, false));
 	}
 	
 	@Override
@@ -65,8 +67,11 @@ public class CardPerfectFall extends PowerCards{
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
-			tooltip.add(EnumChatFormatting.DARK_AQUA + "Never take fall damage... ever");
-			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Boots");
+			tooltip.add(EnumChatFormatting.DARK_AQUA + "See in the dark");
+			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Helmet");
+		}
+		if (GuiScreen.isCtrlKeyDown()){
+			tooltip.add(EnumChatFormatting.GRAY + "Just don't look directly at the sun");
 		}
 	}
 }

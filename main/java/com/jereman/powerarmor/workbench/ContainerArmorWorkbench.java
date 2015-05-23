@@ -1,5 +1,6 @@
 package com.jereman.powerarmor.workbench;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -16,6 +17,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.config.GuiSlider;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -178,12 +180,12 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Item inputItem1 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotOne").substring(5));
 						workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
 						this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
-						if (armor.getTagCompound().getBoolean("SlotOneValid")){		//Setting the new item with correct NBT data
+						try {		//Adding the Metadata again
 							workbench.getStackInSlot(0).setTagCompound(new NBTTagCompound());
-							workbench.getStackInSlot(0).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
-							if (armor.getTagCompound().hasKey("SlotOneLimit")){
-								workbench.getStackInSlot(0).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotOneLimit"));
-							}
+							Method method = inputItem1.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+							method.invoke((Object) inputItem1, workbench.getStackInSlot(0), workbench.getWorld(), this.player, 0, true);
+						}catch (Exception e) {
+							e.printStackTrace();
 						}
 					} 
 				}
@@ -192,12 +194,12 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
 						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
 						this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
-						if (armor.getTagCompound().getBoolean("SlotTwoValid")){		//Setting the new item with correct NBT data
+						try {		//Adding the Metadata again
 							workbench.getStackInSlot(1).setTagCompound(new NBTTagCompound());
-							workbench.getStackInSlot(1).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
-							if (armor.getTagCompound().hasKey("SlotTwoLimit")){
-								workbench.getStackInSlot(1).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotTwoLimit"));
-							}
+							Method method = inputItem2.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+							method.invoke((Object) inputItem2, workbench.getStackInSlot(1), workbench.getWorld(), this.player, 0, true);
+						}catch (Exception e) {
+							e.printStackTrace();
 						}
 					}else if (armor.getTagCompound().getString("SlotTwo").equals("none")){
 						workbench.setInventorySlotContents(1, null);
@@ -208,12 +210,12 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
 						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
 						this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
-						if (armor.getTagCompound().getBoolean("SlotThreeValid")){	//Setting the new item with correct NBT data
+						try {		//Adding the Metadata again
 							workbench.getStackInSlot(2).setTagCompound(new NBTTagCompound());
-							workbench.getStackInSlot(2).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
-							if (armor.getTagCompound().hasKey("SlotThreeLimit")){
-								workbench.getStackInSlot(2).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotThreeLimit"));
-							}
+							Method method = inputItem3.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+							method.invoke((Object) inputItem3, workbench.getStackInSlot(2), workbench.getWorld(), this.player, 0, true);
+						}catch (Exception e) {
+							e.printStackTrace();
 						}
 					}else if (armor.getTagCompound().getString("SlotThree").equals("none")){
 						workbench.setInventorySlotContents(2, null);
@@ -224,12 +226,12 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
 						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
 						this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
-						if (armor.getTagCompound().getBoolean("SlotFourValid")){	//Setting the new item with correct NBT data
+						try {		//Adding the Metadata again
 							workbench.getStackInSlot(3).setTagCompound(new NBTTagCompound());
-							workbench.getStackInSlot(3).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
-							if (armor.getTagCompound().hasKey("SlotFourLimit")){
-								workbench.getStackInSlot(3).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotFourLimit"));
-							}
+							Method method = inputItem4.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+							method.invoke((Object) inputItem4, workbench.getStackInSlot(3), workbench.getWorld(), this.player, 0, true);
+						}catch (Exception e) {
+							e.printStackTrace();
 						}
 					}else if (armor.getTagCompound().getString("SlotFour").equals("none")){
 						workbench.setInventorySlotContents(3, null);
@@ -240,12 +242,12 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
 						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
 						this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
-						if (armor.getTagCompound().getBoolean("SlotFiveValid")){	//Setting the new item with correct NBT data
+						try {		//Adding the Metadata again
 							workbench.getStackInSlot(4).setTagCompound(new NBTTagCompound());
-							workbench.getStackInSlot(4).getTagCompound().setString("ValidArmor", armor.getUnlocalizedName().substring(5));
-							if (armor.getTagCompound().hasKey("SlotFiveLimit")){
-								workbench.getStackInSlot(4).getTagCompound().setDouble("UpgradeLimit", armor.getTagCompound().getDouble("SlotFiveLimit"));
-							}
+							Method method = inputItem5.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+							method.invoke((Object) inputItem5, workbench.getStackInSlot(4), workbench.getWorld(), this.player, 0, true);
+						}catch (Exception e) {
+							e.printStackTrace();
 						}
 					}else if (armor.getTagCompound().getString("SlotFive").equals("none")){
 						workbench.setInventorySlotContents(4, null);
@@ -257,36 +259,56 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			}
 				//Storing the data from slots
 				if (slotOne != null && this.slotOneValid){
-					PowerBase.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
-					PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit"));
+					if (workbench.getStackInSlot(0).hasTagCompound()){
+						if (workbench.getStackInSlot(0).getTagCompound().hasKey("UpgradeLimit")){
+							PowerBase.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
+							PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit"));
+						}
+					}
 				}else{
 					PowerBase.NBTUpgradeList("SlotOne", armor, "none");
 					PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, 0);
 				}
 				if (slotTwo != null && this.slotTwoValid){
-					PowerBase.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
-					PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit"));
+					if (workbench.getStackInSlot(1).hasTagCompound()){
+						if (workbench.getStackInSlot(1).getTagCompound().hasKey("UpgradeLimit")){
+							PowerBase.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
+							PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit"));
+						}
+					}
 				}else{
 					PowerBase.NBTUpgradeList("SlotTwo", armor, "none");
 					PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, 0);
 				}
 				if (slotThree !=null && this.slotThreeValid){
-					PowerBase.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
-					PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit"));
+					if (workbench.getStackInSlot(2).hasTagCompound()){
+						if (workbench.getStackInSlot(2).getTagCompound().hasKey("UpgradeLimit")){
+							PowerBase.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
+							PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit"));
+						}
+					}
 				}else{
 					PowerBase.NBTUpgradeList("SlotThree", armor, "none");
 					PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, 0);
 				}
 				if (slotFour != null && this.slotFourValid){
-					PowerBase.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
-					PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit"));
+					if (workbench.getStackInSlot(3).hasTagCompound()){
+						if (workbench.getStackInSlot(3).getTagCompound().hasKey("UpgradeLimit")){
+							PowerBase.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
+							PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit"));
+						}
+					}
 				}else{
 					PowerBase.NBTUpgradeList("SlotFour", armor, "none");
 					PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, 0);
 				}
 				if (slotFive != null && this.slotFiveValid){
+					if (workbench.getStackInSlot(4).hasTagCompound()){
+						if (workbench.getStackInSlot(4).getTagCompound().hasKey("UpgradeLimit")){
 					PowerBase.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
 					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit"));
+						}
+					}
 				}else{
 					PowerBase.NBTUpgradeList("SlotFive", armor, "none");
 					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, 0);
@@ -313,12 +335,15 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (workbench.getStackInSlot(0) != null){
 					if (workbench.getStackInSlot(0).hasTagCompound()){
 						if (workbench.getStackInSlot(0).getTagCompound().hasKey("ValidArmor")){
-							if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotOneValid", false);
-								this.slotOneValid = false;
-							}else{
+							if (workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
 								this.armor.getTagCompound().setBoolean("SlotOneValid", true);
 								this.slotOneValid = true;
+							}else if (workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals("all")){
+								this.armor.getTagCompound().setBoolean("SlotOneValid", true);
+								this.slotOneValid = true;
+							}else if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotOneValid", false);
+								this.slotOneValid = false;
 							}
 						}
 					}
@@ -328,12 +353,15 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (workbench.getStackInSlot(1) != null){
 					if (workbench.getStackInSlot(1).getTagCompound() != null){
 						if (workbench.getStackInSlot(1).getTagCompound().hasKey("ValidArmor")){
-							if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
-								this.slotTwoValid = false;
-							}else{
+							if (workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
 								this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
 								this.slotTwoValid = true;
+							}else if (workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals("all")){
+								this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
+								this.slotTwoValid = true;
+							}else if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
+								this.slotTwoValid = false;
 							}
 						}
 					}
@@ -343,12 +371,15 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (workbench.getStackInSlot(2) != null){
 					if (workbench.getStackInSlot(2).getTagCompound() != null){
 						if (workbench.getStackInSlot(2).getTagCompound().hasKey("ValidArmor")){
-							if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
-								this.slotThreeValid = false;
-							}else{
+							if (workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
 								this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
 								this.slotThreeValid = true;
+							}else if (workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals("all")){
+								this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
+								this.slotThreeValid = true;
+							}else if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
+								this.slotThreeValid = false;
 							}
 						}
 					}
@@ -358,12 +389,15 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (workbench.getStackInSlot(3) != null){
 					if (workbench.getStackInSlot(3).getTagCompound() != null){
 						if (workbench.getStackInSlot(3).getTagCompound().hasKey("ValidArmor")){
-							if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotFourValid", false);
-								this.slotFourValid = false;
-							}else{
+							if (workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
 								this.armor.getTagCompound().setBoolean("SlotFourValid", true);
 								this.slotFourValid = true;
+							}else if (workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals("all")){
+								this.armor.getTagCompound().setBoolean("SlotFourValid", true);
+								this.slotFourValid = true;
+							}else if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotFourValid", false);
+								this.slotFourValid = false;
 							}
 						}
 					}
@@ -373,18 +407,85 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				if (workbench.getStackInSlot(4) != null){
 					if (workbench.getStackInSlot(4).getTagCompound() != null){
 						if (workbench.getStackInSlot(4).getTagCompound().hasKey("ValidArmor")){
-							if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
-								this.slotFiveValid = false;
-							}else{
+							if (workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
 								this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
 								this.slotFiveValid = true;
+							}else if (workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals("all")){
+								this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
+								this.slotFiveValid = true;
+							}else if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+								this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
+								this.slotFiveValid = false;
 							}
 						}
 					}
 				}else{
 					this.slotFiveAmount = 0;
 				}
+			}
+			switch (this.slotSelected){
+				case 0:
+					break;
+				case 1:
+					if (workbench.getStackInSlot(0) != null){
+						if (workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit") == 0){
+							Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+						}else{
+							Main.network.sendTo(new GUIAmountMessage(this.slotOneAmount), (EntityPlayerMP) this.player);
+						}
+					}else{
+						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+					}
+					break;
+				case 2:
+					if (workbench.getStackInSlot(1) != null){
+						if (workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit") == 0){
+							Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+						}else{
+							Main.network.sendTo(new GUIAmountMessage(this.slotTwoAmount), (EntityPlayerMP) this.player);
+						}
+					}else{
+						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+					}
+					break;
+				case 3:
+					if (workbench.getStackInSlot(2) != null){
+						if (workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit") == 0){
+							Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+						}else{
+							Main.network.sendTo(new GUIAmountMessage(this.slotThreeAmount), (EntityPlayerMP) this.player);
+						}
+					}else{
+						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+					}
+					break;
+				case 4:
+					if (workbench.getStackInSlot(4) != null){
+						if (workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit") == 0){
+							Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+						}else{
+							Main.network.sendTo(new GUIAmountMessage(this.slotFourAmount), (EntityPlayerMP) this.player);
+						}
+					}else{
+						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+					}
+					break;
+				case 5:
+					if (workbench.getStackInSlot(4) != null){
+						if (workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit") == 0){
+							Main.network.sendTo(new GUIAmountMessage(-2), (EntityPlayerMP) this.player);
+						}else{
+							Main.network.sendTo(new GUIAmountMessage(this.slotFiveAmount), (EntityPlayerMP) this.player);
+						}
+					}else{
+						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
+					}
+					break;
 			}
 		}else{
 				//Putting the cards in the player's inventory if they are invalid, removing if they are
@@ -423,6 +524,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				} catch (Exception e){
 					
 				}
+				this.slotSelected = 0;
 				this.shouldUpdate = true;
 				
 		}

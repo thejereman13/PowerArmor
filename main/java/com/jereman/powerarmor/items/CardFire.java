@@ -66,6 +66,7 @@ public class CardFire extends PowerCards{
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Reduces the damage taken from fire");
+			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Chestplate");
 		}
 	}
 }

@@ -24,7 +24,7 @@ import com.jereman.powerarmor.init.JeremanItems;
 
 public class CardSpeed extends PowerCards{
 	public static float playerSpeed = .3f;
-	public static String validArmor = "powerChest";
+	public static String validArmor = "powerPants";
 	public static double limit = 3.25;
 	public boolean shouldSetArmor = true;
 	
@@ -84,6 +84,7 @@ public class CardSpeed extends PowerCards{
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Increases ground movement speed");
+			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Leggings");
 		}
 	}
 }
