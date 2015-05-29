@@ -28,9 +28,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialArmor{
 	private Method method;
 	double upgradeAmount;
-	public PowerBase(int armorSlot){
+	int upgradeNumber;
+	public PowerBase(int armorSlot, int upgradeNumber){
 		super(Main.PowerArmorMaterial, 3, armorSlot);
-		
+		this.upgradeNumber = upgradeNumber;
 	}
 	
 	//Checks for information about the chestplate being worn
@@ -81,6 +82,15 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 			}
 		}
 	}
+	}
+	
+	@Override
+	public void onUpdate(ItemStack stack, World par2World, Entity par3Entity, int par4, boolean par5){ //Setting default NBT Data
+		if (stack.hasTagCompound()){
+				stack.getTagCompound().setInteger("JeremanUpgradeNumber", this.upgradeNumber);
+		}else if (stack.hasTagCompound() == false){
+			stack.setTagCompound(new NBTTagCompound());
+		}
 	}
 	
 	public static boolean findAllUpgrades(ItemStack stack, String upgradeCheck){

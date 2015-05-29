@@ -15,7 +15,7 @@ import com.jereman.powerarmor.Reference;
 public class PowerBoots extends PowerBase{
 
 	public PowerBoots(){
-		super(3);
+		super(3, 5);
 	}
 	
 	@Override

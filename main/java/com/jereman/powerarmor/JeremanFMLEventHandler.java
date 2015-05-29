@@ -13,7 +13,7 @@ import com.jereman.powerarmor.init.JeremanItems;
 
 public class JeremanFMLEventHandler {
 
-	//Do da things to reverse the effects added later
+	//Do da things to reverse the effects added
 	@SubscribeEvent
 	public void onPlayerTick(TickEvent.PlayerTickEvent event){
 		if (!event.player.worldObj.isRemote && event.phase == TickEvent.Phase.START){
@@ -21,12 +21,19 @@ public class JeremanFMLEventHandler {
 			ExtendedProperties props = ExtendedProperties.get((EntityPlayer) player);
 			if (props.getChestPlate() && player.getCurrentArmor(2) == null){
 				props.setChestPlate(false);
+					player.capabilities.allowFlying = false;
 				player.capabilities.setPlayerWalkSpeed(.1f);
-			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null && player.getCurrentArmor(2).getItem() != JeremanItems.powerChest){
+			}else if(props.getChestPlate() && player.getCurrentArmor(2) != null){
 				props.setChestPlate(false);
-				player.capabilities.setPlayerWalkSpeed(.1f);
+				if (!PowerBase.findAllUpgrades(player.getCurrentArmor(2), "cardSpeed")){
+					player.capabilities.setPlayerWalkSpeed(.1f);
+				}
+				if (!PowerBase.findAllUpgrades(player.getCurrentArmor(2), "cardCreativeFlight")){
+					player.capabilities.allowFlying = false;
+				}else if (PowerBase.findAllUpgrades(player.getCurrentArmor(2), "cardCreativeFlight")){
+					player.capabilities.allowFlying = true;
+				}
 			}
-		}else{
 		}
 		
 	}

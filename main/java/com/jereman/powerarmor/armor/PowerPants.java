@@ -14,9 +14,8 @@ import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Reference;
 
 public class PowerPants extends PowerBase{
-
 	public PowerPants() {
-		super(2);
+		super(2, 5);
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ import com.jereman.powerarmor.items.CardJump;
 public class JeremanEventHandler {
 	@SubscribeEvent
 	public void onLivingUpdateEvent(LivingUpdateEvent event){
-		if (event.entity instanceof EntityPlayer){
+		if (event.entity instanceof EntityPlayer){			//Should probably fix this code to be like the chestplate code below
 			EntityPlayer player = (EntityPlayer) event.entity;
 			ExtendedProperties props = ExtendedProperties.get((EntityPlayer) player);
 			if (player.getCurrentArmor(1) != null && player.getCurrentArmor(1).hasTagCompound()){
@@ -38,6 +38,21 @@ public class JeremanEventHandler {
 			}else{
 				player.stepHeight = .5F;
 				props.setLeggings(false);
+			}
+			if (props.getChestPlate()){
+				if (player.getCurrentArmor(2) != null && player.getCurrentArmor(2).hasTagCompound() && player.getCurrentArmor(2).getTagCompound().hasKey("JeremanUpgradeNumber")){	//Use JeremanUpgradeNumber to check if a powerarmor piece is being worn
+					if (!PowerBase.findAllUpgrades(player.getCurrentArmor(2), "cardCreativeFlight")){
+						player.capabilities.allowFlying = false;
+						player.capabilities.isFlying = false;
+						player.fall(player.height, 0);
+					}else if (PowerBase.findAllUpgrades(player.getCurrentArmor(2), "cardCreativeFlight")){
+						player.capabilities.allowFlying = true;
+					}
+				}else{
+					player.capabilities.allowFlying = false;
+					player.capabilities.isFlying = false;
+					props.setChestPlate(false);
+				}
 			}
 		}
 	}

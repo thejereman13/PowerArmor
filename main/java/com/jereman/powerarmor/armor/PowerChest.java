@@ -15,7 +15,7 @@ import com.jereman.powerarmor.Reference;
 public class PowerChest extends PowerBase{
 
 	public PowerChest(){
-		super(1);
+		super(1, 5);
 	}
 	
 	@Override

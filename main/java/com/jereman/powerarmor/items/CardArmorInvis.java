@@ -51,7 +51,6 @@ public class CardArmorInvis extends PowerCards{
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        
 		return false;
     }
 	
@@ -65,8 +64,8 @@ public class CardArmorInvis extends PowerCards{
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
-			tooltip.add(EnumChatFormatting.DARK_AQUA + "Automatically step up whole blocks");
-			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Any");
+			tooltip.add(EnumChatFormatting.DARK_AQUA + "Make the armor transparent");
+			tooltip.add(EnumChatFormatting.GOLD + "Requires: Any");
 		}
 		if (GuiScreen.isCtrlKeyDown()){
 			tooltip.add(EnumChatFormatting.GRAY + "Peek-a-boo");

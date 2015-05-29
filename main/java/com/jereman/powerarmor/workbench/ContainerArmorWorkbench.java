@@ -172,7 +172,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 
 				//Getting the Cards from NBT data and putting them in the gui
 			if (armor.getTagCompound() != null & this.shouldUpdate == true){
-				if (armor.getTagCompound().getString("SlotOne") != null){			//Slot One Code
+				if (armor.getTagCompound().hasKey("SlotOne")){			//Slot One Code
 					String tagOne =  armor.getTagCompound().getString("SlotOne");
 					if (tagOne.equals("none")){
 						workbench.setInventorySlotContents(0, null);
@@ -187,9 +187,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						}catch (Exception e) {
 							e.printStackTrace();
 						}
-					} 
+					}
 				}
-				if (armor.getTagCompound().getString("SlotTwo") != null){			//Slot Two Code
+				if (armor.getTagCompound().hasKey("SlotTwo")){			//Slot Two Code
 					if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
 						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
 						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
@@ -205,7 +205,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(1, null);
 					}
 				}
-				if (armor.getTagCompound().getString("SlotThree") != null){			//Slot Three Code
+				if (armor.getTagCompound().hasKey("SlotThree")){			//Slot Three Code
 					if (!armor.getTagCompound().getString("SlotThree").equals("none")){
 						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
 						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
@@ -221,7 +221,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(2, null);
 					}
 				}
-				if (armor.getTagCompound().getString("SlotFour") != null){			//Slot Four Code
+				if (armor.getTagCompound().hasKey("SlotFour")){			//Slot Four Code
 					if (!armor.getTagCompound().getString("SlotFour").equals("none")){
 						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
 						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
@@ -237,7 +237,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						workbench.setInventorySlotContents(3, null);
 					}
 				}
-				if (armor.getTagCompound().getString("SlotFive") != null){			//Slot Five Code
+				if (armor.getTagCompound().hasKey("SlotFive")){			//Slot Five Code
 					if (!armor.getTagCompound().getString("SlotFive").equals("none")){
 						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
 						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
@@ -422,8 +422,44 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}else{
 					this.slotFiveAmount = 0;
 				}
+				//Invalidating slots if armor doesn't support that many slots
+				if (armor.getTagCompound().hasKey("JeremanUpgradeNumber")){
+					int upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
+					switch (upgradeNumber){
+						case 0:
+							this.slotOneValid = false;
+							this.slotTwoValid = false;
+							this.slotThreeValid = false;
+							this.slotFourValid = false;
+							this.slotFiveValid = false;
+							break;
+						case 1:
+							this.slotTwoValid = false;
+							this.slotThreeValid = false;
+							this.slotFourValid = false;
+							this.slotFiveValid = false;
+							break;
+						case 2:
+							this.slotThreeValid = false;
+							this.slotFourValid = false;
+							this.slotFiveValid = false;
+							break;
+						case 3:
+							this.slotFourValid = false;
+							this.slotFiveValid = false;
+							break;
+						case 4:
+							this.slotFiveValid = false;
+							break;
+						case 5:
+							break;
+						default:
+							break;
+					}
+				}
+				//End validation code
 			}
-			switch (this.slotSelected){
+			switch (this.slotSelected){		//Sending code to gui so it knows what slot is selected and amounts and stuff
 				case 0:
 					break;
 				case 1:

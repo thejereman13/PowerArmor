@@ -84,7 +84,7 @@ public class CardSpeed extends PowerCards{
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Increases ground movement speed");
-			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Leggings");
+			tooltip.add(EnumChatFormatting.GOLD + "Requires: Leggings");
 		}
 	}
 }

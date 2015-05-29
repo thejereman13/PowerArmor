@@ -12,6 +12,7 @@ import com.jereman.powerarmor.armor.PowerChest;
 import com.jereman.powerarmor.armor.PowerHelmet;
 import com.jereman.powerarmor.armor.PowerPants;
 import com.jereman.powerarmor.items.CardArmorInvis;
+import com.jereman.powerarmor.items.CardCreativeFlight;
 import com.jereman.powerarmor.items.CardFall;
 import com.jereman.powerarmor.items.CardFire;
 import com.jereman.powerarmor.items.CardJump;
@@ -37,6 +38,7 @@ public class JeremanItems {
 	public static Item cardProtection;
 	public static Item cardNightvision;
 	public static Item cardArmorInvis;
+	public static Item cardCreativeFlight;
 	
 	public static void init(){
 		ingotCopper = new Item().setUnlocalizedName("ingotCopper").setCreativeTab(Main.tabPowerarmor);
@@ -53,6 +55,7 @@ public class JeremanItems {
 		cardProtection = new CardProtection().setUnlocalizedName("cardProtection").setCreativeTab(Main.tabPowerarmor);
 		cardNightvision = new CardNightvision().setUnlocalizedName("cardNightvision").setCreativeTab(Main.tabPowerarmor);
 		cardArmorInvis = new CardArmorInvis().setUnlocalizedName("cardArmorInvis").setCreativeTab(Main.tabPowerarmor);
+		cardCreativeFlight = new CardCreativeFlight().setUnlocalizedName("cardCreativeFlight").setCreativeTab(Main.tabPowerarmor);
 	}
 	
 	public static void register(){
@@ -70,6 +73,7 @@ public class JeremanItems {
 		GameRegistry.registerItem(cardProtection, cardProtection.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(cardNightvision, cardNightvision.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(cardArmorInvis, cardArmorInvis.getUnlocalizedName().substring(5));
+		GameRegistry.registerItem(cardCreativeFlight, cardCreativeFlight.getUnlocalizedName().substring(5));
 	}
 	
 	public static void registerRenders(){
@@ -87,6 +91,7 @@ public class JeremanItems {
 		registerRender(cardProtection);
 		registerRender(cardNightvision);
 		registerRender(cardArmorInvis);
+		registerRender(cardCreativeFlight);
 	}
 	
 	public static void registerRender(Item item){

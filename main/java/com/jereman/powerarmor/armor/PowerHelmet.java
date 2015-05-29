@@ -12,7 +12,7 @@ import com.jereman.powerarmor.Reference;
 public class PowerHelmet extends PowerBase{
 
 	public PowerHelmet(){
-		super(0);
+		super(0, 5);
 	}
 	
 	@Override

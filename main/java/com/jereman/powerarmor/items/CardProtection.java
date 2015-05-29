@@ -66,7 +66,7 @@ public class CardProtection extends PowerCards{
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Reduces all damage taken");
-			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Chest");
+			tooltip.add(EnumChatFormatting.GOLD+ "Requires: Chestplate");
 		}
 		if (GuiScreen.isCtrlKeyDown()){
 			tooltip.add(EnumChatFormatting.GRAY + "You can never go wrong with some protection");

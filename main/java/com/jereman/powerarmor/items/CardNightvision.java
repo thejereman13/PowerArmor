@@ -68,7 +68,7 @@ public class CardNightvision extends PowerCards{
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "See in the dark");
-			tooltip.add(EnumChatFormatting.DARK_BLUE + "Requires: Helmet");
+			tooltip.add(EnumChatFormatting.GOLD + "Requires: Helmet");
 		}
 		if (GuiScreen.isCtrlKeyDown()){
 			tooltip.add(EnumChatFormatting.GRAY + "Just don't look directly at the sun");
