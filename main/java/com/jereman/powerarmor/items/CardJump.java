@@ -56,11 +56,14 @@ public class CardJump extends PowerCards{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+		tooltip.add(EnumChatFormatting.LIGHT_PURPLE + "Hold Shift for details");
 		if (GuiScreen.isShiftKeyDown()){
+			tooltip.remove(1);
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Increases jump height");
 			tooltip.add(EnumChatFormatting.GOLD + "Requires: Leggings");
 		}
 		if (GuiScreen.isCtrlKeyDown()){
+			tooltip.remove(1);
 			tooltip.add(EnumChatFormatting.GRAY + "What goes up, must come down");
 		}
 	}

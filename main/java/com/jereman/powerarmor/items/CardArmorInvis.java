@@ -63,11 +63,14 @@ public class CardArmorInvis extends PowerCards{
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+		tooltip.add(EnumChatFormatting.LIGHT_PURPLE + "Hold Shift for details");
 		if (GuiScreen.isShiftKeyDown()){
+			tooltip.remove(1);
 			tooltip.add(EnumChatFormatting.DARK_AQUA + "Make the armor transparent");
 			tooltip.add(EnumChatFormatting.GOLD + "Requires: Any");
 		}
 		if (GuiScreen.isCtrlKeyDown()){
+			tooltip.remove(1);
 			tooltip.add(EnumChatFormatting.GRAY + "Peek-a-boo");
 		}
 	}

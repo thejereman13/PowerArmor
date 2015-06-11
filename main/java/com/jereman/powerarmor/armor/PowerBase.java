@@ -2,6 +2,7 @@ package com.jereman.powerarmor.armor;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import scala.Console;
 
@@ -11,6 +12,7 @@ import com.jereman.powerarmor.Reference;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.items.*;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,10 +22,13 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialArmor{
 	private Method method;
@@ -41,9 +46,7 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 			
 			final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
 			for (String upgradeString: upgradeList){
-				if (upgradeString.equals("none") || upgradeString.equals(null)){
-					//None
-				}else if (!upgradeString.equals("none") && !upgradeString.equals(null)){
+				if (!upgradeString.equals("none") && stack.getTagCompound().hasKey("SlotOne")){
 						//Determining what slot the card is in, setting the amount for execution to the NBT data for that slot
 					if (upgradeString.equals(stack.getTagCompound().getString("SlotOne"))){
 						this.upgradeAmount = stack.getTagCompound().getDouble("SlotOneAmount");
@@ -78,6 +81,8 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 					} catch (InvocationTargetException e) {
 						e.printStackTrace();
 					}
+				}else {
+					//None
 				}
 			}
 		}
@@ -96,9 +101,11 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 	public static boolean findAllUpgrades(ItemStack stack, String upgradeCheck){
 		final String[] upgradeList = {stack.getTagCompound().getString("SlotOne"), stack.getTagCompound().getString("SlotTwo"), stack.getTagCompound().getString("SlotThree"), stack.getTagCompound().getString("SlotFour"), stack.getTagCompound().getString("SlotFive")};
 		for (String upgradeString: upgradeList){
-			if (upgradeString != null && !upgradeString.equals("none")){
-				if (upgradeString.substring(5).equals(upgradeCheck)){
-					return true;
+			if (stack.getTagCompound().hasKey("SlotOne")){
+				if (upgradeString != null && !upgradeString.equals("none")){
+					if (upgradeString.substring(5).equals(upgradeCheck)){
+						return true;
+					}
 				}
 			}
 		}
@@ -159,6 +166,46 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 			DamageSource source, int damage, int slot) {
 		//Armor Does not take natural damage, will remain empty until Power system is in place
 		
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+		tooltip.add(EnumChatFormatting.LIGHT_PURPLE + "Hold Ctrl for installed upgrades");
+		if (GuiScreen.isCtrlKeyDown()){
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("SlotOne")){
+				tooltip.remove(1);
+				tooltip.add(EnumChatFormatting.DARK_AQUA + "Installed Upgrades:");
+				if (!stack.getTagCompound().getString("SlotOne").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot One: " + stack.getTagCompound().getString("SlotOne").substring(9));
+				}else if (stack.getTagCompound().getString("SlotOne").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot One: none");
+				}
+				if (!stack.getTagCompound().getString("SlotTwo").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Two: " + stack.getTagCompound().getString("SlotTwo").substring(9));
+				}else if (stack.getTagCompound().getString("SlotTwo").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Two: none");
+				}
+				if (!stack.getTagCompound().getString("SlotThree").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Three: " + stack.getTagCompound().getString("SlotThree").substring(9));
+				}else if (stack.getTagCompound().getString("SlotThree").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Three: none");
+				}
+				if (!stack.getTagCompound().getString("SlotFour").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Four: " + stack.getTagCompound().getString("SlotFour").substring(9));
+				}else if (stack.getTagCompound().getString("SlotFour").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Four: none");
+				}
+				if (!stack.getTagCompound().getString("SlotFive").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Five: " + stack.getTagCompound().getString("SlotFive").substring(9));
+				}else if (stack.getTagCompound().getString("SlotFive").equals("none")){
+					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Five: none");
+				}
+			}else{
+				tooltip.remove(1);
+				tooltip.add(EnumChatFormatting.RED + "Not Configured Yet");
+			}
+		}
 	}
 
 }

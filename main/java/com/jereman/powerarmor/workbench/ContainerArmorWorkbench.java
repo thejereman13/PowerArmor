@@ -90,6 +90,12 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		          }
 		          return par1ItemStack.getItem().isValidArmor(par1ItemStack, k, player);
 		        }
+		        @Override
+		        @SideOnly(Side.CLIENT)
+                public String getSlotTexture()
+                {
+                    return ItemArmor.EMPTY_SLOT_NAMES[k];
+                }
 		      });
 		    }
 		

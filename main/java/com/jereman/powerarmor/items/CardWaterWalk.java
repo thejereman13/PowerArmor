@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,16 +23,16 @@ import com.jereman.powerarmor.PowerCards;
 import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 
-public class CardStep extends PowerCards{
-	public static String validArmor = "powerPants";
+public class CardWaterWalk extends PowerCards{
+	public static String validArmor = "powerBoots";
 	public static double limit = 0;
 	public boolean shouldSetArmor = true;
 	
-	public CardStep(){
+	public CardWaterWalk(){
 	}
 	
 	public static void Upgrade(double playerSpeed, EntityPlayer player){
-		//Code is in the Pants Class
+		
 	}
 	
 	@Override
@@ -67,12 +68,12 @@ public class CardStep extends PowerCards{
 		tooltip.add(EnumChatFormatting.LIGHT_PURPLE + "Hold Shift for details");
 		if (GuiScreen.isShiftKeyDown()){
 			tooltip.remove(1);
-			tooltip.add(EnumChatFormatting.DARK_AQUA + "Automatically step up whole blocks");
-			tooltip.add(EnumChatFormatting.GOLD + "Requires: Leggings");
+			tooltip.add(EnumChatFormatting.DARK_AQUA + "Walk on Water");
+			tooltip.add(EnumChatFormatting.GOLD + "Requires: Boots");
 		}
 		if (GuiScreen.isCtrlKeyDown()){
 			tooltip.remove(1);
-			tooltip.add(EnumChatFormatting.GRAY + "It's like having portable stairs");
+			tooltip.add(EnumChatFormatting.GRAY + "Feel like Jesus");
 		}
 	}
 }
