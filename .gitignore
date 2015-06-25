@@ -1,43 +1,24 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-#It's mine now!
-# Folder config file
-Desktop.ini
+# exclude all
+/*
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# include important folders
+# need gradle 
+!gradle/
+!gradlew
+!gradlew.bat
+!build.gradle
+!gradle.properties
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# include markdowns
+!README.md
+!LICENSE
+!CONTRIBUTING.md
 
-# Windows shortcuts
-*.lnk
+# include sourcecode
+!src/
 
-# =========================
-# Operating System Files
-# =========================
+# include git important files
+!.gitmodules
+!.gitignore
 
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear on external disk
-.Spotlight-V100
-.Trashes
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# code forma

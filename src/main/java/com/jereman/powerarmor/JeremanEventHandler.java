@@ -5,6 +5,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -63,6 +64,11 @@ public class JeremanEventHandler {			//Client
 					}else if (PowerBase.findAllUpgrades(playerBoots, "cardWaterWalk")){
 						if (player.worldObj.getBlockState(new BlockPos(player.posX, player.posY - .1, player.posZ)).getBlock() == Blocks.water){
 							player.motionY = 0D;
+							if (player.worldObj.getBlockState(new BlockPos(player.posX, player.posY - .01, player.posZ)).getBlock() == Blocks.water){
+								player.motionY = .1D;
+							}else{
+								player.motionY=0D;
+							}
 							player.fallDistance = 0;
 							player.onGround = true;
 						}
@@ -89,17 +95,25 @@ public class JeremanEventHandler {			//Client
 			if (props.getChestPlate()){
 				if (playerChestplate != null && playerChestplate.hasTagCompound() && playerChestplate.getTagCompound().hasKey("JeremanUpgradeNumber")){	//Use JeremanUpgradeNumber to check if a powerarmor piece is being worn
 					if (!PowerBase.findAllUpgrades(playerChestplate, "cardCreativeFlight")){
-						player.capabilities.allowFlying = false;
-						player.capabilities.isFlying = false;
-						player.fall(player.height, 0);
+						if (player.capabilities.isCreativeMode){
+							player.capabilities.allowFlying = true;
+						}else{
+							player.capabilities.allowFlying = false;
+							player.capabilities.isFlying = false;
+							player.fall(player.height, 0);
+						}
 					}else if (PowerBase.findAllUpgrades(playerChestplate, "cardCreativeFlight")){
 						player.capabilities.allowFlying = true;
 					}
 					
 				}else{
-					player.capabilities.allowFlying = false;
-					player.capabilities.isFlying = false;
-					props.setChestPlate(false);
+					if (player.capabilities.isCreativeMode){
+						player.capabilities.allowFlying = true;
+					}else{
+						player.capabilities.allowFlying = false;
+						player.capabilities.isFlying = false;
+						props.setChestPlate(false);
+					}
 				}
 			}
 		}
