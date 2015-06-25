@@ -100,9 +100,11 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		    }
 		
 		//Add Card Slots to Container
-		for (int y = 0; y < 5; y++){
-			this.addSlotToContainer(new CardSlot(entity, y, 40, 7 + 20*y));
-		}
+			this.addSlotToContainer(new CardSlot(entity, 0, 40, 7 + 20*0));
+			this.addSlotToContainer(new CardSlot(entity, 1, 40, 7 + 20*1));
+			this.addSlotToContainer(new CardSlot(entity, 2, 40, 7 + 20*2));
+			this.addSlotToContainer(new CardSlot(entity, 3, 40, 7 + 20*3));
+			this.addSlotToContainer(new CardSlot(entity, 4, 40, 7 + 20*4));
 		//Add Armor Piece to Container
 		this.addSlotToContainer(new ArmorpieceSlot(entity, 5, 8, 7));
 	}
@@ -175,7 +177,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		
 		if (armor != null){
 			if (armor.getItem() instanceof PowerBase){
-
 				//Getting the Cards from NBT data and putting them in the gui
 			if (armor.getTagCompound() != null & this.shouldUpdate == true){
 				if (armor.getTagCompound().hasKey("SlotOne")){			//Slot One Code
@@ -461,11 +462,11 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 							break;
 						default:
 							break;
-					}
+					}	
 				}
 				//End validation code
 			}
-			switch (this.slotSelected){		//Sending code to gui so it knows what slot is selected and amounts and stuff
+			switch (this.slotSelected){		//Sending code to GUI so it knows what slot is selected and amounts and stuff
 				case 0:
 					break;
 				case 1:
@@ -571,6 +572,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				
 		}
 	}
+	
 	
 		//Buttons to select the upgrade to modify
 	public void buttonClick(int buttonId){

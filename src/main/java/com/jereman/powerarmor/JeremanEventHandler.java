@@ -81,9 +81,13 @@ public class JeremanEventHandler {			//Client
 			if (props.getLeggings()){
 				if (playerLeggings != null && playerLeggings.hasTagCompound() && playerLeggings.getTagCompound().hasKey("JeremanUpgradeNumber")){	//Use JeremanUpgradeNumber to check if a powerarmor piece is being worn
 					if (!PowerBase.findAllUpgrades(playerLeggings, "cardStep")){
-						player.stepHeight = .5F;
+						if (player.stepHeight != .5F){
+							player.stepHeight = .5F;
+						}
 					}else if (PowerBase.findAllUpgrades(playerLeggings, "cardStep")){
-						player.stepHeight = 1F;
+						if (player.stepHeight != 1F){
+							player.stepHeight = 1F;
+						}
 					}
 					
 				}else{

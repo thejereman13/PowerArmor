@@ -8,11 +8,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import scala.Console;
 
 public class CardSlot extends Slot{
 	
 	private final int slotIndex;
 	private final IInventory inventory;
+	private boolean isHoverable;
 	
 	public CardSlot(IInventory inventoryIn, int index, int xPosition, int yPosition) {
 		super(inventoryIn, index, xPosition, yPosition);
@@ -35,6 +37,11 @@ public class CardSlot extends Slot{
 	public int getSlotStackLimit(){
 		return 1;
 		
+	}
+	
+	@Override
+	public boolean canBeHovered(){
+		return true;
 	}
 
 
