@@ -1,4 +1,5 @@
 TODO:
+~Work on checking whether player data needs to be changed every tick (e.g. if speed is already set, don't set speed again)
 ~Gui Custom Settings (probably need another network class; function in class that adds the custom items)
 ~Figure out a way to have keybinds for stuff
 Ideas:
