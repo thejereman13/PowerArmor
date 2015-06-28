@@ -1,6 +1,6 @@
 TODO:
-~Gui Custom Settings (probably need another network class; function in class that adds the custom items)
-~Figure out a way to have keybinds for stuff
+~Figure out a way to have keybinds for stuff (Going to take a lot of work)
+~Setup variables for power, display as durability
 Ideas:
 ~Card that can interact with your inventory, syncs with chest (goes on the pants, cuz ender pockets)
 ~Card that eats for you (lore: "Don't worry, it doesn't bite")
