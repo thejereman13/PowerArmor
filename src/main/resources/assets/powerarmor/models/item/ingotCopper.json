@@ -1,7 +1,7 @@
 {
     "parent": "minecraft:builtin/generated",
     "textures": {
-        "layer0": "powerarmor:items/IngotCopper"
+        "layer0": "powerarmor:items/ingotCopper"
     },
     "display": {
         "thirdperson": {

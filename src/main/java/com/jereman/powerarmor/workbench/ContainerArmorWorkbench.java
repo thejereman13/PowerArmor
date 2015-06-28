@@ -10,6 +10,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -32,6 +34,7 @@ import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.packets.GUIAmountMessage;
 import com.jereman.powerarmor.packets.GUISlotMessage;
 import com.jereman.powerarmor.tileentities.TileEntityArmorWorkbench;
+import com.jereman.powerarmor.PowerCards;
 
 public class ContainerArmorWorkbench extends Container implements IElementHandler{
 	public TileEntityArmorWorkbench workbench;
@@ -49,6 +52,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	
 	public Item slotOne, slotTwo, slotThree, slotFour, slotFive;
 	public int slotSelected = 0;
+	public int upgradeNumber;
 	public double slotOneAmount, slotTwoAmount, slotThreeAmount, slotFourAmount, slotFiveAmount;
 	public boolean slotOneValid = false, slotTwoValid = false, slotThreeValid = false, slotFourValid = false, slotFiveValid = false;
 	public double slotOneLimit, slotTwoLimit, slotThreeLimit, slotFourLimit, slotFiveLimit;
@@ -100,11 +104,11 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		    }
 		
 		//Add Card Slots to Container
-			this.addSlotToContainer(new CardSlot(entity, 0, 40, 7 + 20*0));
-			this.addSlotToContainer(new CardSlot(entity, 1, 40, 7 + 20*1));
-			this.addSlotToContainer(new CardSlot(entity, 2, 40, 7 + 20*2));
-			this.addSlotToContainer(new CardSlot(entity, 3, 40, 7 + 20*3));
-			this.addSlotToContainer(new CardSlot(entity, 4, 40, 7 + 20*4));
+		this.addSlotToContainer(new CardSlot(this.workbench, 0, 40, 7 + 20*0));
+		this.addSlotToContainer(new CardSlot(this.workbench, 1, 40, 7 + 20*1));
+		this.addSlotToContainer(new CardSlot(this.workbench, 2, 40, 7 + 20*2));
+		this.addSlotToContainer(new CardSlot(this.workbench, 3, 40, 7 + 20*3));
+		this.addSlotToContainer(new CardSlot(this.workbench, 4, 40, 7 + 20*4));
 		//Add Armor Piece to Container
 		this.addSlotToContainer(new ArmorpieceSlot(entity, 5, 8, 7));
 	}
@@ -145,8 +149,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			this.slotFive = null;
 		}
 		
-		if (armor != null){					//Code to detect the limits on each card
+		if (armor != null){
+			//Code to detect the limits on each card
 			if (armor.hasTagCompound()){
+				this.upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
 				if (armor.getTagCompound().hasKey("SlotOneLimit")){
 					this.slotOneLimit = armor.getTagCompound().getDouble("SlotOneLimit");
 				}else if (!armor.getTagCompound().hasKey("SlotOneLimit")){
@@ -262,7 +268,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				}
 				this.shouldUpdate = false;
 				workbench.markDirty();
-			}else{
 			}
 				//Storing the data from slots
 				if (slotOne != null && this.slotOneValid){
@@ -320,7 +325,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					PowerBase.NBTUpgradeList("SlotFive", armor, "none");
 					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, 0);
 				}
-				
+				//Store new upgrade values on the armor
 				switch (this.slotSelected){
 				case 1:
 					PowerBase.NBTUpgrades("SlotOneAmount", armor, this.slotOneAmount);
@@ -432,6 +437,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				//Invalidating slots if armor doesn't support that many slots
 				if (armor.getTagCompound().hasKey("JeremanUpgradeNumber")){
 					int upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
+					this.upgradeNumber = upgradeNumber;
 					switch (upgradeNumber){
 						case 0:
 							this.slotOneValid = false;
@@ -568,6 +574,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					
 				}
 				this.slotSelected = 0;
+				this.upgradeNumber = 0;
 				this.shouldUpdate = true;
 				
 		}

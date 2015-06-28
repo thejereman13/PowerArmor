@@ -24,8 +24,6 @@ import com.jereman.powerarmor.items.CardStep;
 import com.jereman.powerarmor.items.CardWaterWalk;
 
 public class JeremanItems {
-	
-	public static Item ingotCopper;
 	public static Item cardSpeed;
 	public static Item cardJump;
 	public static Item powerHelmet;
@@ -43,7 +41,6 @@ public class JeremanItems {
 	public static Item cardWaterWalk;
 	
 	public static void init(){
-		ingotCopper = new Item().setUnlocalizedName("ingotCopper").setCreativeTab(Main.tabPowerarmor);
 		cardSpeed = new CardSpeed().setUnlocalizedName("cardSpeed").setCreativeTab(Main.tabPowerarmor);
 		cardJump = new CardJump().setUnlocalizedName("cardJump").setCreativeTab(Main.tabPowerarmor);
 		powerHelmet = new PowerHelmet().setUnlocalizedName("powerHelmet").setCreativeTab(Main.tabPowerarmor);
@@ -62,7 +59,6 @@ public class JeremanItems {
 	}
 	
 	public static void register(){
-		GameRegistry.registerItem(ingotCopper, ingotCopper.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerHelmet, powerHelmet.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerChest, powerChest.getUnlocalizedName().substring(5));
 		GameRegistry.registerItem(powerPants, powerPants.getUnlocalizedName().substring(5));
@@ -81,7 +77,6 @@ public class JeremanItems {
 	}
 	
 	public static void registerRenders(){
-		registerRender(ingotCopper);
 		registerRender(cardSpeed);
 		registerRender(cardJump);
 		registerRender(powerHelmet);
