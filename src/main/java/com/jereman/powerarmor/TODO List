@@ -1,5 +1,6 @@
 TODO:
-~Move GUI stuff around, put information at the bottom of the screen, display name of upgrade too
+~Fix GUI disappearing randomly (may have to redo some GUI code with upgrade names as well)
+~Setup config for capacity on armor, use config value instead of metadata on tooltips
 ~Figure out a way to have keybinds for stuff (Going to take a lot of work)
 ~Setup variables for power, display as durability
 Ideas:

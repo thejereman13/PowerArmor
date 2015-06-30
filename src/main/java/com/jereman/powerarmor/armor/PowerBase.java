@@ -171,38 +171,43 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 	@Override
 	@SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List tooltip, boolean advanced){
+		int upgradeNum = 0;
+		if (stack.hasTagCompound()){
+			upgradeNum = stack.getTagCompound().getInteger("JeremanUpgradeNumber");
+			tooltip.add(EnumChatFormatting.GOLD + "Upgrade Capacity: " + upgradeNum);
+		}
 		tooltip.add(EnumChatFormatting.LIGHT_PURPLE + "Hold Ctrl for installed upgrades");
 		if (GuiScreen.isCtrlKeyDown()){
-			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("SlotOne")){
-				tooltip.remove(1);
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("SlotOne") && stack.getTagCompound().hasKey("JeremanUpgradeNumber")){
+				tooltip.remove(2);
 				tooltip.add(EnumChatFormatting.DARK_AQUA + "Installed Upgrades:");
-				if (!stack.getTagCompound().getString("SlotOne").equals("none")){
+				if (upgradeNum > 0 && !stack.getTagCompound().getString("SlotOne").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot One: " + stack.getTagCompound().getString("SlotOne").substring(9));
-				}else if (stack.getTagCompound().getString("SlotOne").equals("none")){
+				}else if (upgradeNum > 0 && stack.getTagCompound().getString("SlotOne").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot One: none");
 				}
-				if (!stack.getTagCompound().getString("SlotTwo").equals("none")){
+				if (upgradeNum > 1 && !stack.getTagCompound().getString("SlotTwo").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Two: " + stack.getTagCompound().getString("SlotTwo").substring(9));
-				}else if (stack.getTagCompound().getString("SlotTwo").equals("none")){
+				}else if (upgradeNum > 1 && stack.getTagCompound().getString("SlotTwo").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Two: none");
 				}
-				if (!stack.getTagCompound().getString("SlotThree").equals("none")){
+				if (upgradeNum > 2 && !stack.getTagCompound().getString("SlotThree").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Three: " + stack.getTagCompound().getString("SlotThree").substring(9));
-				}else if (stack.getTagCompound().getString("SlotThree").equals("none")){
+				}else if (upgradeNum > 2 && stack.getTagCompound().getString("SlotThree").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Three: none");
 				}
-				if (!stack.getTagCompound().getString("SlotFour").equals("none")){
+				if (upgradeNum > 3 && !stack.getTagCompound().getString("SlotFour").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Four: " + stack.getTagCompound().getString("SlotFour").substring(9));
-				}else if (stack.getTagCompound().getString("SlotFour").equals("none")){
+				}else if (upgradeNum > 3 && stack.getTagCompound().getString("SlotFour").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Four: none");
 				}
-				if (!stack.getTagCompound().getString("SlotFive").equals("none")){
+				if (upgradeNum > 4 && !stack.getTagCompound().getString("SlotFive").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Five: " + stack.getTagCompound().getString("SlotFive").substring(9));
-				}else if (stack.getTagCompound().getString("SlotFive").equals("none")){
+				}else if (upgradeNum > 4 && stack.getTagCompound().getString("SlotFive").equals("none")){
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Five: none");
 				}
 			}else{
-				tooltip.remove(1);
+				tooltip.remove(2);
 				tooltip.add(EnumChatFormatting.RED + "Not Configured Yet");
 			}
 		}

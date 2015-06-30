@@ -59,21 +59,51 @@ public class JeremanItems {
 	}
 	
 	public static void register(){
-		GameRegistry.registerItem(powerHelmet, powerHelmet.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(powerChest, powerChest.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(powerPants, powerPants.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(powerBoots, powerBoots.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardSpeed, cardSpeed.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardJump, cardJump.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardStep, cardStep.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardFire, cardFire.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardFall, cardFall.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardPerfectFall, cardPerfectFall.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardProtection, cardProtection.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardNightvision, cardNightvision.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardArmorInvis, cardArmorInvis.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardCreativeFlight, cardCreativeFlight.getUnlocalizedName().substring(5));
-		GameRegistry.registerItem(cardWaterWalk, cardWaterWalk.getUnlocalizedName().substring(5));
+		if (Reference.powerHelmetEnabled){
+			GameRegistry.registerItem(powerHelmet, powerHelmet.getUnlocalizedName().substring(5));
+		}
+		if (Reference.powerChestEnabled){
+			GameRegistry.registerItem(powerChest, powerChest.getUnlocalizedName().substring(5));
+		}
+		if (Reference.powerPantsEnabled){
+			GameRegistry.registerItem(powerPants, powerPants.getUnlocalizedName().substring(5));
+		}
+		if (Reference.powerBootsEnabled){
+			GameRegistry.registerItem(powerBoots, powerBoots.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardSpeedEnabled){
+			GameRegistry.registerItem(cardSpeed, cardSpeed.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardJumpEnabled){
+			GameRegistry.registerItem(cardJump, cardJump.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardStepEnabled){
+			GameRegistry.registerItem(cardStep, cardStep.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardFireEnabled){
+			GameRegistry.registerItem(cardFire, cardFire.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardFallEnabled){
+			GameRegistry.registerItem(cardFall, cardFall.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardPerfectFallEnabled){
+			GameRegistry.registerItem(cardPerfectFall, cardPerfectFall.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardProtectionEnabled){
+			GameRegistry.registerItem(cardProtection, cardProtection.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardNightVisionEnabled){
+			GameRegistry.registerItem(cardNightvision, cardNightvision.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardArmorInvisEnabled){
+			GameRegistry.registerItem(cardArmorInvis, cardArmorInvis.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardCreativeFlightEnabled){
+			GameRegistry.registerItem(cardCreativeFlight, cardCreativeFlight.getUnlocalizedName().substring(5));
+		}
+		if (Reference.cardWaterWalkEnabled){
+			GameRegistry.registerItem(cardWaterWalk, cardWaterWalk.getUnlocalizedName().substring(5));
+		}
 	}
 	
 	public static void registerRenders(){

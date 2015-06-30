@@ -22,11 +22,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import com.jereman.powerarmor.init.Blocks;
+import com.jereman.powerarmor.init.Config;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.packets.CardNumberHandler;
 import com.jereman.powerarmor.packets.CardNumberMessage;
 import com.jereman.powerarmor.packets.GUIAmountHandler;
 import com.jereman.powerarmor.packets.GUIAmountMessage;
+import com.jereman.powerarmor.packets.GUINameHandler;
+import com.jereman.powerarmor.packets.GUINameMessage;
 import com.jereman.powerarmor.packets.GUISlotHandler;
 import com.jereman.powerarmor.packets.GUISlotMessage;
 import com.jereman.powerarmor.proxy.CommonProxy;
@@ -50,6 +53,7 @@ public class Main {
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
+		Config.Setup(event);
 		Blocks.init();
 		Blocks.register();
 		JeremanItems.init();
@@ -58,6 +62,7 @@ public class Main {
 		network.registerMessage(CardNumberHandler.class, CardNumberMessage.class, 0, Side.SERVER);
 		network.registerMessage(GUIAmountHandler.class, GUIAmountMessage.class, 1, Side.CLIENT);
 		network.registerMessage(GUISlotHandler.class, GUISlotMessage.class, 2, Side.CLIENT);
+		network.registerMessage(GUINameHandler.class, GUINameMessage.class, 3, Side.CLIENT);
 	}
 	
 	@EventHandler

@@ -23,6 +23,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IChatComponent;
@@ -43,6 +44,8 @@ public class GuiArmorWorkbench extends GuiContainer{
 	IThreadListener mainThread;
 	public boolean isEmpty = true;
 	public String nullName = "none";
+	public String upgradeName;
+	public ItemStack upgradeStack;
 	public EntityPlayer player;
 	public ContainerArmorWorkbench container;
 	private final ResourceLocation backgroundImage = new ResourceLocation(Reference.MOD_ID.toLowerCase(), "textures/client/gui/guiArmorWorkbench.png");
@@ -73,12 +76,12 @@ public class GuiArmorWorkbench extends GuiContainer{
 			Main.network.sendToServer(new CardNumberMessage(button.id));
 			if (button.id <= 4){
 				if (isButton == false){
-					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 41, 25, 20, "-1"));
-					this.buttonList.add(new GuiButton(6, xCord + 105, yCord + 41, 25, 20, "-.1"));
-					this.buttonList.add(new GuiButton(7, xCord + 130, yCord + 41, 25, 20, "-.05"));
-					this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 20, 25, 20, "+1"));
-					this.buttonList.add(new GuiButton(9, xCord + 105, yCord + 20, 25, 20, "+.1"));
-					this.buttonList.add(new GuiButton(10, xCord + 130, yCord + 20, 25, 20, "+.05"));
+					this.buttonList.add(new GuiButton(5, xCord + 80, yCord + 27, 25, 20, "-1"));
+					this.buttonList.add(new GuiButton(6, xCord + 105, yCord + 27, 25, 20, "-.1"));
+					this.buttonList.add(new GuiButton(7, xCord + 130, yCord + 27, 25, 20, "-.05"));
+					this.buttonList.add(new GuiButton(8, xCord + 80, yCord + 6, 25, 20, "+1"));
+					this.buttonList.add(new GuiButton(9, xCord + 105, yCord + 6, 25, 20, "+.1"));
+					this.buttonList.add(new GuiButton(10, xCord + 130, yCord + 6, 25, 20, "+.05"));
 					this.isButton = true;
 				}
 			}
@@ -125,6 +128,9 @@ public class GuiArmorWorkbench extends GuiContainer{
 		}
 	}
 	
+	public void recieveStack(ItemStack upgradeStack){
+		this.upgradeStack = upgradeStack;
+	}
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1F, 1F, 1F, 1F);
@@ -136,18 +142,26 @@ public class GuiArmorWorkbench extends GuiContainer{
 			drawTexturedModalRect(xCord + 35, yCord - 13 + (slotActivated * 20), 177, 1, 4, 16);
 		}
 		if (this.isEmpty || this.upgrade == -2){
-			this.fontRendererObj.drawString("Upgrade: " + this.nullName, xCord + 98, yCord + 10, 0x000e74);
+			if (this.nullName != "none"){
+				this.fontRendererObj.drawString("Value: " + this.nullName, xCord + 80, yCord + 55, 0x000e74);
+			}
 			if (isButton == true){
-				this.buttonList.remove(5);
-				this.buttonList.remove(5);
-				this.buttonList.remove(5);
-				this.buttonList.remove(5);
-				this.buttonList.remove(5);
-				this.buttonList.remove(5);
+				if (this.buttonList.size() > 5){
+					this.buttonList.remove(5);
+					this.buttonList.remove(5);
+					this.buttonList.remove(5);
+					this.buttonList.remove(5);
+					this.buttonList.remove(5);
+					this.buttonList.remove(5);
+				}
 				this.isButton = false;
 			}
 		}else{
-			this.fontRendererObj.drawString("Upgrade: " + this.upgrade, xCord + 98, yCord + 10, 0x000e74);
+			if (this.isButton){
+				this.fontRendererObj.drawString("Upgrade: ", xCord + 70, yCord + 85, 0x000e74);
+				this.fontRendererObj.drawString(this.upgradeStack.getDisplayName(), xCord + 70, yCord + 95, 0x000e74);
+				this.fontRendererObj.drawString("Value: " + this.upgrade, xCord + 80, yCord + 50, 0x000e74);
+			}
 		}
 
 	}
