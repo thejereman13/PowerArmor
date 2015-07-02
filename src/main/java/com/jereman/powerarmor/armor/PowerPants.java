@@ -9,11 +9,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor.ArmorProperties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Reference;
 
+import cofh.api.energy.IEnergyContainerItem;
+
 public class PowerPants extends PowerBase{
+	
 	public PowerPants() {
 		super(2, 5);
 	}
@@ -30,7 +35,7 @@ public class PowerPants extends PowerBase{
 	@Override
 	public void onArmorTick(World world, EntityPlayer player, ItemStack stack){
 		super.onArmorTick(world, player, stack);
-		ExtendedProperties props = ExtendedProperties.get(player); //NBT data for the player wearing the chestplate
+		ExtendedProperties props = ExtendedProperties.get(player); //NBT data for the player wearing the chest plate
 		if (props.getLeggings() == false){
 			props.setLeggings(true);
 		}
@@ -47,6 +52,7 @@ public class PowerPants extends PowerBase{
 			}
 		}
 	}
+	
 	
 	
 }

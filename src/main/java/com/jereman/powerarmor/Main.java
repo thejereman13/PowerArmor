@@ -23,6 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import com.jereman.powerarmor.init.Blocks;
 import com.jereman.powerarmor.init.Config;
+import com.jereman.powerarmor.init.Crafting;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.packets.CardNumberHandler;
 import com.jereman.powerarmor.packets.CardNumberMessage;
@@ -69,6 +70,7 @@ public class Main {
 	public void init(FMLInitializationEvent event){
 		proxy.registerTileEntites();
 		proxy.registerRenders();
+		Crafting.initVanillaRecipes();
 		MinecraftForge.EVENT_BUS.register(new JeremanEventHandler());
 		FMLCommonHandler.instance().bus().register(new JeremanFMLEventHandler());
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new JeremanGuiHandler());

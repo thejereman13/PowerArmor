@@ -42,7 +42,8 @@ public class GuiArmorWorkbench extends GuiContainer{
 	public double upgrade = 0;
 	public boolean isButton = false;
 	IThreadListener mainThread;
-	public boolean isEmpty = true;
+	private boolean isEmpty = true;
+	private boolean showText = false;
 	public String nullName = "none";
 	public String upgradeName;
 	public ItemStack upgradeStack;
@@ -107,12 +108,10 @@ public class GuiArmorWorkbench extends GuiContainer{
 	}
 	
 	public void recieveAmount(double upgradeAmount){
-		this.upgrade = upgradeAmount;
-		if (this.upgrade == -1){
-			this.isEmpty = true;
-		}else{
-			this.isEmpty = false;
+		if (Reference.DEBUG){
+			Console.println("Recieved Amount Packet: " + upgradeAmount);
 		}
+		this.upgrade = upgradeAmount;
 		if (this.upgrade == -2){
 			this.nullName = "null";
 		}else{
@@ -121,10 +120,19 @@ public class GuiArmorWorkbench extends GuiContainer{
 	}
 	
 	public void recieveSlot(double slotNum){
+		if (Reference.DEBUG){
+			Console.println("Recieved Slot Packet: " + slotNum);
+		}
 		this.slotActivated = (int) slotNum;
 		if (this.slotActivated == 0){
 			this.isEmpty = true;
 			this.upgrade = -1;
+			this.isButton = false;
+			removeValueButtons();
+			this.showText = false;
+		}else{
+			this.showText = true;
+			this.isEmpty = false;
 		}
 	}
 	
@@ -141,29 +149,38 @@ public class GuiArmorWorkbench extends GuiContainer{
 		if (slotActivated != 0 && isEmpty == false){
 			drawTexturedModalRect(xCord + 35, yCord - 13 + (slotActivated * 20), 177, 1, 4, 16);
 		}
+		
+		if (isButton == true && this.isEmpty == true){
+			removeValueButtons();
+		}
+		
 		if (this.isEmpty || this.upgrade == -2){
 			if (this.nullName != "none"){
 				this.fontRendererObj.drawString("Value: " + this.nullName, xCord + 80, yCord + 55, 0x000e74);
 			}
-			if (isButton == true){
-				if (this.buttonList.size() > 5){
-					this.buttonList.remove(5);
-					this.buttonList.remove(5);
-					this.buttonList.remove(5);
-					this.buttonList.remove(5);
-					this.buttonList.remove(5);
-					this.buttonList.remove(5);
-				}
-				this.isButton = false;
-			}
+			
 		}else{
-			if (this.isButton){
+			if (this.showText){
 				this.fontRendererObj.drawString("Upgrade: ", xCord + 70, yCord + 85, 0x000e74);
-				this.fontRendererObj.drawString(this.upgradeStack.getDisplayName(), xCord + 70, yCord + 95, 0x000e74);
+				if (this.upgradeStack != null){
+					this.fontRendererObj.drawString(this.upgradeStack.getDisplayName(), xCord + 70, yCord + 95, 0x000e74);
+				}
 				this.fontRendererObj.drawString("Value: " + this.upgrade, xCord + 80, yCord + 50, 0x000e74);
 			}
 		}
 
+	}
+	
+	public void removeValueButtons(){
+		if (this.buttonList.size() > 5){
+			this.buttonList.remove(5);
+			this.buttonList.remove(5);
+			this.buttonList.remove(5);
+			this.buttonList.remove(5);
+			this.buttonList.remove(5);
+			this.buttonList.remove(5);
+			this.isButton = false;
+		}
 	}
 	
 }

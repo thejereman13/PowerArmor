@@ -10,6 +10,7 @@ public class Config {
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		
 		config.load();
+		boolean debug = config.get(Configuration.CATEGORY_GENERAL, "Debug", false).getBoolean();
 		float powerMultiplier = config.getFloat("Power Multiplier", Configuration.CATEGORY_GENERAL, 1, 0, 100, "Ratio the power usage is multiplied by");
 		boolean powerHelmetEnabled = config.get("Items", "Enable Power Helmet", true).getBoolean();
 		boolean powerChestEnabled = config.get("Items", "Enable Power Chestplate", true).getBoolean();
@@ -27,6 +28,7 @@ public class Config {
 		boolean cardCreativeFlightEnabled = config.get("Items", "Enable Creative Flight Card", true).getBoolean();
 		boolean cardWaterWalkEnabled = config.get("Items", "Enable Water Walking Card", true).getBoolean();
 		config.save();
+		Reference.DEBUG = debug;
 		Reference.powerBootsEnabled = powerBootsEnabled;
 		Reference.powerPantsEnabled = powerPantsEnabled;
 		Reference.powerChestEnabled = powerChestEnabled;

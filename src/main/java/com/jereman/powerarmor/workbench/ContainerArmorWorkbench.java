@@ -53,7 +53,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	
 	public Item slotOne, slotTwo, slotThree, slotFour, slotFive;
 	public int slotSelected = 0;
+	public boolean sentSlot = false;
+	public boolean sentAmount = false;
 	public int upgradeNumber;
+	private World worldObj;
 	public double slotOneAmount, slotTwoAmount, slotThreeAmount, slotFourAmount, slotFiveAmount;
 	public boolean slotOneValid = false, slotTwoValid = false, slotThreeValid = false, slotFourValid = false, slotFiveValid = false;
 	public double slotOneLimit, slotTwoLimit, slotThreeLimit, slotFourLimit, slotFiveLimit;
@@ -66,6 +69,7 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		this.workbench = entity;
 		inventory = invPlayer;
 		this.player = player;
+		this.worldObj = entity.getWorld();
 		
 		
 		//Add slots from hotbar
@@ -482,12 +486,8 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 					}	
 				}
 				//End validation code
-				try{
-					Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
-				} catch (Exception e){
-					
-				}
 			}
+			if (this.sentAmount == false){
 			switch (this.slotSelected){		//Sending code to GUI so it knows what slot is selected and amounts and stuff
 				case 0:
 					break;
@@ -500,7 +500,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						}
 					}else{
 						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 					}
 					break;
 				case 2:
@@ -512,7 +511,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						}
 					}else{
 						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 					}
 					break;
 				case 3:
@@ -524,7 +522,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						}
 					}else{
 						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 					}
 					break;
 				case 4:
@@ -536,7 +533,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						}
 					}else{
 						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 					}
 					break;
 				case 5:
@@ -548,9 +544,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 						}
 					}else{
 						Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-						Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 					}
 					break;
+			}
+			this.sentAmount = true;
 			}
 		}else{
 			containerCleanup();
@@ -590,7 +587,10 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			workbench.setInventorySlotContents(4, null);
 		}
 			this.slotSelected = 0;
-			Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+			if (this.sentSlot == false){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				this.sentSlot = true;
+			}
 			this.upgradeNumber = 0;
 			this.shouldUpdate = true;
 	}
@@ -617,7 +617,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
 			}else if (workbench.getStackInSlot(0) == null){
 				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 1: //Button 2
@@ -639,7 +638,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
 			}else if (workbench.getStackInSlot(1) == null){
 				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 2: //Button 3
@@ -661,7 +659,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
 			}else if (workbench.getStackInSlot(2) == null){
 				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 3: //Button 4
@@ -683,7 +680,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
 			}else if (workbench.getStackInSlot(3) == null){
 				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 4: //Button 5
@@ -705,7 +701,6 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 				Main.network.sendTo(new GUISlotMessage(this.slotSelected), (EntityPlayerMP) this.player);
 			}else if (workbench.getStackInSlot(4) == null){
 				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-				Main.network.sendTo(new GUIAmountMessage(-1), (EntityPlayerMP) this.player);
 			}
 			break;
 		case 5: //Upgrade -1
@@ -1075,6 +1070,23 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		    bd = bd.setScale(places, RoundingMode.HALF_UP);
 		    return bd.doubleValue();
 		}
+		
+	@Override
+	public void onContainerClosed(EntityPlayer playerIn){
+        super.onContainerClosed(playerIn);
+
+        if (!this.worldObj.isRemote)
+        {
+                ItemStack itemstack = this.workbench.getStackInSlotOnClosing(5);
+
+                if (itemstack != null)
+                {
+                    playerIn.dropPlayerItemWithRandomChoice(itemstack, false);
+                }
+                containerCleanup();
+        }
+    }
+	
 	@Override
 	protected boolean mergeItemStack(ItemStack stack, int start, int end, boolean backwards)
 	{
