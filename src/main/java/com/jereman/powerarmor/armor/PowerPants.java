@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.Reference;
 
-import cofh.api.energy.IEnergyContainerItem;
 
 public class PowerPants extends PowerBase{
 	

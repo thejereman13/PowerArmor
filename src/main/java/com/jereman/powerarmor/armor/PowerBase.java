@@ -3,6 +3,7 @@ package com.jereman.powerarmor.armor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.UUID;
 
 import scala.Console;
 
@@ -95,6 +96,7 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 	public void onUpdate(ItemStack stack, World par2World, Entity par3Entity, int par4, boolean par5){ //Setting default NBT Data
 		if (stack.hasTagCompound()){
 				stack.getTagCompound().setInteger("JeremanUpgradeNumber", this.upgradeNumber);
+				stack.getTagCompound().setString("RandomID", UUID.randomUUID().toString());
 		}else if (stack.hasTagCompound() == false){
 			stack.setTagCompound(new NBTTagCompound());
 		}
@@ -153,7 +155,7 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
-		//Need to override in each Armor class for functionalitys
+		//Need to override in each Armor class for functionalities
 		ArmorProperties properties = new ArmorProperties(0, .25, 1);
 		return properties;
 	}
@@ -166,7 +168,7 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 	@Override
 	public void damageArmor(EntityLivingBase entity, ItemStack stack,
 			DamageSource source, int damage, int slot) {
-		//Armor Does not take natural damage, will remain empty until Power system is in place
+		//Armor Does not take natural damage, will remain empty
 		
 	}
 	
@@ -209,7 +211,10 @@ public class PowerBase extends net.minecraft.item.ItemArmor implements ISpecialA
 					tooltip.add(EnumChatFormatting.DARK_GREEN + "Slot Five: none");
 				}
 			}else{
-				tooltip.remove(2);
+				try{
+					tooltip.remove(2);
+				}catch (Exception e){
+				}
 				tooltip.add(EnumChatFormatting.RED + "Not Configured Yet");
 			}
 		}

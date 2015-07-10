@@ -29,6 +29,7 @@ import com.jereman.powerarmor.ExtendedProperties;
 import com.jereman.powerarmor.IElementHandler;
 import com.jereman.powerarmor.Main;
 import com.jereman.powerarmor.PowerCards;
+import com.jereman.powerarmor.Reference;
 import com.jereman.powerarmor.armor.PowerBase;
 import com.jereman.powerarmor.init.JeremanItems;
 import com.jereman.powerarmor.packets.GUIAmountMessage;
@@ -39,11 +40,10 @@ import com.jereman.powerarmor.PowerCards;
 
 public class ContainerArmorWorkbench extends Container implements IElementHandler{
 	public TileEntityArmorWorkbench workbench;
-	public double SpeedCurrent;
 	public boolean shouldUpdate = true;
 	public EntityPlayer player;
 	ItemStack armor = null;
-	
+	public boolean nbttoGui,checkSlotValid,storeSlotItems,guitoNbt,sendValues, returnCards, containerCleanup;
 	private static final int ARMOR_START = 27, ARMOR_END = ARMOR_START + 3,
 			INV_START = 1, INV_END = INV_START+26,
 			HOTBAR_START = 0, HOTBAR_END = HOTBAR_START+8;
@@ -55,7 +55,9 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	public int slotSelected = 0;
 	public boolean sentSlot = false;
 	public boolean sentAmount = false;
+	public boolean newArmor;
 	public int upgradeNumber;
+	private boolean sendCrashed;
 	private World worldObj;
 	public double slotOneAmount, slotTwoAmount, slotThreeAmount, slotFourAmount, slotFiveAmount;
 	public boolean slotOneValid = false, slotTwoValid = false, slotThreeValid = false, slotFourValid = false, slotFiveValid = false;
@@ -127,17 +129,78 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 	@Override
 	public void detectAndSendChanges(){						//Container Update Tick
 		super.detectAndSendChanges();
-		if (this.armor != workbench.getStackInSlot(5)){
-				containerCleanup();
-				/*workbench.setInventorySlotContents(0, null);
-				workbench.setInventorySlotContents(1, null);
-				workbench.setInventorySlotContents(2, null);
-				workbench.setInventorySlotContents(3, null);
-				workbench.setInventorySlotContents(4, null);
-				*/
-			this.armor = workbench.getStackInSlot(5);
-			
+		if (this.armor == null || !this.armor.hasTagCompound()){
+			if (workbench.getStackInSlot(5) != null){
+				this.armor = workbench.getStackInSlot(5);
+			}
 		}
+		if (workbench.getStackInSlot(5) != null){
+			if (this.armor.getTagCompound().getString("RandomID") != workbench.getStackInSlot(5).getTagCompound().getString("RandomID")){	
+				this.newArmor = true;
+					Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+					//Put this code at the end, probably won't do anything but why not
+				
+			}else{
+				this.newArmor = false;
+			}
+		}else{
+			this.newArmor = false;
+		}
+		this.armor = workbench.getStackInSlot(5);
+		if (armor != null){
+			detectLimits();
+			if (newArmor){
+				this.sentSlot = false;
+			}
+			if (newArmor & Reference.DEBUG){
+				//Console.println("New Armor");
+			}
+			nbttoGui();
+			if (this.nbttoGui){
+				checkSlotValid();
+			}
+			if (this.checkSlotValid){
+				storeSlotItems();
+			}
+			if (this.checkSlotValid && this.storeSlotItems){
+				guitoNbt();
+			}
+			if (this.guitoNbt){
+				sendValues();
+			}
+			if (this.checkSlotValid && this.guitoNbt){
+				returnCards();	//Removing things that shouldn't be removed instantly
+			}
+			this.nbttoGui = false;
+			this.checkSlotValid = false;
+			this.storeSlotItems = false;
+			this.guitoNbt = false;
+			this.sendValues = false;
+			this.returnCards = false;
+			
+		}else{
+			if (Reference.DEBUG){
+				//Console.println("No Armor");
+			}
+			storeSlotItems();
+			if (this.storeSlotItems){
+				returnCards();
+			}
+			containerCleanup();
+			this.returnCards = false;
+			this.containerCleanup = false;
+			this.storeSlotItems = false;
+			this.slotSelected = 0;
+			if (this.sentSlot == false && this.player instanceof EntityPlayerMP){
+				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
+				this.sentSlot = true;
+			}
+			this.upgradeNumber = 0;
+			this.shouldUpdate = true;
+		}
+	}
+	
+	public void storeSlotItems(){
 		if (workbench.getStackInSlot(0)!= null){
 			this.slotOne = workbench.getStackInSlot(0).getItem();
 		}else{
@@ -163,331 +226,11 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 		}else{
 			this.slotFive = null;
 		}
-		
-		if (armor != null){
-			//Code to detect the limits on each card
-			if (armor.hasTagCompound()){
-				this.upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
-				if (armor.getTagCompound().hasKey("SlotOneLimit")){
-					this.slotOneLimit = armor.getTagCompound().getDouble("SlotOneLimit");
-				}else if (!armor.getTagCompound().hasKey("SlotOneLimit")){
-					this.slotOneLimit = 0;
-				}
-				if (armor.getTagCompound().hasKey("SlotTwoLimit")){
-					this.slotTwoLimit = armor.getTagCompound().getDouble("SlotTwoLimit");
-				}else if (!armor.getTagCompound().hasKey("SlotTwoLimit")){
-					this.slotTwoLimit = 0;
-				}
-				if (armor.getTagCompound().hasKey("SlotThreeLimit")){
-					this.slotThreeLimit = armor.getTagCompound().getDouble("SlotThreeLimit");
-				}else if (!armor.getTagCompound().hasKey("SlotThreeLimit")){
-					this.slotThreeLimit = 0;
-				}
-				if (armor.getTagCompound().hasKey("SlotFourLimit")){
-					this.slotFourLimit = armor.getTagCompound().getDouble("SlotFourLimit");
-				}else if (!armor.getTagCompound().hasKey("SlotFourLimit")){
-					this.slotFourLimit = 0;
-				}
-				if (armor.getTagCompound().hasKey("SlotFiveLimit")){
-					this.slotFiveLimit = armor.getTagCompound().getDouble("SlotFiveLimit");
-				}else if (!armor.getTagCompound().hasKey("SlotFiveLimit")){
-					this.slotFiveLimit = 0;
-				}
-			}
-		}
-		
-		if (armor != null){
-			if (armor.getItem() instanceof PowerBase){
-				//Getting the Cards from NBT data and putting them in the gui
-			if (armor.getTagCompound() != null & this.shouldUpdate == true){
-				if (armor.getTagCompound().hasKey("SlotOne")){			//Slot One Code
-					String tagOne =  armor.getTagCompound().getString("SlotOne");
-					if (tagOne.equals("none")){
-						workbench.setInventorySlotContents(0, null);
-					}else if (!tagOne.equals("none")){
-						Item inputItem1 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotOne").substring(5));
-						workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
-						this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
-						try {		//Adding the Metadata again
-							workbench.getStackInSlot(0).setTagCompound(new NBTTagCompound());
-							Method method = inputItem1.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
-							method.invoke((Object) inputItem1, workbench.getStackInSlot(0), workbench.getWorld(), this.player, 0, true);
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				}
-				if (armor.getTagCompound().hasKey("SlotTwo")){			//Slot Two Code
-					if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
-						Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
-						workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
-						this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
-						try {		//Adding the Metadata again
-							workbench.getStackInSlot(1).setTagCompound(new NBTTagCompound());
-							Method method = inputItem2.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
-							method.invoke((Object) inputItem2, workbench.getStackInSlot(1), workbench.getWorld(), this.player, 0, true);
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-					}else if (armor.getTagCompound().getString("SlotTwo").equals("none")){
-						workbench.setInventorySlotContents(1, null);
-					}
-				}
-				if (armor.getTagCompound().hasKey("SlotThree")){			//Slot Three Code
-					if (!armor.getTagCompound().getString("SlotThree").equals("none")){
-						Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
-						workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
-						this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
-						try {		//Adding the Metadata again
-							workbench.getStackInSlot(2).setTagCompound(new NBTTagCompound());
-							Method method = inputItem3.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
-							method.invoke((Object) inputItem3, workbench.getStackInSlot(2), workbench.getWorld(), this.player, 0, true);
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-					}else if (armor.getTagCompound().getString("SlotThree").equals("none")){
-						workbench.setInventorySlotContents(2, null);
-					}
-				}
-				if (armor.getTagCompound().hasKey("SlotFour")){			//Slot Four Code
-					if (!armor.getTagCompound().getString("SlotFour").equals("none")){
-						Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
-						workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
-						this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
-						try {		//Adding the Metadata again
-							workbench.getStackInSlot(3).setTagCompound(new NBTTagCompound());
-							Method method = inputItem4.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
-							method.invoke((Object) inputItem4, workbench.getStackInSlot(3), workbench.getWorld(), this.player, 0, true);
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-					}else if (armor.getTagCompound().getString("SlotFour").equals("none")){
-						workbench.setInventorySlotContents(3, null);
-					}
-				}
-				if (armor.getTagCompound().hasKey("SlotFive")){			//Slot Five Code
-					if (!armor.getTagCompound().getString("SlotFive").equals("none")){
-						Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
-						workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
-						this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
-						try {		//Adding the Metadata again
-							workbench.getStackInSlot(4).setTagCompound(new NBTTagCompound());
-							Method method = inputItem5.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
-							method.invoke((Object) inputItem5, workbench.getStackInSlot(4), workbench.getWorld(), this.player, 0, true);
-						}catch (Exception e) {
-							e.printStackTrace();
-						}
-					}else if (armor.getTagCompound().getString("SlotFive").equals("none")){
-						workbench.setInventorySlotContents(4, null);
-					}
-				}
-				this.shouldUpdate = false;
-				workbench.markDirty();
-			}
-				//Storing the data from slots
-				if (slotOne != null && this.slotOneValid){
-					if (workbench.getStackInSlot(0).hasTagCompound()){
-						if (workbench.getStackInSlot(0).getTagCompound().hasKey("UpgradeLimit")){
-							PowerBase.NBTUpgradeList("SlotOne", armor, slotOne.getUnlocalizedName());
-							PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit"));
-						}
-					}
-				}else{
-					PowerBase.NBTUpgradeList("SlotOne", armor, "none");
-					PowerBase.NBTUpgradeLimit("SlotOneLimit", armor, 0);
-				}
-				if (slotTwo != null && this.slotTwoValid){
-					if (workbench.getStackInSlot(1).hasTagCompound()){
-						if (workbench.getStackInSlot(1).getTagCompound().hasKey("UpgradeLimit")){
-							PowerBase.NBTUpgradeList("SlotTwo", armor, slotTwo.getUnlocalizedName());
-							PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit"));
-						}
-					}
-				}else{
-					PowerBase.NBTUpgradeList("SlotTwo", armor, "none");
-					PowerBase.NBTUpgradeLimit("SlotTwoLimit", armor, 0);
-				}
-				if (slotThree !=null && this.slotThreeValid){
-					if (workbench.getStackInSlot(2).hasTagCompound()){
-						if (workbench.getStackInSlot(2).getTagCompound().hasKey("UpgradeLimit")){
-							PowerBase.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
-							PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit"));
-						}
-					}
-				}else{
-					PowerBase.NBTUpgradeList("SlotThree", armor, "none");
-					PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, 0);
-				}
-				if (slotFour != null && this.slotFourValid){
-					if (workbench.getStackInSlot(3).hasTagCompound()){
-						if (workbench.getStackInSlot(3).getTagCompound().hasKey("UpgradeLimit")){
-							PowerBase.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
-							PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit"));
-						}
-					}
-				}else{
-					PowerBase.NBTUpgradeList("SlotFour", armor, "none");
-					PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, 0);
-				}
-				if (slotFive != null && this.slotFiveValid){
-					if (workbench.getStackInSlot(4).hasTagCompound()){
-						if (workbench.getStackInSlot(4).getTagCompound().hasKey("UpgradeLimit")){
-					PowerBase.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
-					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit"));
-						}
-					}
-				}else{
-					PowerBase.NBTUpgradeList("SlotFive", armor, "none");
-					PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, 0);
-				}
-				//Store new upgrade values on the armor
-				switch (this.slotSelected){
-				case 1:
-					PowerBase.NBTUpgrades("SlotOneAmount", armor, this.slotOneAmount);
-					break;
-				case 2:
-					PowerBase.NBTUpgrades("SlotTwoAmount", armor, this.slotTwoAmount);
-					break;
-				case 3:
-					PowerBase.NBTUpgrades("SlotThreeAmount", armor, this.slotThreeAmount);
-					break;
-				case 4:
-					PowerBase.NBTUpgrades("SlotFourAmount", armor, this.slotFourAmount);
-					break;
-				case 5:
-					PowerBase.NBTUpgrades("SlotFiveAmount", armor, this.slotFiveAmount);
-				}
-				
-				//Checking if the cards are valid for the currently inserted armor piece
-				if (workbench.getStackInSlot(0) != null){
-					if (workbench.getStackInSlot(0).hasTagCompound()){
-						if (workbench.getStackInSlot(0).getTagCompound().hasKey("ValidArmor")){
-							if (workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotOneValid", true);
-								this.slotOneValid = true;
-							}else if (workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals("all")){
-								this.armor.getTagCompound().setBoolean("SlotOneValid", true);
-								this.slotOneValid = true;
-							}else if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotOneValid", false);
-								this.slotOneValid = false;
-							}
-						}
-					}
-				}else{
-					this.slotOneAmount = 0;
-				}
-				if (workbench.getStackInSlot(1) != null){
-					if (workbench.getStackInSlot(1).getTagCompound() != null){
-						if (workbench.getStackInSlot(1).getTagCompound().hasKey("ValidArmor")){
-							if (workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
-								this.slotTwoValid = true;
-							}else if (workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals("all")){
-								this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
-								this.slotTwoValid = true;
-							}else if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
-								this.slotTwoValid = false;
-							}
-						}
-					}
-				}else{
-					this.slotTwoAmount = 0;
-				}
-				if (workbench.getStackInSlot(2) != null){
-					if (workbench.getStackInSlot(2).getTagCompound() != null){
-						if (workbench.getStackInSlot(2).getTagCompound().hasKey("ValidArmor")){
-							if (workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
-								this.slotThreeValid = true;
-							}else if (workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals("all")){
-								this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
-								this.slotThreeValid = true;
-							}else if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
-								this.slotThreeValid = false;
-							}
-						}
-					}
-				}else{
-					this.slotThreeAmount = 0;
-				}
-				if (workbench.getStackInSlot(3) != null){
-					if (workbench.getStackInSlot(3).getTagCompound() != null){
-						if (workbench.getStackInSlot(3).getTagCompound().hasKey("ValidArmor")){
-							if (workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotFourValid", true);
-								this.slotFourValid = true;
-							}else if (workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals("all")){
-								this.armor.getTagCompound().setBoolean("SlotFourValid", true);
-								this.slotFourValid = true;
-							}else if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotFourValid", false);
-								this.slotFourValid = false;
-							}
-						}
-					}
-				}else{
-					this.slotFourAmount = 0;
-				}
-				if (workbench.getStackInSlot(4) != null){
-					if (workbench.getStackInSlot(4).getTagCompound() != null){
-						if (workbench.getStackInSlot(4).getTagCompound().hasKey("ValidArmor")){
-							if (workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
-								this.slotFiveValid = true;
-							}else if (workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals("all")){
-								this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
-								this.slotFiveValid = true;
-							}else if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
-								this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
-								this.slotFiveValid = false;
-							}
-						}
-					}
-				}else{
-					this.slotFiveAmount = 0;
-				}
-				//Invalidating slots if armor doesn't support that many slots
-				if (armor.getTagCompound().hasKey("JeremanUpgradeNumber")){
-					int upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
-					this.upgradeNumber = upgradeNumber;
-					switch (upgradeNumber){
-						case 0:
-							this.slotOneValid = false;
-							this.slotTwoValid = false;
-							this.slotThreeValid = false;
-							this.slotFourValid = false;
-							this.slotFiveValid = false;
-							break;
-						case 1:
-							this.slotTwoValid = false;
-							this.slotThreeValid = false;
-							this.slotFourValid = false;
-							this.slotFiveValid = false;
-							break;
-						case 2:
-							this.slotThreeValid = false;
-							this.slotFourValid = false;
-							this.slotFiveValid = false;
-							break;
-						case 3:
-							this.slotFourValid = false;
-							this.slotFiveValid = false;
-							break;
-						case 4:
-							this.slotFiveValid = false;
-							break;
-						case 5:
-							break;
-						default:
-							break;
-					}	
-				}
-				//End validation code
-			}
-			if (this.sentAmount == false){
+		this.storeSlotItems = true;
+	}
+	
+	public void sendValues(){
+		if (this.sentAmount == false){
 			switch (this.slotSelected){		//Sending code to GUI so it knows what slot is selected and amounts and stuff
 				case 0:
 					break;
@@ -549,50 +292,416 @@ public class ContainerArmorWorkbench extends Container implements IElementHandle
 			}
 			this.sentAmount = true;
 			}
+		this.sendValues = true;
+	}
+	
+	public void guitoNbt(){
+		//Storing the data from slots
+		if (Reference.DEBUG){
+			//Console.println("Saving Data from slots");
+		}
+			if (this.slotOne != null && this.slotOneValid){
+				if (workbench.getStackInSlot(0).hasTagCompound()){
+					if (workbench.getStackInSlot(0).getTagCompound().hasKey("UpgradeLimit")){
+						armor.getTagCompound().setString("SlotOne", slotOne.getUnlocalizedName());
+						armor.getTagCompound().setDouble("SlotOneLimit", workbench.getStackInSlot(0).getTagCompound().getDouble("UpgradeLimit"));
+					}
+				}
+			}else{
+				armor.getTagCompound().setString("SlotOne", "none");
+				armor.getTagCompound().setDouble("SlotOneLimit", 0);
+			}
+			if (this.slotTwo != null && this.slotTwoValid){
+				if (workbench.getStackInSlot(1).hasTagCompound()){
+					if (workbench.getStackInSlot(1).getTagCompound().hasKey("UpgradeLimit")){
+						armor.getTagCompound().setString("SlotTwo", slotTwo.getUnlocalizedName());
+						armor.getTagCompound().setDouble("SlotTwoLimit", workbench.getStackInSlot(1).getTagCompound().getDouble("UpgradeLimit"));					}
+				}
+			}else{
+				armor.getTagCompound().setString("SlotTwo", "none");
+				armor.getTagCompound().setDouble("SlotTwoLimit", 0);
+			}
+			if (this.slotThree !=null && this.slotThreeValid){
+				if (workbench.getStackInSlot(2).hasTagCompound()){
+					if (workbench.getStackInSlot(2).getTagCompound().hasKey("UpgradeLimit")){
+						PowerBase.NBTUpgradeList("SlotThree", armor, slotThree.getUnlocalizedName());
+						PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, workbench.getStackInSlot(2).getTagCompound().getDouble("UpgradeLimit"));
+					}
+				}
+			}else{
+				PowerBase.NBTUpgradeList("SlotThree", armor, "none");
+				PowerBase.NBTUpgradeLimit("SlotThreeLimit", armor, 0);
+			}
+			if (this.slotFour != null && this.slotFourValid){
+				if (workbench.getStackInSlot(3).hasTagCompound()){
+					if (workbench.getStackInSlot(3).getTagCompound().hasKey("UpgradeLimit")){
+						PowerBase.NBTUpgradeList("SlotFour", armor, slotFour.getUnlocalizedName());
+						PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, workbench.getStackInSlot(3).getTagCompound().getDouble("UpgradeLimit"));
+					}
+				}
+			}else{
+				PowerBase.NBTUpgradeList("SlotFour", armor, "none");
+				PowerBase.NBTUpgradeLimit("SlotFourLimit", armor, 0);
+			}
+			if (this.slotFive != null && this.slotFiveValid){
+				if (workbench.getStackInSlot(4).hasTagCompound()){
+					if (workbench.getStackInSlot(4).getTagCompound().hasKey("UpgradeLimit")){
+				PowerBase.NBTUpgradeList("SlotFive", armor, slotFive.getUnlocalizedName());
+				PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, workbench.getStackInSlot(4).getTagCompound().getDouble("UpgradeLimit"));
+					}
+				}
+			}else{
+				PowerBase.NBTUpgradeList("SlotFive", armor, "none");
+				PowerBase.NBTUpgradeLimit("SlotFiveLimit", armor, 0);
+			}
+			//Store new upgrade values on the armor
+			switch (this.slotSelected){
+			case 1:
+				PowerBase.NBTUpgrades("SlotOneAmount", armor, this.slotOneAmount);
+				break;
+			case 2:
+				PowerBase.NBTUpgrades("SlotTwoAmount", armor, this.slotTwoAmount);
+				break;
+			case 3:
+				PowerBase.NBTUpgrades("SlotThreeAmount", armor, this.slotThreeAmount);
+				break;
+			case 4:
+				PowerBase.NBTUpgrades("SlotFourAmount", armor, this.slotFourAmount);
+				break;
+			case 5:
+				PowerBase.NBTUpgrades("SlotFiveAmount", armor, this.slotFiveAmount);
+			}
+			this.guitoNbt = true;
+	}
+	
+	public void checkSlotValid(){
+		//Checking if the cards are valid for the currently inserted armor piece
+		if (workbench.getStackInSlot(0) != null){
+			if (workbench.getStackInSlot(0).hasTagCompound()){
+				if (workbench.getStackInSlot(0).getTagCompound().hasKey("ValidArmor")){
+					if (workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotOneValid", true);
+						this.slotOneValid = true;
+					}else if (workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals("all")){
+						this.armor.getTagCompound().setBoolean("SlotOneValid", true);
+						this.slotOneValid = true;
+					}else if (!workbench.getStackInSlot(0).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotOneValid", false);
+						this.slotOneValid = false;
+					}
+				}
+			}
 		}else{
-			containerCleanup();
+			this.slotOneAmount = 0;
+		}
+		if (workbench.getStackInSlot(1) != null){
+			if (workbench.getStackInSlot(1).getTagCompound() != null){
+				if (workbench.getStackInSlot(1).getTagCompound().hasKey("ValidArmor")){
+					if (workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
+						this.slotTwoValid = true;
+					}else if (workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals("all")){
+						this.armor.getTagCompound().setBoolean("SlotTwoValid", true);
+						this.slotTwoValid = true;
+					}else if (!workbench.getStackInSlot(1).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotTwoValid", false);
+						this.slotTwoValid = false;
+					}
+				}
+			}
+		}else{
+			this.slotTwoAmount = 0;
+		}
+		if (workbench.getStackInSlot(2) != null){
+			if (workbench.getStackInSlot(2).getTagCompound() != null){
+				if (workbench.getStackInSlot(2).getTagCompound().hasKey("ValidArmor")){
+					if (workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
+						this.slotThreeValid = true;
+					}else if (workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals("all")){
+						this.armor.getTagCompound().setBoolean("SlotThreeValid", true);
+						this.slotThreeValid = true;
+					}else if (!workbench.getStackInSlot(2).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotThreeValid", false);
+						this.slotThreeValid = false;
+					}
+				}
+			}
+		}else{
+			this.slotThreeAmount = 0;
+		}
+		if (workbench.getStackInSlot(3) != null){
+			if (workbench.getStackInSlot(3).getTagCompound() != null){
+				if (workbench.getStackInSlot(3).getTagCompound().hasKey("ValidArmor")){
+					if (workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotFourValid", true);
+						this.slotFourValid = true;
+					}else if (workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals("all")){
+						this.armor.getTagCompound().setBoolean("SlotFourValid", true);
+						this.slotFourValid = true;
+					}else if (!workbench.getStackInSlot(3).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotFourValid", false);
+						this.slotFourValid = false;
+					}
+				}
+			}
+		}else{
+			this.slotFourAmount = 0;
+		}
+		if (workbench.getStackInSlot(4) != null){
+			if (workbench.getStackInSlot(4).getTagCompound() != null){
+				if (workbench.getStackInSlot(4).getTagCompound().hasKey("ValidArmor")){
+					if (workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
+						this.slotFiveValid = true;
+					}else if (workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals("all")){
+						this.armor.getTagCompound().setBoolean("SlotFiveValid", true);
+						this.slotFiveValid = true;
+					}else if (!workbench.getStackInSlot(4).getTagCompound().getString("ValidArmor").equals(armor.getUnlocalizedName().substring(5))){
+						this.armor.getTagCompound().setBoolean("SlotFiveValid", false);
+						this.slotFiveValid = false;
+					}
+				}
+			}
+		}else{
+			this.slotFiveAmount = 0;
+		}
+		
+		//Invalidating slots if armor doesn't support that many slots
+		if (armor.getTagCompound().hasKey("JeremanUpgradeNumber")){
+			int upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
+			this.upgradeNumber = upgradeNumber;
+			switch (upgradeNumber){
+				case 0:
+					this.slotOneValid = false;
+					this.slotTwoValid = false;
+					this.slotThreeValid = false;
+					this.slotFourValid = false;
+					this.slotFiveValid = false;
+					break;
+				case 1:
+					this.slotTwoValid = false;
+					this.slotThreeValid = false;
+					this.slotFourValid = false;
+					this.slotFiveValid = false;
+					break;
+				case 2:
+					this.slotThreeValid = false;
+					this.slotFourValid = false;
+					this.slotFiveValid = false;
+					break;
+				case 3:
+					this.slotFourValid = false;
+					this.slotFiveValid = false;
+					break;
+				case 4:
+					this.slotFiveValid = false;
+					break;
+				case 5:
+					break;
+				default:
+					break;
+			}
+		}
+		//End validation code
+		this.checkSlotValid = true;
+	}
+	
+	public void nbttoGui(){		//Getting the Cards from NBT data and putting them in the gui
+		if (armor.getTagCompound() != null && this.shouldUpdate == true){
+			if (armor.getTagCompound().hasKey("SlotOne")){			//Slot One Code
+				String tagOne =  armor.getTagCompound().getString("SlotOne");
+				if (tagOne.equals("none")){
+					workbench.setInventorySlotContents(0, null);
+				}else if (!tagOne.equals("none")){
+					Item inputItem1 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotOne").substring(5));
+					workbench.setInventorySlotContents(0, new ItemStack(inputItem1));
+					this.slotOneAmount = armor.getTagCompound().getDouble("SlotOneAmount");
+					try {		//Adding the Metadata again
+						workbench.getStackInSlot(0).setTagCompound(new NBTTagCompound());
+						Method method = inputItem1.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+						method.invoke((Object) inputItem1, workbench.getStackInSlot(0), workbench.getWorld(), this.player, 0, true);
+					}catch (Exception e) {
+						if (Reference.DEBUG){
+							Console.println(inputItem1.getUnlocalizedName());
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+			if (armor.getTagCompound().hasKey("SlotTwo")){			//Slot Two Code
+				if (!armor.getTagCompound().getString("SlotTwo").equals("none")){
+					Item inputItem2 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotTwo").substring(5));
+					workbench.setInventorySlotContents(1, new ItemStack(inputItem2));
+					this.slotTwoAmount = armor.getTagCompound().getDouble("SlotTwoAmount");
+					try {		//Adding the Metadata again
+						workbench.getStackInSlot(1).setTagCompound(new NBTTagCompound());
+						Method method = inputItem2.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+						method.invoke((Object) inputItem2, workbench.getStackInSlot(1), workbench.getWorld(), this.player, 0, true);
+					}catch (Exception e) {
+						if (Reference.DEBUG){
+							e.printStackTrace();
+						}
+					}
+				}else if (armor.getTagCompound().getString("SlotTwo").equals("none")){
+					workbench.setInventorySlotContents(1, null);
+				}
+			}
+			if (armor.getTagCompound().hasKey("SlotThree")){			//Slot Three Code
+				if (!armor.getTagCompound().getString("SlotThree").equals("none")){
+					Item inputItem3 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotThree").substring(5));
+					workbench.setInventorySlotContents(2, new ItemStack(inputItem3));
+					this.slotThreeAmount = armor.getTagCompound().getDouble("SlotThreeAmount");
+					try {		//Adding the Metadata again
+						workbench.getStackInSlot(2).setTagCompound(new NBTTagCompound());
+						Method method = inputItem3.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+						method.invoke((Object) inputItem3, workbench.getStackInSlot(2), workbench.getWorld(), this.player, 0, true);
+					}catch (Exception e) {
+						if (Reference.DEBUG){
+							e.printStackTrace();
+						}
+					}
+				}else if (armor.getTagCompound().getString("SlotThree").equals("none")){
+					workbench.setInventorySlotContents(2, null);
+				}
+			}
+			if (armor.getTagCompound().hasKey("SlotFour")){			//Slot Four Code
+				if (!armor.getTagCompound().getString("SlotFour").equals("none")){
+					Item inputItem4 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFour").substring(5));
+					workbench.setInventorySlotContents(3, new ItemStack(inputItem4));
+					this.slotFourAmount = armor.getTagCompound().getDouble("SlotFourAmount");
+					try {		//Adding the Metadata again
+						workbench.getStackInSlot(3).setTagCompound(new NBTTagCompound());
+						Method method = inputItem4.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+						method.invoke((Object) inputItem4, workbench.getStackInSlot(3), workbench.getWorld(), this.player, 0, true);
+					}catch (Exception e) {
+						if (Reference.DEBUG){
+							e.printStackTrace();
+						}
+					}
+				}else if (armor.getTagCompound().getString("SlotFour").equals("none")){
+					workbench.setInventorySlotContents(3, null);
+				}
+			}
+			if (armor.getTagCompound().hasKey("SlotFive")){			//Slot Five Code
+				if (!armor.getTagCompound().getString("SlotFive").equals("none")){
+					Item inputItem5 = GameRegistry.findItem("powerarmor", armor.getTagCompound().getString("SlotFive").substring(5));
+					workbench.setInventorySlotContents(4, new ItemStack(inputItem5));
+					this.slotFiveAmount = armor.getTagCompound().getDouble("SlotFiveAmount");
+					try {		//Adding the Metadata again
+						workbench.getStackInSlot(4).setTagCompound(new NBTTagCompound());
+						Method method = inputItem5.getClass().getMethod("onUpdate", ItemStack.class, World.class, Entity.class, int.class, boolean.class);
+						method.invoke((Object) inputItem5, workbench.getStackInSlot(4), workbench.getWorld(), this.player, 0, true);
+					}catch (Exception e) {
+						if (Reference.DEBUG){
+							e.printStackTrace();
+						}
+					}
+				}else if (armor.getTagCompound().getString("SlotFive").equals("none")){
+					workbench.setInventorySlotContents(4, null);
+				}
+			}
+			this.shouldUpdate = false;
+			workbench.markDirty();
+		}
+		this.nbttoGui = true;
+	}
+	
+	public void detectLimits(){
+		//Code to detect the limits on each card
+		if (armor.hasTagCompound()){
+			this.upgradeNumber = armor.getTagCompound().getInteger("JeremanUpgradeNumber");
+			if (armor.getTagCompound().hasKey("SlotOneLimit")){
+				this.slotOneLimit = armor.getTagCompound().getDouble("SlotOneLimit");
+			}else if (!armor.getTagCompound().hasKey("SlotOneLimit")){
+				this.slotOneLimit = 0;
+			}
+			if (armor.getTagCompound().hasKey("SlotTwoLimit")){
+				this.slotTwoLimit = armor.getTagCompound().getDouble("SlotTwoLimit");
+			}else if (!armor.getTagCompound().hasKey("SlotTwoLimit")){
+				this.slotTwoLimit = 0;
+			}
+			if (armor.getTagCompound().hasKey("SlotThreeLimit")){
+				this.slotThreeLimit = armor.getTagCompound().getDouble("SlotThreeLimit");
+			}else if (!armor.getTagCompound().hasKey("SlotThreeLimit")){
+				this.slotThreeLimit = 0;
+			}
+			if (armor.getTagCompound().hasKey("SlotFourLimit")){
+				this.slotFourLimit = armor.getTagCompound().getDouble("SlotFourLimit");
+			}else if (!armor.getTagCompound().hasKey("SlotFourLimit")){
+				this.slotFourLimit = 0;
+			}
+			if (armor.getTagCompound().hasKey("SlotFiveLimit")){
+				this.slotFiveLimit = armor.getTagCompound().getDouble("SlotFiveLimit");
+			}else if (!armor.getTagCompound().hasKey("SlotFiveLimit")){
+				this.slotFiveLimit = 0;
+			}
 		}
 	}
 	
-	public void containerCleanup(){
-		//Putting the cards in the player's inventory if they are invalid, removing if they are
-		if (this.slotOneValid){
-			workbench.setInventorySlotContents(0, null);
-		}else if (this.slotOneValid == false && workbench.getStackInSlot(0) != null){
+	public void returnCards(){
+		if (!this.slotOneValid && workbench.getStackInSlot(0) != null){
 			this.player.inventory.addItemStackToInventory(new ItemStack(this.slotOne));
 			workbench.setInventorySlotContents(0, null);
 		}
-		if (this.slotTwoValid){
-			workbench.setInventorySlotContents(1, null);
-		}else if (this.slotTwoValid == false && workbench.getStackInSlot(1) != null){
+		if (this.slotTwoValid == false && workbench.getStackInSlot(1) != null){
 			this.player.inventory.addItemStackToInventory(new ItemStack(this.slotTwo));
 			workbench.setInventorySlotContents(1, null);
 		}
-		if (this.slotThreeValid){
-			workbench.setInventorySlotContents(2, null);
-		}else if (this.slotThreeValid == false && workbench.getStackInSlot(2) != null){
+		if (this.slotThreeValid == false && workbench.getStackInSlot(2) != null){
 			this.player.inventory.addItemStackToInventory(new ItemStack(this.slotThree));
 			workbench.setInventorySlotContents(2, null);
 		}
-		if (this.slotFourValid){
-			workbench.setInventorySlotContents(3, null);
-		}else if (this.slotFourValid == false && workbench.getStackInSlot(3) != null){
+		if (this.slotFourValid == false && workbench.getStackInSlot(3) != null){
 			this.player.inventory.addItemStackToInventory(new ItemStack(this.slotFour));
 			workbench.setInventorySlotContents(3, null);
 		}
-		if (this.slotFiveValid){
-			workbench.setInventorySlotContents(4, null);
-		}else if (this.slotFiveValid == false && workbench.getStackInSlot(4) != null){
+		if (this.slotFiveValid == false && workbench.getStackInSlot(4) != null){
 			this.player.inventory.addItemStackToInventory(new ItemStack(this.slotFive));
 			workbench.setInventorySlotContents(4, null);
 		}
-			this.slotSelected = 0;
-			if (this.sentSlot == false){
-				Main.network.sendTo(new GUISlotMessage(0), (EntityPlayerMP) this.player);
-				this.sentSlot = true;
+		this.returnCards = true;
+	}
+	
+	public void containerCleanup(){
+		if (Reference.DEBUG){
+			//Console.println("Container Cleanup");
+		}
+		if (this.armor == null){
+		//removing if they are invalid
+		if (this.slotOneValid){
+			workbench.setInventorySlotContents(0, null);
+			if (Reference.DEBUG){
+				//Console.println("Removed Valid Item: Slot 0");
 			}
-			this.upgradeNumber = 0;
-			this.shouldUpdate = true;
+		}
+		if (this.slotTwoValid){
+			workbench.setInventorySlotContents(1, null);
+			if (Reference.DEBUG){
+				//Console.println("Removed Valid Item: Slot 1");
+			}
+		}
+		if (this.slotThreeValid){
+			workbench.setInventorySlotContents(2, null);
+			if (Reference.DEBUG){
+				//Console.println("Removed Valid Item: Slot 2");
+			}
+		}
+		if (this.slotFourValid){
+			workbench.setInventorySlotContents(3, null);
+			if (Reference.DEBUG){
+				//Console.println("Removed Valid Item: Slot 3");
+			}
+		}
+		if (this.slotFiveValid){
+			workbench.setInventorySlotContents(4, null);
+			if (Reference.DEBUG){
+				//Console.println("Removed Valid Item: Slot 4");
+			}
+		}
+		}
+		workbench.markDirty();
+		this.containerCleanup = true;
 	}
 	
 		//Buttons to select the upgrade to modify

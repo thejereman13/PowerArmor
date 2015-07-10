@@ -1,8 +1,10 @@
 TODO:
-~Fix GUI disappearing randomly (may have to redo some GUI code with upgrade names as well)
+~Fix GUI disappearing on first click
+~Look into stupid code for cardSpeed and cardJump (start in PowerPants class)
 ~Setup config for capacity on armor, use config value instead of metadata on tooltips
 ~Figure out a way to have keybinds for stuff (Going to take a lot of work)
 ~Setup variables for power, display as durability
+~If I feel like it, work on IGuiFactory stuff
 Ideas:
 ~Card that can interact with your inventory, syncs with chest (goes on the pants, cuz ender pockets)
 ~Card that eats for you (lore: "Don't worry, it doesn't bite")

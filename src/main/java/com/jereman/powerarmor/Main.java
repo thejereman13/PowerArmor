@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,6 +35,7 @@ import com.jereman.powerarmor.packets.GUINameMessage;
 import com.jereman.powerarmor.packets.GUISlotHandler;
 import com.jereman.powerarmor.packets.GUISlotMessage;
 import com.jereman.powerarmor.proxy.CommonProxy;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
 public class Main {
 	@Mod.Instance(Reference.MOD_ID)
@@ -81,5 +83,9 @@ public class Main {
 			
 	}
 	
-	public static boolean DebugMode = true;
+	@SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+        if(eventArgs.modID.equals(Reference.MOD_ID))
+           Config.syncConfig();
+    }
 }

@@ -1,16 +1,17 @@
 [
 {
-  "modid": "powerArmor",
+  "modid": "powerarmor",
   "name": "Power Armor",
   "description": "Jereman's Better Armor for Minecraft",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "0.0.6",
+  "mcversion": "1.8",
   "url": "http://jereman.com",
   "updateUrl": "",
   "authorList": ["Jereman"],
   "credits": "Jereman",
   "logoFile": "",
   "screenshots": [],
+  "requiredMods": ["progressiveautomation"],
   "dependencies": []
 }
 ]
