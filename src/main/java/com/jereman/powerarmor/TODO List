@@ -1,4 +1,5 @@
 TODO:
+~compile array list for all upgrades and file path on startup. (Necessary for other mods' mod ID)
 ~Fix GUI disappearing on first click
 ~Look into stupid code for cardSpeed and cardJump (start in PowerPants class)
 ~Setup config for capacity on armor, use config value instead of metadata on tooltips
